@@ -9,6 +9,7 @@
         <!-- <script src="extra_functions/jspsych-html-slider-response-smooth-tracking.js"></script>
         <script src="./extra_functions/custom_functions.js"> </script> -->
         <script src="./extra_functions/jspsych-plugin-playground.js"></script>
+        <script src="./extra_functions/jspsych-free-sort-modified.js"></script>        
         <link href="./jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
     </head>
     <body></body>
@@ -67,29 +68,62 @@
             top: 100
         }
 
-        // ///////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////////
+        // //////////// FREE SORT PLUGIN //////////////////////////////
+        // var sorting_stimuli = [];
 
-        /* create timeline */
+        // for (var i = 1; i <= 12; i++) {
+        //     sorting_stimuli.push("img/cell_img_" + i + ".jpg");
+        // }
+
         var timeline = [];
 
-        /* define welcome message trial */
-        var oneTrial = {
-            type: "plugin-playground",
-            // prompt: "<p style=' position: relative; left: 200px'>Which of the two pictures of birds is associated with this Christmas toy? Press 1 or 2 </p>",
-            prompt: "<p>Which of the two pictures of birds is associated with this Christmas toy? Press 1 or 2 </p>",            
-            targetStim: "./img/targets/Bell.png",
+        var stimuli = ["./img/targets/Bell.png"]
+
+        var sort_trial = {
+            type: 'plugin-playground',
+            stimuli: stimuli,
+            stim_width: [50],
+            stim_height: [50],
+            stim_x_coords: [350],
+            stim_y_coords: [50],
+            sort_area_width: 750,
+            sort_area_height: 700,
+            prompt: "Which of the two pictures below are associated with this Christmas toy?",
             choices: ['1', '2'],
             // trial_duration: 2000,
-            response_ends_trial: true            
-        }
+            response_ends_trial: true              
+        };
 
-        timeline.push(oneTrial)
+        timeline.push(sort_trial)
 
-        /* start the experiment */
         jsPsych.init({
             timeline: timeline
         });
+
+
+        // ///////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // /* create timeline */
+        // var timeline = [];
+
+        // /* define welcome message trial */
+        // var oneTrial = {
+        //     type: "plugin-playground",
+        //     // prompt: "<p style=' position: relative; left: 200px'>Which of the two pictures of birds is associated with this Christmas toy? Press 1 or 2 </p>",
+        //     prompt: "<p>Which of the two pictures of birds is associated with this Christmas toy? Press 1 or 2 </p>",            
+        //     targetStim: "./img/targets/Bell.png",
+        //     choices: ['1', '2'],
+        //     // trial_duration: 2000,
+        //     response_ends_trial: true            
+        // }
+
+        // timeline.push(oneTrial)
+
+        // /* start the experiment */
+        // jsPsych.init({
+        //     timeline: timeline
+        // });
 
         //  // Define the procedure
         //  var session_procedure = {
