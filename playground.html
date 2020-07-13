@@ -8,6 +8,7 @@
         <script src = "./extra_functions/jquery-3.4.1.js" type="text/javascript"></script>
         <!-- <script src="extra_functions/jspsych-html-slider-response-smooth-tracking.js"></script>
         <script src="./extra_functions/custom_functions.js"> </script> -->
+        <script src="./extra_functions/jspsych-plugin-playground.js"></script>
         <link href="./jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
     </head>
     <body></body>
@@ -52,6 +53,89 @@
 
         var xSpace = _.range(25,800,(800 - 25)/300);
         var ySpace = JSON.parse(JSON.stringify(xSpace)); 
+
+
+        // Get screen size:
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+
+        var centerX = w/2;
+        var centerY = h/2;
+
+        bellPosition = {
+            left: 210,
+            top: 100
+        }
+
+        // ///////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+
+        /* create timeline */
+        var timeline = [];
+
+        /* define welcome message trial */
+        var oneTrial = {
+            type: "plugin-playground",
+            // prompt: "<p style=' position: relative; left: 200px'>Which of the two pictures of birds is associated with this Christmas toy? Press 1 or 2 </p>",
+            prompt: "<p>Which of the two pictures of birds is associated with this Christmas toy? Press 1 or 2 </p>",            
+            targetStim: "./img/targets/Bell.png",
+            choices: ['1', '2'],
+            // trial_duration: 2000,
+            response_ends_trial: true            
+        }
+
+        timeline.push(oneTrial)
+
+        /* start the experiment */
+        jsPsych.init({
+            timeline: timeline
+        });
+
+        //  // Define the procedure
+        //  var session_procedure = {
+        //         timeline: [
+        //             {
+        //                 type: "plugin-playground",
+        //                 prompt: "Which of the two pictures of birds is associated with this Christmas toy? Press 1 or 2",
+        //                 targetStim: "./img/targets/Bell.png",
+
+        //                 // current_space: jatos.studySessionData.condition.subjSpace,
+        //                 // n_trials: n_imgs_to_use,
+        //                 // trial_idx: jsPsych.timelineVariable("trial"),
+        //                 // session_idx: jsPsych.timelineVariable("session"),
+        //                 // stimulus_img: jsPsych.timelineVariable("image"),
+        //                 // id_pair: jsPsych.timelineVariable("id_pair"),
+        //                 // stimulus_img_width: jatos.studySessionData.condition.subjImgWidth,
+        //                 // maintain_aspect_ration: true,
+        //                 // min: 1,
+        //                 // max: 10,
+        //                 // start: 5,
+        //                 // step: 1,
+        //                 // labels: jatos.studySessionData.scale_labels,
+        //                 // slider_width: jatos.studySessionData.slider_width,
+        //                 // prompt: "<p style='margin: 25px;'>How similar are these two pictures? </p>",
+        //                 // trial_duration: jatos.studySessionData.trial_dur,
+        //                 // response_ends_trial: true,
+        //                 // post_trial_gap: jatos.studySessionData.post_trial_gap,
+        //                 // data: {test_part: "real_trials"},
+        //                 // auto_respond: jatos.studySessionData.auto_respond
+        //             }
+        //         ],
+
+        //         timeline_variables: jatos.studySessionData.imgs_to_use_dynamic
+        //     };
+
+        //     jsPsych.init({
+        //         timeline: [session_procedure],
+        //         preload_images: imgs_to_load,
+
+        //         on_finish: function(data) {
+        //         	console.log('Over');
+        //         	jsPsych.data.displayData('json');
+        //         }            
+                
+        //     });
+
 
     </script>
 </html>
