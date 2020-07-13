@@ -19,22 +19,62 @@
     // ///////////////////////////////////////////////////////////////////////////////////////////
 
         var baseTrialArray = [
-            {item1: "T1", item2: "T2", itemShown: 1},
-            {item1: "T1", item2: "T3", itemShown: 2},
-            {item1: "T2", item2: "T3", itemShown: 1},
-            {item1: "T1", item2: "N1", itemShown: 2},
-            {item1: "T1", item2: "N2", itemShown: 1},
-            {item1: "T1", item2: "N3", itemShown: 2},
-            {item1: "T2", item2: "N1", itemShown: 1},
-            {item1: "T2", item2: "N2", itemShown: 2},
-            {item1: "T2", item2: "N3", itemShown: 1},
-            {item1: "T3", item2: "N1", itemShown: 2},
-            {item1: "T3", item2: "N2", itemShown: 1},
-            {item1: "T3", item2: "N3", itemShown: 2},
-            {item1: "T4", item2: "N1", itemShown: 1},
-            {item1: "T4", item2: "N2", itemShown: 2},
-            {item1: "T4", item2: "N3", itemShown: 1}
+            {item1: "T1", item2: "T2"},
+            {item1: "T1", item2: "T3"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T2", item2: "T3"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E3"},
         ]
+        
+        // Add which of the items are shown on the top (or left)
+        for(i = 0; i < baseTrialArray.length; i++) {
+
+            if (i % 2 == 1){
+                baseTrialArray[i].item_on_top_or_left = 2;
+            } else {
+                baseTrialArray[i].item_on_top_or_left = 1;
+            }
+
+        }
+
+        debugger
 
         var targetCoords = {
             targetIdx: ["T1","T2","T3","N1","N2","N3"],
