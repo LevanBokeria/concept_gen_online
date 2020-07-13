@@ -16,7 +16,7 @@ for iT = 1:nTargets
 end
 
 for iE = 1:nEmpties
-    namesEmpty{iE,1} = ['E' int2str(iT)];
+    namesEmpty{iE,1} = ['E' int2str(iE)];
 end
 
 namesEverything = [namesTarget; namesEmpty];
