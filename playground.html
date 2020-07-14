@@ -21,46 +21,46 @@
         var baseTrialArray = [
             {item1: "T1", item2: "T2"},
             {item1: "T1", item2: "T3"},
+            {item1: "T1", item2: "E1"},
+            {item1: "T1", item2: "E2"},
             {item1: "T1", item2: "E3"},
-            {item1: "T1", item2: "E3"},
-            {item1: "T1", item2: "E3"},
-            {item1: "T1", item2: "E3"},
-            {item1: "T1", item2: "E3"},
-            {item1: "T1", item2: "E3"},
-            {item1: "T1", item2: "E3"},
-            {item1: "T1", item2: "E3"},
-            {item1: "T1", item2: "E3"},
-            {item1: "T1", item2: "E3"},
-            {item1: "T1", item2: "E3"},
-            {item1: "T1", item2: "E3"},
-            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E4"},
+            {item1: "T1", item2: "E5"},
+            {item1: "T1", item2: "E6"},
+            {item1: "T1", item2: "E7"},
+            {item1: "T1", item2: "E8"},
+            {item1: "T1", item2: "E9"},
+            {item1: "T1", item2: "E10"},
+            {item1: "T1", item2: "E11"},
+            {item1: "T1", item2: "E12"},
+            {item1: "T1", item2: "E13"},
             {item1: "T2", item2: "T3"},
+            {item1: "T2", item2: "E1"},
+            {item1: "T2", item2: "E2"},
             {item1: "T2", item2: "E3"},
-            {item1: "T2", item2: "E3"},
-            {item1: "T2", item2: "E3"},
-            {item1: "T2", item2: "E3"},
-            {item1: "T2", item2: "E3"},
-            {item1: "T2", item2: "E3"},
-            {item1: "T2", item2: "E3"},
-            {item1: "T2", item2: "E3"},
-            {item1: "T2", item2: "E3"},
-            {item1: "T2", item2: "E3"},
-            {item1: "T2", item2: "E3"},
-            {item1: "T2", item2: "E3"},
-            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E4"},
+            {item1: "T2", item2: "E5"},
+            {item1: "T2", item2: "E6"},
+            {item1: "T2", item2: "E7"},
+            {item1: "T2", item2: "E8"},
+            {item1: "T2", item2: "E9"},
+            {item1: "T2", item2: "E10"},
+            {item1: "T2", item2: "E11"},
+            {item1: "T2", item2: "E12"},
+            {item1: "T2", item2: "E13"},
+            {item1: "T3", item2: "E1"},
+            {item1: "T3", item2: "E2"},
             {item1: "T3", item2: "E3"},
-            {item1: "T3", item2: "E3"},
-            {item1: "T3", item2: "E3"},
-            {item1: "T3", item2: "E3"},
-            {item1: "T3", item2: "E3"},
-            {item1: "T3", item2: "E3"},
-            {item1: "T3", item2: "E3"},
-            {item1: "T3", item2: "E3"},
-            {item1: "T3", item2: "E3"},
-            {item1: "T3", item2: "E3"},
-            {item1: "T3", item2: "E3"},
-            {item1: "T3", item2: "E3"},
-            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E4"},
+            {item1: "T3", item2: "E5"},
+            {item1: "T3", item2: "E6"},
+            {item1: "T3", item2: "E7"},
+            {item1: "T3", item2: "E8"},
+            {item1: "T3", item2: "E9"},
+            {item1: "T3", item2: "E10"},
+            {item1: "T3", item2: "E11"},
+            {item1: "T3", item2: "E12"},
+            {item1: "T3", item2: "E13"}
         ]
         
         // Add which of the items are shown on the top (or left)
@@ -91,14 +91,31 @@
 
                 targetCoords.xCoord.push(iX * 50 + 100);
                 targetCoords.yCoord.push(iY * 50 + 100);                
-
-
             }
-
         }
         
-        // Now, which ones become the targets?
+        var targetToImages = {  
+            targetIdx: ["T1","T2","T3","E1","E2","E3","E4","E5","E6","E7","E8","E9","E10","E11","E12","E13"],
+            targetImg: ["Bell","Tree","Santa","Empty","Empty","Empty",
+                        "Empty","Empty","Empty","Empty","Empty",
+                        "Empty","Empty","Empty","Empty","Empty"]
+        }
 
+        // Now, which ones become the targets?
+        var tgt_idxs = [1,7,14] // so 1st, 7th and 14th points
+
+        for (iIdx = 0; iIdx < tgt_idxs.length; iIdx++){
+
+            targetCoords.targetNames[tgt_idxs[iIdx] - 1] = "T" + (iIdx+1)
+
+            // For this target, whats the name of the Christmas toy?
+            let i_tgt_name_match = targetToImages.targetImg[targetToImages.targetIdx.indexOf("T" + (iIdx+1))]
+
+            targetCoords.imageNames[tgt_idxs[iIdx] - 1] = i_tgt_name_match
+
+        }
+
+        // targetCoords.targetNames[0,6,13] = ["T1","T2","T3"]
 
 
         // var targetCoords = {
@@ -112,35 +129,42 @@
         //     T2: {xCoord: 20, yCoord: 20}
         // }
 
-        var targetToImages = {  
-            targetIdx: ["T1","T2","T3","E1","E2","E3","E4","E5","E6","E7","E8","E9","E10","E11","E12","E13"],
-            targetImg: ["Bell","Tree","Santa","Empty","Empty","Empty",
-                        "Empty","Empty","Empty","Empty","Empty",
-                        "Empty","Empty","Empty","Empty","Empty"]
-        }
+
 
         var xSpace = _.range(25,800,(800 - 25)/300);
         var ySpace = JSON.parse(JSON.stringify(xSpace)); 
 
+        // ///////////////////////////////////////////////////////////////////////////////////////////////
+        // For each concept, create the arrays for each trial, specifying which image is loaded with what dimensions and where.
 
-        // Get screen size:
-        var w = window.innerWidth;
-        var h = window.innerHeight;
+        var curr_space = "neck_legs_space"
 
-        var centerX = w/2;
-        var centerY = h/2;
-
-        bellPosition = {
-            left: 210,
-            top: 100
+        var neck_legs_space_parameters = {
+            parts: ["Body","Feet","Head","Legs","Neck"],
+            xDimName: "Neck",
+            yDimName: "Legs",
+            stim1_x_coords: [200,250],
+            stim1_y_coords: [300,250],
+            stim2_x_coords: [300],
+            stim2_y_coords: [300],
+            stim_width: [200,50,30,30,20],
+            stim_height: [100,50,30,20,20],
+            xDim_height: [100], // neck
+            yDim_height: [100] // legs
         }
 
-        // //////////// FREE SORT PLUGIN //////////////////////////////
-        // var sorting_stimuli = [];
+        debugger
 
-        // for (var i = 1; i <= 12; i++) {
-        //     sorting_stimuli.push("img/cell_img_" + i + ".jpg");
-        // }
+        // Now create image paths from names
+        var imagePaths = neck_legs_space_parameters.parts.map(function(item){
+            let path = "./img/" + curr_space + "/birdparts/" + item + ".png"
+            return path
+        })
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        // //////////// FREE SORT PLUGIN //////////////////////////////
 
         var timeline = [];
 
@@ -148,11 +172,11 @@
 
         var sort_trial = {
             type: 'plugin-playground',
-            stimuli: stimuli,
-            stim_width: [50],
-            stim_height: [50],
-            stim_x_coords: [350],
-            stim_y_coords: [50],
+            stimuli: imagePaths,
+            stim1_width: neck_legs_space_parameters.stim_width,
+            stim1_height: neck_legs_space_parameters.stim_height,
+            stim1_x_coords: neck_legs_space_parameters.stim1_x_coords,
+            stim1_y_coords: neck_legs_space_parameters.stim1_y_coords,
             sort_area_width: 750,
             sort_area_height: 700,
             prompt: "Which of the two pictures below are associated with this Christmas toy?",

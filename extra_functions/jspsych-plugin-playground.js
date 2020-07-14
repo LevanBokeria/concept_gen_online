@@ -135,7 +135,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
         "x": coords.x,
         "y": coords.y
       });
-    }
+    } // for loop for adding images
 
     ////////////////////////////////////////////////////////////////////
     // store response
