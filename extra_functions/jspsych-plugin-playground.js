@@ -12,33 +12,32 @@ jsPsych.plugins["plugin-playground"] = (function() {
     name: "plugin-playground",
     description: "",
     parameters: {
-      stimuli: {
+      target_stimulus: {
         type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: 'Stimuli',
+        pretty_name: 'Target',
         default: undefined,
         array: true,
-        description: 'Images to be displayed.'
-      },
-      stim_height: {
+        description: 'Target stimulu to display.'
+      },      
+      target_stim_height: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus height',
         default: 100,
         description: 'Height of images in pixels.'
       },
-      stim_width: {
+      target_stim_width: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus width',
         default: 100,
         description: 'Width of images in pixels'
       },
-
-      stim_x_coords: {
+      target_stim_x_coords: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus x coordinates',
         default: 100,
         description: 'X coordinate of images.'
       },
-      stim_y_coords: {
+      target_stim_y_coords: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus y coordinates',
         default: 100,
@@ -102,40 +101,22 @@ jsPsych.plugins["plugin-playground"] = (function() {
     // store initial location data
     var init_locations = [];
 
-    debugger;
-
+    // ADD PROMPT 
     const prompt = document.createElement('P')
     prompt.innerText = trial.prompt
     display_element.querySelector("#jspsych-free-sort-arena").appendChild(prompt)
 
-    for (var i = 0; i < trial.stimuli.length; i++) {
-      // var coords = random_coordinate(trial.sort_area_width - trial.stim_width, trial.sort_area_height - trial.stim_height);
+    // ADD TARGET IMAGE
+    const target_image = document.createElement('img')
+    target_image.src = trial.target_stimulus
+    target_image.dataset.src = trial.target_stimulus
 
-      const image = document.createElement('img')
-      image.src = trial.stimuli[i]
-      image.dataset.src = trial.stimuli[i]
-      // image.draggable = false
-      // image.classList.add('jspsych-free-sort-draggable')
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(target_image)
 
-      display_element.querySelector("#jspsych-free-sort-arena").appendChild(image)
+    target_image.width = trial.target_stim_width
+    target_image.height = trial.target_stim_height
 
-      width = image.width = trial.stim_width[i]
-      height = image.height = trial.stim_height[i]
-      // var coords = random_coordinate(trial.sort_area_width - width, trial.sort_area_height - height);
-
-      var coords = {
-        x: trial.stim_x_coords[i],
-        y: trial.stim_y_coords[i]
-      }
-
-      image.style = 'position: absolute; top:'+coords.y+'px; left:'+coords.x+'px;'
-
-      init_locations.push({
-        "src": trial.stimuli[i],
-        "x": coords.x,
-        "y": coords.y
-      });
-    } // for loop for adding images
+    target_image.style = 'position: absolute; top:' + trial.target_stim_y_coords + 'px; left:' + trial.target_stim_x_coords + 'px;'
 
     ////////////////////////////////////////////////////////////////////
     // store response

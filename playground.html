@@ -71,7 +71,6 @@
             } else {
                 baseTrialArray[i].item_on_top_or_left = 1;
             }
-
         }
 
         // Just an array with names of empties
@@ -168,15 +167,15 @@
 
         var timeline = [];
 
-        var stimuli = ["./img/targets/Bell.png"]
+        var target_stimulus = ["./img/targets/Bell.png"]
 
         var sort_trial = {
             type: 'plugin-playground',
-            stimuli: imagePaths,
-            stim1_width: neck_legs_space_parameters.stim_width,
-            stim1_height: neck_legs_space_parameters.stim_height,
-            stim1_x_coords: neck_legs_space_parameters.stim1_x_coords,
-            stim1_y_coords: neck_legs_space_parameters.stim1_y_coords,
+            target_stimulus: target_stimulus,
+            target_stim_width: 50,
+            target_stim_height: 50,
+            target_stim_x_coords: 350,
+            target_stim_y_coords: 50,
             sort_area_width: 750,
             sort_area_height: 700,
             prompt: "Which of the two pictures below are associated with this Christmas toy?",
