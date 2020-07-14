@@ -62,16 +62,6 @@
             {item1: "T3", item2: "E12"},
             {item1: "T3", item2: "E13"}
         ]
-        
-        // Add which of the items are shown on the top (or left)
-        for(i = 0; i < baseTrialArray.length; i++) {
-
-            if (i % 2 == 1){
-                baseTrialArray[i].item_on_top_or_left = 2;
-            } else {
-                baseTrialArray[i].item_on_top_or_left = 1;
-            }
-        }
 
         // Just an array with names of empties
         var allEmptyNames = ["E1","E2","E3","E4","E5","E6","E7","E8","E9","E10","E11","E12","E13","E14","E15","E16"]
@@ -114,8 +104,41 @@
 
         }
 
-        // targetCoords.targetNames[0,6,13] = ["T1","T2","T3"]
 
+        // // Create an array signifying which item is the target? Which toy to display?
+        // var tempArray = []
+        // for (i=0, j=0; i < baseTrialArray.length / 2; i++, j+=2){
+
+        //     if(j % 2 == 0){
+        //         tempArray[i] = 1
+        //     } else {
+        //         tempArray[i] = 2
+        //     }
+        // }
+
+        // Add which of the items are shown on the top (or left)
+        for(i = 0; i < baseTrialArray.length; i++) {
+
+            // Which item is on top or left?
+            if (i % 2 == 1){
+                baseTrialArray[i].item_on_top_or_left = 2
+                baseTrialArray[i].target_item_idx = 2                
+            } else {
+                baseTrialArray[i].item_on_top_or_left = 1
+                baseTrialArray[i].target_item_idx = 1                
+            }
+
+            debugger
+
+            // Name of the target toy item?
+            let targetID = baseTrialArray[i]["item" + baseTrialArray[i].target_item_idx]
+            let targetName = targetToImages.targetImg[targetToImages.targetIdx.indexOf(targetID)]
+
+
+
+        }
+
+        debugger
 
         // var targetCoords = {
         //     targetIdx: ["T1","T2","T3","E1","E2","E3","E4","E5","E6","E7","E8","E9","E10","E11","E12","E13"],
@@ -127,11 +150,6 @@
         //     T1: {xCoord: 10, yCoord: 10},
         //     T2: {xCoord: 20, yCoord: 20}
         // }
-
-
-
-        var xSpace = _.range(25,800,(800 - 25)/300);
-        var ySpace = JSON.parse(JSON.stringify(xSpace)); 
 
         // ///////////////////////////////////////////////////////////////////////////////////////////////
         // For each concept, create the arrays for each trial, specifying which image is loaded with what dimensions and where.
