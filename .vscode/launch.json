@@ -7,11 +7,10 @@
         {
             "type": "chrome",
             "request": "attach",
-            // "name": "Launch Chrome against localhost",
-            // "url": "file:///C:/Users/levan/jatos-3.3.6/study_assets_root/concept_gen/playground.html",
+            "name": "Attach to Chrome with localhost",
+            "url": "file:///C:/Users/levan/jatos-3.3.6/study_assets_root/concept_gen/",
             "port": 9222,
-            "url": "file:///C:/Users/levan/jatos-3.3.6/study_assets_root/concept_gen/playground.html",
-            "webRoot": "${workspaceFolder}/out"
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
