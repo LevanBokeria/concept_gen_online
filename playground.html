@@ -2,92 +2,88 @@
 <html>
     <head>
         <title>6 Example Trials</title>
-        <!-- <script src="jatos.js"></script> -->
-        <script src="./jspsych-6.1.0/jspsych.js"></script>        
-        <script src="./extra_functions/lodash.js"></script>
-        <script src = "./extra_functions/jquery-3.4.1.js" type="text/javascript"></script>
-        <!-- <script src="extra_functions/jspsych-html-slider-response-smooth-tracking.js"></script>
-        <script src="./extra_functions/custom_functions.js"> </script> -->
-        <script src="./extra_functions/jspsych-plugin-playground.js"></script>
-        <script src="./extra_functions/jspsych-free-sort-modified.js"></script>        
-        <link href="./jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+        <!-- <script src='jatos.js'></script> -->
+        <script src='./jspsych-6.1.0/jspsych.js'></script>        
+        <script src='./extra_functions/lodash.js'></script>
+        <script src = './extra_functions/jquery-3.4.1.js' type='text/javascript'></script>
+        <!-- <script src='extra_functions/jspsych-html-slider-response-smooth-tracking.js'></script>
+        <script src='./extra_functions/custom_functions.js'> </script> -->
+        <script src='./extra_functions/jspsych-plugin-playground.js'></script>
+        <script src='./extra_functions/jspsych-free-sort-modified.js'></script>        
+        <link href='./jspsych-6.1.0/css/jspsych.css' rel='stylesheet' type='text/css'></link>
     </head>
     <body></body>
     <script>
 
-    // ////////////////////////////////////////////////////////////////////////////////////////////
-    // ///////////////////////////////////////////////////////////////////////////////////////////
-
         var baseTrialArray = [
-            {item1: "T1", item2: "T2"},
-            {item1: "T1", item2: "T3"},
-            {item1: "T1", item2: "E1"},
-            {item1: "T1", item2: "E2"},
-            {item1: "T1", item2: "E3"},
-            {item1: "T1", item2: "E4"},
-            {item1: "T1", item2: "E5"},
-            {item1: "T1", item2: "E6"},
-            {item1: "T1", item2: "E7"},
-            {item1: "T1", item2: "E8"},
-            {item1: "T1", item2: "E9"},
-            {item1: "T1", item2: "E10"},
-            {item1: "T1", item2: "E11"},
-            {item1: "T1", item2: "E12"},
-            {item1: "T1", item2: "E13"},
-            {item1: "T2", item2: "T3"},
-            {item1: "T2", item2: "E1"},
-            {item1: "T2", item2: "E2"},
-            {item1: "T2", item2: "E3"},
-            {item1: "T2", item2: "E4"},
-            {item1: "T2", item2: "E5"},
-            {item1: "T2", item2: "E6"},
-            {item1: "T2", item2: "E7"},
-            {item1: "T2", item2: "E8"},
-            {item1: "T2", item2: "E9"},
-            {item1: "T2", item2: "E10"},
-            {item1: "T2", item2: "E11"},
-            {item1: "T2", item2: "E12"},
-            {item1: "T2", item2: "E13"},
-            {item1: "T3", item2: "E1"},
-            {item1: "T3", item2: "E2"},
-            {item1: "T3", item2: "E3"},
-            {item1: "T3", item2: "E4"},
-            {item1: "T3", item2: "E5"},
-            {item1: "T3", item2: "E6"},
-            {item1: "T3", item2: "E7"},
-            {item1: "T3", item2: "E8"},
-            {item1: "T3", item2: "E9"},
-            {item1: "T3", item2: "E10"},
-            {item1: "T3", item2: "E11"},
-            {item1: "T3", item2: "E12"},
-            {item1: "T3", item2: "E13"}
+            {item1: 'T1', item2: 'T2'},
+            {item1: 'T1', item2: 'T3'},
+            {item1: 'T1', item2: 'E1'},
+            {item1: 'T1', item2: 'E2'},
+            {item1: 'T1', item2: 'E3'},
+            {item1: 'T1', item2: 'E4'},
+            {item1: 'T1', item2: 'E5'},
+            {item1: 'T1', item2: 'E6'},
+            {item1: 'T1', item2: 'E7'},
+            {item1: 'T1', item2: 'E8'},
+            {item1: 'T1', item2: 'E9'},
+            {item1: 'T1', item2: 'E10'},
+            {item1: 'T1', item2: 'E11'},
+            {item1: 'T1', item2: 'E12'},
+            {item1: 'T1', item2: 'E13'},
+            {item1: 'T2', item2: 'T3'},
+            {item1: 'T2', item2: 'E1'},
+            {item1: 'T2', item2: 'E2'},
+            {item1: 'T2', item2: 'E3'},
+            {item1: 'T2', item2: 'E4'},
+            {item1: 'T2', item2: 'E5'},
+            {item1: 'T2', item2: 'E6'},
+            {item1: 'T2', item2: 'E7'},
+            {item1: 'T2', item2: 'E8'},
+            {item1: 'T2', item2: 'E9'},
+            {item1: 'T2', item2: 'E10'},
+            {item1: 'T2', item2: 'E11'},
+            {item1: 'T2', item2: 'E12'},
+            {item1: 'T2', item2: 'E13'},
+            {item1: 'T3', item2: 'E1'},
+            {item1: 'T3', item2: 'E2'},
+            {item1: 'T3', item2: 'E3'},
+            {item1: 'T3', item2: 'E4'},
+            {item1: 'T3', item2: 'E5'},
+            {item1: 'T3', item2: 'E6'},
+            {item1: 'T3', item2: 'E7'},
+            {item1: 'T3', item2: 'E8'},
+            {item1: 'T3', item2: 'E9'},
+            {item1: 'T3', item2: 'E10'},
+            {item1: 'T3', item2: 'E11'},
+            {item1: 'T3', item2: 'E12'},
+            {item1: 'T3', item2: 'E13'}
         ]
 
         // Just an array with names of empties
-        var allEmptyNames = ["E1","E2","E3","E4","E5","E6","E7","E8","E9","E10","E11","E12","E13","E14","E15","E16"]
+        var allEmptyNames = ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16']
 
         // Now, allocate coordinates for all empty location
         var targetCoords = {
             targetNames: JSON.parse(JSON.stringify(allEmptyNames)),
-            imageNames: Array(16).fill("Empty"),
+            imageNames: Array(16).fill('Empty'),
             xCoord: [],
             yCoord: []
         }
 
         for (iX = 0; iX < 4; iX++){
-
             for (iY = 0; iY < 4; iY++){
-
                 targetCoords.xCoord.push(iX * 50 + 100);
                 targetCoords.yCoord.push(iY * 50 + 100);                
             }
         }
         
+        // 
         var targetToImages = {  
-            targetIdx: ["T1","T2","T3","E1","E2","E3","E4","E5","E6","E7","E8","E9","E10","E11","E12","E13"],
-            targetImg: ["Bell","Tree","Santa","Empty","Empty","Empty",
-                        "Empty","Empty","Empty","Empty","Empty",
-                        "Empty","Empty","Empty","Empty","Empty"]
+            targetIdx: ['T1','T2','T3','E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
+            targetImg: ['Bell','Tree','Santa','Empty','Empty','Empty',
+                        'Empty','Empty','Empty','Empty','Empty','Empty',
+                        'Empty','Empty','Empty','Empty','Empty','Empty']
         }
 
         // Now, which ones become the targets?
@@ -95,108 +91,116 @@
 
         for (iIdx = 0; iIdx < tgt_idxs.length; iIdx++){
 
-            targetCoords.targetNames[tgt_idxs[iIdx] - 1] = "T" + (iIdx+1)
+            targetCoords.targetNames[tgt_idxs[iIdx] - 1] = 'T' + (iIdx+1)
 
             // For this target, whats the name of the Christmas toy?
-            let i_tgt_name_match = targetToImages.targetImg[targetToImages.targetIdx.indexOf("T" + (iIdx+1))]
+            let i_tgt_name_match = targetToImages.targetImg[targetToImages.targetIdx.indexOf('T' + (iIdx+1))]
 
             targetCoords.imageNames[tgt_idxs[iIdx] - 1] = i_tgt_name_match
 
         }
 
+        var neck_legs_space = {
+            concept_space: 'neck_legs_space',
+            concept_object: 'birds',
+            dim1_name: 'neck',
+            dim2_name: 'legs',
+            ex_pairs_height: undefined, 
+            ex_pairs_width: 350,
+            ex_pairs_x_coord: 10,
+            ex_pairs_y_coord: 10,
+            fb_img_1_x_coord: 10,
+            fb_img_1_y_coord: 400,
+            fb_img_2_x_coord: 600,
+            fb_img_2_y_coord: 400,            
+            fb_text_1_x_coord: 70,
+            fb_text_1_y_coord: 200,
+            fb_text_2_x_coord: 170,
+            fb_text_2_y_coord: 300
+        }
 
-        // // Create an array signifying which item is the target? Which toy to display?
-        // var tempArray = []
-        // for (i=0, j=0; i < baseTrialArray.length / 2; i++, j+=2){
+        var curr_space_object = neck_legs_space
 
-        //     if(j % 2 == 0){
-        //         tempArray[i] = 1
-        //     } else {
-        //         tempArray[i] = 2
-        //     }
-        // }
-
-        // Add which of the items are shown on the top (or left)
+        // Populate the baseTrialArray with details for each trial
         for(i = 0; i < baseTrialArray.length; i++) {
 
             // Which item is on top or left?
             if (i % 2 == 1){
                 baseTrialArray[i].item_on_top_or_left = 2
-                baseTrialArray[i].target_item_idx = 2                
+                baseTrialArray[i].target_item_idx = 2 
+                baseTrialArray[i].foil_item_idx = 1               
             } else {
                 baseTrialArray[i].item_on_top_or_left = 1
-                baseTrialArray[i].target_item_idx = 1                
+                baseTrialArray[i].target_item_idx = 1
+                baseTrialArray[i].foil_item_idx = 2                                
             }
 
+            // Name and images of the target and foil toy item?
+            let targetID   = baseTrialArray[i]['item' + baseTrialArray[i].target_item_idx]
+            let targetName = targetToImages.targetImg[targetToImages.targetIdx.indexOf(targetID)]
+            let foilID     = baseTrialArray[i]['item' + baseTrialArray[i].foil_item_idx]
+            let foilName   = targetToImages.targetImg[targetToImages.targetIdx.indexOf(foilID)]            
+
+            baseTrialArray[i].targetName = targetName
+            baseTrialArray[i].targetImg  = './img/targets/' + targetName + '.png'
+            baseTrialArray[i].foilName   = foilName
+            baseTrialArray[i].foilImg    = './img/targets/' + foilName + '.png'            
+
+            // Which ex pairs to load?
+            let targetCoordIdx = targetCoords.targetNames.indexOf(targetID) + 1
+            let foilCoordIdx   = targetCoords.targetNames.indexOf(foilID) + 1            
+
+            if (baseTrialArray[i].target_item_idx == 1){
+                baseTrialArray[i].ex_pairs_img = 
+                    './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' +
+                    targetCoordIdx + '_' + foilCoordIdx + '.png'
+            } else {
+                baseTrialArray[i].ex_pairs_img = 
+                    './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' +
+                    targetCoordIdx + '_' + foilCoordIdx + '.png'
+            }
             // debugger
 
-            // Name of the target toy item?
-            let targetID = baseTrialArray[i]["item" + baseTrialArray[i].target_item_idx]
-            let targetName = targetToImages.targetImg[targetToImages.targetIdx.indexOf(targetID)]
-
-
+            
 
         }
-
-        // debugger
-
-        // var targetCoords = {
-        //     targetIdx: ["T1","T2","T3","E1","E2","E3","E4","E5","E6","E7","E8","E9","E10","E11","E12","E13"],
-        //     xCoord: [],
-        //     yCoord: []
-        // }
-        // // possibly: 
-        // var targetCoords = {
-        //     T1: {xCoord: 10, yCoord: 10},
-        //     T2: {xCoord: 20, yCoord: 20}
-        // }
-
-        // ///////////////////////////////////////////////////////////////////////////////////////////////
-        // For each concept, create the arrays for each trial, specifying which image is loaded with what dimensions and where.
-
-        var curr_space = "neck_legs_space"
-
-        var neck_legs_space_parameters = {
-            parts: ["Body","Feet","Head","Legs","Neck"],
-            xDimName: "Neck",
-            yDimName: "Legs",
-            stim1_x_coords: [200,250],
-            stim1_y_coords: [300,250],
-            stim2_x_coords: [300],
-            stim2_y_coords: [300],
-            stim_width: [200,50,30,30,20],
-            stim_height: [100,50,30,20,20],
-            xDim_height: [100], // neck
-            yDim_height: [100] // legs
-        }
-
-        // debugger
-
-        // Now create image paths from names
-        var imagePaths = neck_legs_space_parameters.parts.map(function(item){
-            let path = "./img/" + curr_space + "/birdparts/" + item + ".png"
-            return path
-        })
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
         // //////////// FREE SORT PLUGIN //////////////////////////////
 
         var timeline = [];
 
-        var target_stimulus = ["./img/targets/Bell.png"]
-
         var sort_trial = {
             type: 'plugin-playground',
-            target_stimulus: target_stimulus,
-            target_stim_width: 50,
-            target_stim_height: 50,
-            target_stim_x_coords: 350,
-            target_stim_y_coords: 50,
+            target_img: baseTrialArray[0].targetImg,
+            target_img_width: 70,
+            target_img_height: 70,
+            target_img_x_coords: 350,
+            target_img_y_coords: 50,
+            foil_img: baseTrialArray[0].foilImg,
+            ex_pairs_img: baseTrialArray[0].ex_pairs_img,
+            ex_pairs_width: curr_space_object.ex_pairs_width,
+            ex_pairs_height: curr_space_object.ex_pairs_height,
+            ex_pairs_maintain_aspect_ratio: true,
+            fb_target_x_coords: 50,
+            fb_target_y_coords: 300,
+            fb_foil_x_coords: 650,
+            fb_foil_y_coords: 400,
+            fb_green_tick_img: './img/fb/green_tick.png',
+            fb_green_tick_width: 20,
+            fb_green_tick_height: 20,
+            fb_green_tick_x_coords: 250,
+            fb_green_tick_y_coords: 300,
+            fb_red_x_img: './img/fb/red_X.png',
+            fb_red_x_width: 20,
+            fb_red_x_height: 20,
+            fb_red_x_x_coords: 20,
+            fb_red_x_y_coords: 20,
+            fb_correct_text: 'correct!',
+            fb_incorrect_text: 'incorrect',
+            post_response_text: 'press the SPACE key for next trial',                                                
             sort_area_width: 750,
             sort_area_height: 700,
-            prompt: "Which OFFFF of the two pictures below are associated with this Christmas toy?",
+            prompt: 'Which of the two pictures below are associated with this Christmas toy?',
             choices: ['1', '2'],
             // trial_duration: 2000,
             response_ends_trial: true              

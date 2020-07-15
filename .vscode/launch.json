@@ -7,7 +7,7 @@
         {
             "type": "chrome",
             "request": "attach",
-            "name": "Attach to Chrome with localhost",
+            "name": "Attach to Chrome with local file",
             "url": "file:///C:/Users/levan/jatos-3.3.6/study_assets_root/concept_gen/",
             "port": 9222,
             "webRoot": "${workspaceFolder}"

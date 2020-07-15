@@ -12,37 +12,149 @@ jsPsych.plugins["plugin-playground"] = (function() {
     name: "plugin-playground",
     description: "",
     parameters: {
-      target_stimulus: {
+      target_img: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Target',
         default: undefined,
         array: true,
-        description: 'Target stimulu to display.'
+        description: 'Target stimulus to display.'
       },      
-      target_stim_height: {
+      target_img_height: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus height',
         default: 100,
         description: 'Height of images in pixels.'
       },
-      target_stim_width: {
+      target_img_width: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus width',
         default: 100,
         description: 'Width of images in pixels'
       },
-      target_stim_x_coords: {
+      target_img_x_coords: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus x coordinates',
         default: 100,
         description: 'X coordinate of images.'
       },
-      target_stim_y_coords: {
+      target_img_y_coords: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus y coordinates',
         default: 100,
         description: 'Y coordinates of images'
       },
+      foil_img: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Foil',
+        default: undefined,
+        array: true,
+        description: 'Foil toy to display.'
+      },  
+      ex_pairs_img: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Target',
+        default: undefined,
+        array: true,
+        description: 'Target stimulus to display.'
+      },      
+      ex_pairs_height: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'ex pairs height',
+        default: 100,
+        description: 'Height of images in pixels.'
+      },
+      ex_pairs_width: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'ex pairs width',
+        default: 100,
+        description: 'Width of images in pixels'
+      },         
+      fb_target_x_coords: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Stimulus x coordinates',
+        default: 100,
+        description: 'X coordinate of images.'
+      },
+      fb_target_y_coords: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Stimulus y coordinates',
+        default: 100,
+        description: 'Y coordinates of images'
+      },
+      fb_foil_x_coords: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Stimulus x coordinates',
+        default: 100,
+        description: 'X coordinate of images.'
+      },
+      fb_foil_y_coords: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Stimulus y coordinates',
+        default: 100,
+        description: 'Y coordinates of images'
+      },          
+      fb_green_tick_img: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Target',
+        default: undefined,
+        array: true,
+        description: 'Target stimulus to display.'
+      },      
+      fb_green_tick_height: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'ex pairs height',
+        default: 100,
+        description: 'Height of images in pixels.'
+      },
+      fb_green_tick_width: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'ex pairs width',
+        default: 100,
+        description: 'Width of images in pixels'
+      },         
+      fb_green_tick_x_coords: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Stimulus x coordinates',
+        default: 100,
+        description: 'X coordinate of images.'
+      },
+      fb_green_tick_y_coords: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Stimulus y coordinates',
+        default: 100,
+        description: 'Y coordinates of images'
+      },
+      fb_red_x_img: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Target',
+        default: undefined,
+        array: true,
+        description: 'Target stimulus to display.'
+      },      
+      fb_red_x_height: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'ex pairs height',
+        default: 100,
+        description: 'Height of images in pixels.'
+      },
+      fb_red_x_width: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'ex pairs width',
+        default: 100,
+        description: 'Width of images in pixels'
+      },         
+      fb_red_x_x_coords: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Stimulus x coordinates',
+        default: 100,
+        description: 'X coordinate of images.'
+      },
+      fb_red_x_y_coords: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Stimulus y coordinates',
+        default: 100,
+        description: 'Y coordinates of images'
+      },                  
       sort_area_height: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Sort area height',
@@ -108,15 +220,82 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
     // ADD TARGET IMAGE
     const target_image = document.createElement('img')
-    target_image.src = trial.target_stimulus
-    target_image.dataset.src = trial.target_stimulus
+    target_image.src = trial.target_img
+    target_image.dataset.src = trial.target_img
 
     display_element.querySelector("#jspsych-free-sort-arena").appendChild(target_image)
 
-    target_image.width = trial.target_stim_width
-    target_image.height = trial.target_stim_height
+    target_image.width = trial.target_img_width
+    target_image.height = trial.target_img_height
 
-    target_image.style = 'position: absolute; top:' + trial.target_stim_y_coords + 'px; left:' + trial.target_stim_x_coords + 'px;'
+    target_image.style = 'position: absolute; top:' + trial.target_img_y_coords + 'px; left:' + trial.target_img_x_coords + 'px;'
+
+    // ADD ex IMAGE
+    const ex_pairs_img = document.createElement('img')
+    ex_pairs_img.src = trial.ex_pairs_img
+    ex_pairs_img.dataset.src = trial.ex_pairs_img
+
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(ex_pairs_img)
+
+    ex_pairs_img.width = trial.ex_pairs_width
+    ex_pairs_img.height = trial.ex_pairs_height
+
+    ex_pairs_img.style = 'position: absolute; top:' + (trial.target_img_y_coords + trial.target_img_height) + 
+                              'px; left:' + (trial.sort_area_width/2 - trial.ex_pairs_width/2) + 'px;'
+
+    // ADD fb TARGET IMAGE
+    const fb_target_img = document.createElement('img')
+    fb_target_img.src = trial.target_img
+    fb_target_img.dataset.src = trial.target_img
+
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(fb_target_img)
+
+    fb_target_img.width = trial.target_img_width
+    fb_target_img.height = trial.target_img_height
+
+    fb_target_img.style = 'position: absolute; top:' + trial.fb_target_y_coords + 
+                              'px; left:' + trial.fb_target_x_coords + 'px;'
+
+
+    // ADD fb FOIL IMAGE
+    const fb_foil_img = document.createElement('img')
+    fb_foil_img.src = trial.foil_img
+    fb_foil_img.dataset.src = trial.foil_img
+
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(fb_foil_img)
+
+    fb_foil_img.width = trial.target_img_width
+    fb_foil_img.height = trial.target_img_height
+
+    fb_foil_img.style = 'position: absolute; top:' + trial.fb_foil_y_coords + 
+                              'px; left:' + trial.fb_foil_x_coords + 'px;'
+
+    // ADD fb GREEN TICK IMAGE
+    const fb_green_tick_img = document.createElement('img')
+    fb_green_tick_img.src = trial.fb_green_tick_img
+    fb_green_tick_img.dataset.src = trial.fb_green_tick_img
+
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(fb_green_tick_img)
+
+    fb_green_tick_img.width = trial.fb_green_tick_width
+    fb_green_tick_img.height = trial.fb_green_tick_height
+
+    fb_green_tick_img.style = 'position: absolute; top:' + trial.fb_green_tick_y_coords + 
+                              'px; left:' + trial.fb_green_tick_x_coords + 'px;'
+
+    // ADD fb RED X IMAGE
+    const fb_red_x_img = document.createElement('img')
+    fb_red_x_img.src = trial.fb_red_x_img
+    fb_red_x_img.dataset.src = trial.fb_red_x_img
+
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(fb_red_x_img)
+
+    fb_red_x_img.width = trial.fb_red_x_width
+    fb_red_x_img.height = trial.fb_red_x_height
+
+    fb_red_x_img.style = 'position: absolute; top:' + trial.fb_red_x_y_coords + 
+                              'px; left:' + trial.fb_red_x_x_coords + 'px;'
+
 
     ////////////////////////////////////////////////////////////////////
     // store response
