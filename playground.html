@@ -100,12 +100,20 @@
 
         }
 
+        // Basic parameters, not specific to any space
+        var basic_parameters = {
+            sort_area_width: 750,
+            sort_area_height: 700,
+            prompt_target_width: 70,
+            prompt_target_height: 70
+        }
+
         var neck_legs_space = {
             concept_space: 'neck_legs_space',
             concept_object: 'birds',
             dim1_name: 'neck',
             dim2_name: 'legs',
-            ex_pairs_height: undefined, 
+            ex_pairs_height: 500, 
             ex_pairs_width: 350,
             ex_pairs_x_coord: 10,
             ex_pairs_y_coord: 10,
@@ -166,50 +174,61 @@
         }
 
         // //////////// FREE SORT PLUGIN //////////////////////////////
+        var session_procedure = {
+            timeline: [
+                {
+                    type: 'plugin-playground',
+            
+                    prompt_target_img: jsPsych.timelineVariable('targetImg'),
+                    maintain_aspect_ratio: true,
+                    prompt_target_width: basic_parameters.prompt_target_width,
+                    prompt_target_height: basic_parameters.prompt_target_height,
+                    prompt_target_x_coords: basic_parameters.sort_area_width/2 - basic_parameters.prompt_target_width/2,
+                    prompt_target_y_coords: 50,
+                    
+                    ex_pairs_img:    jsPsych.timelineVariable('ex_pairs_img'),
+                    ex_pairs_width:  curr_space_object.ex_pairs_width,
+                    ex_pairs_height: curr_space_object.ex_pairs_height,
+                    ex_pairs_maintain_aspect_ratio: true,
+                                                    
+                    sort_area_width: 750,
+                    sort_area_height: 700,
+                    prompt: 'Which of the two pictures below are associated with this Christmas toy?',
+                    choices: ['1', '2'],
+                    response_ends_trial: true
 
-        var timeline = [];
+                    // foil_img: baseTrialArray[0].foilImg,            
+                    // fb_assoc1_img: '',
+                    // fb_assoc2_img: '',
 
-        var sort_trial = {
-            type: 'plugin-playground',
-            target_img: baseTrialArray[0].targetImg,
-            target_img_width: 70,
-            target_img_height: 70,
-            target_img_x_coords: 350,
-            target_img_y_coords: 50,
-            foil_img: baseTrialArray[0].foilImg,
-            ex_pairs_img: baseTrialArray[0].ex_pairs_img,
-            ex_pairs_width: curr_space_object.ex_pairs_width,
-            ex_pairs_height: curr_space_object.ex_pairs_height,
-            ex_pairs_maintain_aspect_ratio: true,
-            fb_target_x_coords: 50,
-            fb_target_y_coords: 300,
-            fb_foil_x_coords: 650,
-            fb_foil_y_coords: 400,
-            fb_green_tick_img: './img/fb/green_tick.png',
-            fb_green_tick_width: 20,
-            fb_green_tick_height: 20,
-            fb_green_tick_x_coords: 250,
-            fb_green_tick_y_coords: 300,
-            fb_red_x_img: './img/fb/red_X.png',
-            fb_red_x_width: 20,
-            fb_red_x_height: 20,
-            fb_red_x_x_coords: 20,
-            fb_red_x_y_coords: 20,
-            fb_correct_text: 'correct!',
-            fb_incorrect_text: 'incorrect',
-            post_response_text: 'press the SPACE key for next trial',                                                
-            sort_area_width: 750,
-            sort_area_height: 700,
-            prompt: 'Which of the two pictures below are associated with this Christmas toy?',
-            choices: ['1', '2'],
-            // trial_duration: 2000,
-            response_ends_trial: true              
+                    // fb_assoc1_x_coords: 50,
+                    // fb_assoc1_y_coords: 300,
+                    // fb_assoc2_x_coords: 650,
+                    // fb_assoc2_y_coords: 400,
+                    // fb_img1_x_coords: 50,
+                    // fb_img1_y_coords: 300,
+                    // fb_img2_x_coords: 650,
+                    // fb_img2_y_coords: 400,            
+                    
+                    // fb_green_tick_img: './img/fb/green_tick.png',
+                    // fb_green_tick_width: 20,
+                    // fb_green_tick_height: 20,
+                    // fb_red_x_img: './img/fb/red_X.png',
+                    // fb_red_x_width: 20,
+                    // fb_red_x_height: 20,
+                    
+                    // fb_correct_text: 'correct!',
+                    // fb_incorrect_text: 'incorrect',
+                    // post_response_text: 'press the SPACE key for next trial',   
+
+                }
+            ],
+
+            timeline_variables: baseTrialArray
         };
-
-        timeline.push(sort_trial)
-
+ 
         jsPsych.init({
-            timeline: timeline
+            timeline: [session_procedure]
         });
 
 
