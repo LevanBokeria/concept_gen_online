@@ -175,36 +175,10 @@
             // Exemplar image to load?
             baseTrialArray[i].ex_pairs_img = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' + 
                 baseTrialArray[i].item1_point_idx + '_' + baseTrialArray[i].item2_point_idx + '.png'
-
-            // // Name and images of the target and foil toy item?
-            // let targetID   = baseTrialArray[i]['item' + baseTrialArray[i].target_item_idx]
-            // let targetName = targetToImages.targetImg[targetToImages.targetIdx.indexOf(targetID)]
-            // let foilID     = baseTrialArray[i]['item' + baseTrialArray[i].foil_item_idx]
-            // let foilName   = targetToImages.targetImg[targetToImages.targetIdx.indexOf(foilID)]            
-
-            // baseTrialArray[i].targetName = targetName
-            // baseTrialArray[i].targetImg  = './img/targets/' + targetName + '.png'
-            // baseTrialArray[i].foilName   = foilName
-            // baseTrialArray[i].foilImg    = './img/targets/' + foilName + '.png'            
-
-            // // Which ex pairs to load?
-            // let targetCoordIdx = targetCoords.targetNames.indexOf(targetID) + 1
-            // let foilCoordIdx   = targetCoords.targetNames.indexOf(foilID) + 1            
-
-            // if (baseTrialArray[i].target_item_idx == 1){
-            //     baseTrialArray[i].ex_pairs_img = 
-            //         './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' +
-            //         targetCoordIdx + '_' + foilCoordIdx + '.png'
-            // } else {
-            //     baseTrialArray[i].ex_pairs_img = 
-            //         './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' +
-            //         targetCoordIdx + '_' + foilCoordIdx + '.png'
-            // }
-            // debugger
-
-            
-
         }
+
+        // Shuffle base trial array
+
 
         // //////////// FREE SORT PLUGIN //////////////////////////////
         var session_procedure = {
@@ -212,21 +186,20 @@
                 {
                     type: 'plugin-playground',
             
-                    prompt_target_img: jsPsych.timelineVariable('targetImg'),
-                    maintain_aspect_ratio: true,
-                    prompt_target_width: basic_parameters.prompt_target_width,
-                    prompt_target_height: basic_parameters.prompt_target_height,
-                    prompt_target_x_coords: basic_parameters.sort_area_width/2 - basic_parameters.prompt_target_width/2,
-                    prompt_target_y_coords: 50,
+                    prompt_image_path: jsPsych.timelineVariable('prompt_image_path'),
+                    prompt_image_width: basic_parameters.prompt_target_width,
+                    prompt_image_height: basic_parameters.prompt_target_height,
+                    prompt_image_x_coords: basic_parameters.sort_area_width/2 - basic_parameters.prompt_target_width/2,
+                    prompt_image_y_coords: 50,
                     
                     ex_pairs_img:    jsPsych.timelineVariable('ex_pairs_img'),
                     ex_pairs_width:  curr_space_object.ex_pairs_width,
                     ex_pairs_height: curr_space_object.ex_pairs_height,
-                    ex_pairs_maintain_aspect_ratio: true,
+                    maintain_aspect_ratio: true,
                                                     
                     sort_area_width: 750,
                     sort_area_height: 700,
-                    prompt: 'Which OFF the two pictures below are associated with this Christmas toy?',
+                    prompt: 'Which of the two pictures below are associated with this Christmas toy?',
                     choices: ['1', '2'],
                     response_ends_trial: true
 

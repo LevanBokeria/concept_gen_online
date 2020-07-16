@@ -12,7 +12,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
     name: "plugin-playground",
     description: "",
     parameters: {
-      prompt_target_img: {
+      prompt_image_path: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Target',
         default: undefined,
@@ -25,37 +25,30 @@ jsPsych.plugins["plugin-playground"] = (function() {
         default: true,
         description: 'Maintain the aspect ratio after setting width or height'
       },      
-      prompt_target_height: {
+      prompt_image_height: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus height',
         default: 100,
         description: 'Height of images in pixels.'
       },
-      prompt_target_width: {
+      prompt_image_width: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus width',
         default: 100,
         description: 'Width of images in pixels'
       },
-      prompt_target_x_coords: {
+      prompt_image_x_coords: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus x coordinates',
         default: 100,
         description: 'X coordinate of images.'
       },
-      prompt_target_y_coords: {
+      prompt_image_y_coords: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus y coordinates',
         default: 100,
         description: 'Y coordinates of images'
       },
-      // foil_img: {
-      //   type: jsPsych.plugins.parameterType.STRING,
-      //   pretty_name: 'Foil',
-      //   default: undefined,
-      //   array: true,
-      //   description: 'Foil toy to display.'
-      // },  
       ex_pairs_img: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Target',
@@ -225,22 +218,23 @@ jsPsych.plugins["plugin-playground"] = (function() {
     // store initial location data
     var init_locations = [];
 
-    // ADD PROMPT 
+    // ADD PROMPT TEXT
     const prompt = document.createElement('P')
     prompt.innerText = trial.prompt
     display_element.querySelector("#jspsych-free-sort-arena").appendChild(prompt)
 
-    // ADD TARGET IMAGE
-    const target_image = document.createElement('img')
-    target_image.src = trial.prompt_target_img
-    target_image.dataset.src = trial.prompt_target_img
+    // ADD PROMPT IMAGE
+    const prompt_image = document.createElement('img')
+    prompt_image.src = trial.prompt_image_path
+    prompt_image.dataset.src = trial.prompt_image_path
 
-    display_element.querySelector("#jspsych-free-sort-arena").appendChild(target_image)
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(prompt_image)
 
-    target_image.width = trial.prompt_target_width
-    target_image.height = trial.prompt_target_height
+    prompt_image.width = trial.prompt_image_width
+    prompt_image.height = trial.prompt_image_height
 
-    target_image.style = 'position: absolute; top:' + trial.prompt_target_y_coords + 'px; left:' + trial.prompt_target_x_coords + 'px;'
+    prompt_image.style = 'position: absolute; top:' + trial.prompt_image_y_coords + 'px; left:' 
+      + trial.prompt_image_x_coords + 'px;'
 
     // ADD ex IMAGE
     const ex_pairs_img = document.createElement('img')
@@ -251,7 +245,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
     ex_pairs_img.width = trial.ex_pairs_width
 
-    ex_pairs_img.style = 'position: absolute; top:' + (trial.prompt_target_y_coords + trial.prompt_target_height) + 
+    ex_pairs_img.style = 'position: absolute; top:' + (trial.prompt_image_y_coords + trial.prompt_image_height + 30) + 
                               'px; left:' + (trial.sort_area_width/2 - trial.ex_pairs_width/2) + 'px;'
 
     ////////////////////////////////////////////////////////////////////
