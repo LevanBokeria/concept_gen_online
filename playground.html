@@ -127,44 +127,79 @@
 
         var curr_space_object = neck_legs_space
 
+        // Create a counterballanced array indicating which item is the prompt item
+        for(i = 0, j=0; i < baseTrialArray.length; i+=2, j++){
+            if(j % 2 == 0){
+                baseTrialArray[i].prompt_item_idx   = 1
+                baseTrialArray[i+1].prompt_item_idx = 1
+                baseTrialArray[i].foil_item_idx     = 2
+                baseTrialArray[i+1].foil_item_idx   = 2                                
+            } else {
+                baseTrialArray[i].prompt_item_idx   = 2
+                baseTrialArray[i+1].prompt_item_idx = 2
+                baseTrialArray[i].foil_item_idx     = 1
+                baseTrialArray[i+1].foil_item_idx   = 1                
+            }
+        }
+
         // Populate the baseTrialArray with details for each trial
-        for(i = 0; i < baseTrialArray.length; i++) {
+        for(i = 0, j = 0; i < baseTrialArray.length; i++, j+=2) {
 
-            // Which item is on top or left?
-            if (i % 2 == 1){
-                baseTrialArray[i].item_on_top_or_left = 2
-                baseTrialArray[i].target_item_idx = 2 
-                baseTrialArray[i].foil_item_idx = 1               
-            } else {
-                baseTrialArray[i].item_on_top_or_left = 1
-                baseTrialArray[i].target_item_idx = 1
-                baseTrialArray[i].foil_item_idx = 2                                
+            // Randomize item1 and item2
+            if (i % 2 == 0){
+                [baseTrialArray[i].item1, baseTrialArray[i].item2] = [baseTrialArray[i].item2, baseTrialArray[i].item1]               
             }
 
-            // Name and images of the target and foil toy item?
-            let targetID   = baseTrialArray[i]['item' + baseTrialArray[i].target_item_idx]
-            let targetName = targetToImages.targetImg[targetToImages.targetIdx.indexOf(targetID)]
-            let foilID     = baseTrialArray[i]['item' + baseTrialArray[i].foil_item_idx]
-            let foilName   = targetToImages.targetImg[targetToImages.targetIdx.indexOf(foilID)]            
+            // point name of the prompt item?
+            baseTrialArray[i].prompt_point_name = baseTrialArray[i]["item" + baseTrialArray[i].prompt_item_idx]
+            // target name of the prompt item?
+            baseTrialArray[i].prompt_image_name = 
+                targetCoordsNames.imageNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].prompt_point_name)]
+            // prompt image path?
+            baseTrialArray[i].prompt_image_path = './img/targets/' + baseTrialArray[i].prompt_image_name + '.png'
 
-            baseTrialArray[i].targetName = targetName
-            baseTrialArray[i].targetImg  = './img/targets/' + targetName + '.png'
-            baseTrialArray[i].foilName   = foilName
-            baseTrialArray[i].foilImg    = './img/targets/' + foilName + '.png'            
+            // point name of the foil item?
+            baseTrialArray[i].foil_point_name = baseTrialArray[i]["item" + baseTrialArray[i].foil_item_idx]
+            // target name of the foil item?
+            baseTrialArray[i].foil_image_name = 
+                targetCoordsNames.imageNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].foil_point_name)]
+            // foil image path?
+            baseTrialArray[i].foil_image_path = './img/targets/' + baseTrialArray[i].foil_image_name + '.png'
 
-            // Which ex pairs to load?
-            let targetCoordIdx = targetCoords.targetNames.indexOf(targetID) + 1
-            let foilCoordIdx   = targetCoords.targetNames.indexOf(foilID) + 1            
+            // item1 index in point space?
+            baseTrialArray[i].item1_point_idx = targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].item1)+1
 
-            if (baseTrialArray[i].target_item_idx == 1){
-                baseTrialArray[i].ex_pairs_img = 
-                    './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' +
-                    targetCoordIdx + '_' + foilCoordIdx + '.png'
-            } else {
-                baseTrialArray[i].ex_pairs_img = 
-                    './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' +
-                    targetCoordIdx + '_' + foilCoordIdx + '.png'
-            }
+            // item2 index in point space?
+            baseTrialArray[i].item2_point_idx = targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].item2)+1            
+
+            // Exemplar image to load?
+            baseTrialArray[i].ex_pairs_img = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' + 
+                baseTrialArray[i].item1_point_idx + '_' + baseTrialArray[i].item2_point_idx + '.png'
+
+            // // Name and images of the target and foil toy item?
+            // let targetID   = baseTrialArray[i]['item' + baseTrialArray[i].target_item_idx]
+            // let targetName = targetToImages.targetImg[targetToImages.targetIdx.indexOf(targetID)]
+            // let foilID     = baseTrialArray[i]['item' + baseTrialArray[i].foil_item_idx]
+            // let foilName   = targetToImages.targetImg[targetToImages.targetIdx.indexOf(foilID)]            
+
+            // baseTrialArray[i].targetName = targetName
+            // baseTrialArray[i].targetImg  = './img/targets/' + targetName + '.png'
+            // baseTrialArray[i].foilName   = foilName
+            // baseTrialArray[i].foilImg    = './img/targets/' + foilName + '.png'            
+
+            // // Which ex pairs to load?
+            // let targetCoordIdx = targetCoords.targetNames.indexOf(targetID) + 1
+            // let foilCoordIdx   = targetCoords.targetNames.indexOf(foilID) + 1            
+
+            // if (baseTrialArray[i].target_item_idx == 1){
+            //     baseTrialArray[i].ex_pairs_img = 
+            //         './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' +
+            //         targetCoordIdx + '_' + foilCoordIdx + '.png'
+            // } else {
+            //     baseTrialArray[i].ex_pairs_img = 
+            //         './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' +
+            //         targetCoordIdx + '_' + foilCoordIdx + '.png'
+            // }
             // debugger
 
             
