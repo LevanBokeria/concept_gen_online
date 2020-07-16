@@ -17,53 +17,94 @@
 
         var baseTrialArray = []
 
-        // Just an array with names of empties
-        var allEmptyNames = ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16']
 
         // Now, allocate coordinates for all empty location
-        var targetCoords = {
-            targetNames: JSON.parse(JSON.stringify(allEmptyNames)),
-            imageNames: Array(16).fill('Empty'),
-            xCoord: [],
-            yCoord: []
+        var targetCoordsNames = {
+            pointNamesEmpty: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
+            pointNamesUsed: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
+            pointNamesTarget: ['T1','T2','T3','T4','T5','T6'],
+            imageNamesEmpty: Array(16).fill('Empty'),
+            imageNamesTarget: ['Tree','Santa','Bell','Sledge','Gingerman','Bear'],
+            imageNamesUsed: Array(16).fill('Empty'),
+            pointXCoord: [],
+            pointYCoord: []
         }
-
         for (iX = 0; iX < 4; iX++){
             for (iY = 0; iY < 4; iY++){
-                targetCoords.xCoord.push(iX * 50 + 100);
-                targetCoords.yCoord.push(iY * 50 + 100);                
+                targetCoordsNames.pointXCoord.push(iX * 50 + 100);
+                targetCoordsNames.pointYCoord.push(iY * 50 + 100);                
             }
-        }
-        
-        // 
-        var targetToImages = {  
-            targetIdx: ['T1','T2','T3','E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
-            targetImg: ['Bell','Tree','Santa','Empty','Empty','Empty',
-                        'Empty','Empty','Empty','Empty','Empty','Empty',
-                        'Empty','Empty','Empty','Empty','Empty','Empty']
-        }
-
-        // Now, which ones become the targets?
-        var tgt_idxs = [1,7,14] // so 1st, 7th and 14th points
-
-        for (iIdx = 0; iIdx < tgt_idxs.length; iIdx++){
-
-            targetCoords.targetNames[tgt_idxs[iIdx] - 1] = 'T' + (iIdx+1)
-
-            // For this target, whats the name of the Christmas toy?
-            let i_tgt_name_match = targetToImages.targetImg[targetToImages.targetIdx.indexOf('T' + (iIdx+1))]
-
-            targetCoords.imageNames[tgt_idxs[iIdx] - 1] = i_tgt_name_match
-
         }
 
         // Basic parameters, not specific to any space
         var basic_parameters = {
+
+            // Display
             sort_area_width: 750,
             sort_area_height: 700,
             prompt_target_width: 70,
-            prompt_target_height: 70
+            prompt_target_height: 70,
+
+            // Targets
+            nTargets: 3,
+            targetPoints: [1,7,14]
         }
+
+        // Create arrays with point and image names with appropriate number of targets at appropriate locations
+        for (i=0; i<basic_parameters.nTargets; i++){
+
+            targetCoordsNames.pointNamesUsed[basic_parameters.targetPoints[i]-1] = 
+                targetCoordsNames.pointNamesTarget[i]
+
+            targetCoordsNames.imageNamesUsed[basic_parameters.targetPoints[i]-1] = 
+                targetCoordsNames.imageNamesTarget[i]
+        }
+
+        // Create all the combinations of targets and empty locations (imported from Matlab)
+        var baseTrialArray = [
+            {item1: "T1", item2: "T2"},
+            {item1: "T1", item2: "T3"},
+            {item1: "T1", item2: "E2"},
+            {item1: "T1", item2: "E3"},
+            {item1: "T1", item2: "E4"},
+            {item1: "T1", item2: "E5"},
+            {item1: "T1", item2: "E6"},
+            {item1: "T1", item2: "E8"},
+            {item1: "T1", item2: "E9"},
+            {item1: "T1", item2: "E10"},
+            {item1: "T1", item2: "E11"},
+            {item1: "T1", item2: "E12"},
+            {item1: "T1", item2: "E13"},
+            {item1: "T1", item2: "E15"},
+            {item1: "T1", item2: "E16"},
+            {item1: "T2", item2: "T3"},
+            {item1: "T2", item2: "E2"},
+            {item1: "T2", item2: "E3"},
+            {item1: "T2", item2: "E4"},
+            {item1: "T2", item2: "E5"},
+            {item1: "T2", item2: "E6"},
+            {item1: "T2", item2: "E8"},
+            {item1: "T2", item2: "E9"},
+            {item1: "T2", item2: "E10"},
+            {item1: "T2", item2: "E11"},
+            {item1: "T2", item2: "E12"},
+            {item1: "T2", item2: "E13"},
+            {item1: "T2", item2: "E15"},
+            {item1: "T2", item2: "E16"},
+            {item1: "T3", item2: "E2"},
+            {item1: "T3", item2: "E3"},
+            {item1: "T3", item2: "E4"},
+            {item1: "T3", item2: "E5"},
+            {item1: "T3", item2: "E6"},
+            {item1: "T3", item2: "E8"},
+            {item1: "T3", item2: "E9"},
+            {item1: "T3", item2: "E10"},
+            {item1: "T3", item2: "E11"},
+            {item1: "T3", item2: "E12"},
+            {item1: "T3", item2: "E13"},
+            {item1: "T3", item2: "E15"},
+            {item1: "T3", item2: "E16"},
+        ]
 
         var neck_legs_space = {
             concept_space: 'neck_legs_space',

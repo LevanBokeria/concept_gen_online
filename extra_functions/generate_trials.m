@@ -7,16 +7,20 @@ clear; clc;
 
 dbstop if error;
 
-nTargets = 3;
+nPoints = 16;
 
-nEmpties = 13;
+nTargets = 3;
+nEmpties = nPoints - nTargets;
+
+targetPoints = [1,7,14];
+emptyPoints  = setdiff(1:nPoints, targetPoints);
 
 for iT = 1:nTargets
     namesTarget{iT,1} = ['T' int2str(iT)];
 end
 
 for iE = 1:nEmpties
-    namesEmpty{iE,1} = ['E' int2str(iE)];
+    namesEmpty{iE,1} = ['E' int2str(emptyPoints(iE))];
 end
 
 namesEverything = [namesTarget; namesEmpty];
@@ -42,7 +46,7 @@ js_string = '';
 for iComb = 1:size(allCombos,1)
     
     
-    thisLine{iComb,1} = ['{item1: "' allCombos{iComb,1} '", item2: "' allCombos{iComb,2} '"}'];
+    js_string{iComb,1} = ['{item1: "' allCombos{iComb,1} '", item2: "' allCombos{iComb,2} '"}'];
     
     
 end

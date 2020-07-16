@@ -7,10 +7,18 @@
         {
             "type": "chrome",
             "request": "attach",
-            "name": "Attach Chrome  to file",
+            "name": "Attach Chrome to file",
             "url": "file:///C:/Users/Levan/jatos-3.3.6_win_java/study_assets_root/concept_gen/playground.html",
             "webRoot": "${workspaceFolder}",
             "port": 9222
-        }
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome to file",
+            "url": "file:///C:/Users/Levan/jatos-3.3.6_win_java/study_assets_root/concept_gen/playground.html",
+            "webRoot": "${workspaceFolder}",
+            "port": 9222
+        },        
     ]
 }
