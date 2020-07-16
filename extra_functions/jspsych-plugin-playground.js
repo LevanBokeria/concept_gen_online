@@ -12,7 +12,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
     name: "plugin-playground",
     description: "",
     parameters: {
-      prompt_image_path: {
+      prompt_img_path: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Target',
         default: undefined,
@@ -25,25 +25,25 @@ jsPsych.plugins["plugin-playground"] = (function() {
         default: true,
         description: 'Maintain the aspect ratio after setting width or height'
       },      
-      prompt_image_height: {
+      prompt_img_height: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus height',
         default: 100,
         description: 'Height of images in pixels.'
       },
-      prompt_image_width: {
+      prompt_img_width: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus width',
         default: 100,
         description: 'Width of images in pixels'
       },
-      prompt_image_x_coords: {
+      prompt_img_x_coords: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus x coordinates',
         default: 100,
         description: 'X coordinate of images.'
       },
-      prompt_image_y_coords: {
+      prompt_img_y_coords: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Stimulus y coordinates',
         default: 100,
@@ -223,29 +223,36 @@ jsPsych.plugins["plugin-playground"] = (function() {
     prompt.innerText = trial.prompt
     display_element.querySelector("#jspsych-free-sort-arena").appendChild(prompt)
 
+    prompt.id = 'prompt'
+
     // ADD PROMPT IMAGE
-    const prompt_image = document.createElement('img')
-    prompt_image.src = trial.prompt_image_path
-    prompt_image.dataset.src = trial.prompt_image_path
+    const prompt_img = document.createElement('img')
+    prompt_img.src = trial.prompt_img_path
+    prompt_img.dataset.src = trial.prompt_img_path
 
-    display_element.querySelector("#jspsych-free-sort-arena").appendChild(prompt_image)
+    prompt_img.id = 'prompt_img'
 
-    prompt_image.width = trial.prompt_image_width
-    prompt_image.height = trial.prompt_image_height
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(prompt_img)
 
-    prompt_image.style = 'position: absolute; top:' + trial.prompt_image_y_coords + 'px; left:' 
-      + trial.prompt_image_x_coords + 'px;'
+    prompt_img.width = trial.prompt_img_width
+    prompt_img.height = trial.prompt_img_height
 
-    // ADD ex IMAGE
+    prompt_img.style = 'position: absolute; top:' + trial.prompt_img_y_coords + 'px; left:' 
+      + trial.prompt_img_x_coords + 'px;'
+
+    // ADD ex img
     const ex_pairs_img = document.createElement('img')
     ex_pairs_img.src = trial.ex_pairs_img
     ex_pairs_img.dataset.src = trial.ex_pairs_img
+
+    ex_pairs_img.id = 'ex_pairs_img'
+
 
     display_element.querySelector("#jspsych-free-sort-arena").appendChild(ex_pairs_img)
 
     ex_pairs_img.width = trial.ex_pairs_width
 
-    ex_pairs_img.style = 'position: absolute; top:' + (trial.prompt_image_y_coords + trial.prompt_image_height + 30) + 
+    ex_pairs_img.style = 'position: absolute; top:' + (trial.prompt_img_y_coords + trial.prompt_img_height + 30) + 
                               'px; left:' + (trial.sort_area_width/2 - trial.ex_pairs_width/2) + 'px;'
 
     ////////////////////////////////////////////////////////////////////
@@ -289,7 +296,9 @@ jsPsych.plugins["plugin-playground"] = (function() {
       };
 
       // clear the display
-      display_element.innerHTML = '';
+      // display_element.innerHTML = '';
+      document.querySelector("#prompt_img").style.visibility = 'hidden';
+      document.querySelector("#ex_pairs_img").style.visibility = 'hidden';      
 
       // move on to the next trial
       jsPsych.finishTrial(trial_data);

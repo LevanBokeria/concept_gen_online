@@ -23,9 +23,9 @@
             pointNamesEmpty: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
             pointNamesUsed: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
             pointNamesTarget: ['T1','T2','T3','T4','T5','T6'],
-            imageNamesEmpty: Array(16).fill('Empty'),
-            imageNamesTarget: ['Tree','Santa','Bell','Sledge','Gingerman','Bear'],
-            imageNamesUsed: Array(16).fill('Empty'),
+            imgNamesEmpty: Array(16).fill('Empty'),
+            imgNamesTarget: ['Tree','Santa','Bell','Sledge','Gingerman','Bear'],
+            imgNamesUsed: Array(16).fill('Empty'),
             pointXCoord: [],
             pointYCoord: []
         }
@@ -50,14 +50,14 @@
             targetPoints: [1,7,14]
         }
 
-        // Create arrays with point and image names with appropriate number of targets at appropriate locations
+        // Create arrays with point and img names with appropriate number of targets at appropriate locations
         for (i=0; i<basic_parameters.nTargets; i++){
 
             targetCoordsNames.pointNamesUsed[basic_parameters.targetPoints[i]-1] = 
                 targetCoordsNames.pointNamesTarget[i]
 
-            targetCoordsNames.imageNamesUsed[basic_parameters.targetPoints[i]-1] = 
-                targetCoordsNames.imageNamesTarget[i]
+            targetCoordsNames.imgNamesUsed[basic_parameters.targetPoints[i]-1] = 
+                targetCoordsNames.imgNamesTarget[i]
         }
 
         // Create all the combinations of targets and empty locations (imported from Matlab)
@@ -153,18 +153,18 @@
             // point name of the prompt item?
             baseTrialArray[i].prompt_point_name = baseTrialArray[i]["item" + baseTrialArray[i].prompt_item_idx]
             // target name of the prompt item?
-            baseTrialArray[i].prompt_image_name = 
-                targetCoordsNames.imageNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].prompt_point_name)]
-            // prompt image path?
-            baseTrialArray[i].prompt_image_path = './img/targets/' + baseTrialArray[i].prompt_image_name + '.png'
+            baseTrialArray[i].prompt_img_name = 
+                targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].prompt_point_name)]
+            // prompt img path?
+            baseTrialArray[i].prompt_img_path = './img/targets/' + baseTrialArray[i].prompt_img_name + '.png'
 
             // point name of the foil item?
             baseTrialArray[i].foil_point_name = baseTrialArray[i]["item" + baseTrialArray[i].foil_item_idx]
             // target name of the foil item?
-            baseTrialArray[i].foil_image_name = 
-                targetCoordsNames.imageNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].foil_point_name)]
-            // foil image path?
-            baseTrialArray[i].foil_image_path = './img/targets/' + baseTrialArray[i].foil_image_name + '.png'
+            baseTrialArray[i].foil_img_name = 
+                targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].foil_point_name)]
+            // foil img path?
+            baseTrialArray[i].foil_img_path = './img/targets/' + baseTrialArray[i].foil_img_name + '.png'
 
             // item1 index in point space?
             baseTrialArray[i].item1_point_idx = targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].item1)+1
@@ -172,7 +172,7 @@
             // item2 index in point space?
             baseTrialArray[i].item2_point_idx = targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].item2)+1            
 
-            // Exemplar image to load?
+            // Exemplar img to load?
             baseTrialArray[i].ex_pairs_img = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' + 
                 baseTrialArray[i].item1_point_idx + '_' + baseTrialArray[i].item2_point_idx + '.png'
         }
@@ -186,11 +186,11 @@
                 {
                     type: 'plugin-playground',
             
-                    prompt_image_path: jsPsych.timelineVariable('prompt_image_path'),
-                    prompt_image_width: basic_parameters.prompt_target_width,
-                    prompt_image_height: basic_parameters.prompt_target_height,
-                    prompt_image_x_coords: basic_parameters.sort_area_width/2 - basic_parameters.prompt_target_width/2,
-                    prompt_image_y_coords: 50,
+                    prompt_img_path: jsPsych.timelineVariable('prompt_img_path'),
+                    prompt_img_width: basic_parameters.prompt_target_width,
+                    prompt_img_height: basic_parameters.prompt_target_height,
+                    prompt_img_x_coords: basic_parameters.sort_area_width/2 - basic_parameters.prompt_target_width/2,
+                    prompt_img_y_coords: 50,
                     
                     ex_pairs_img:    jsPsych.timelineVariable('ex_pairs_img'),
                     ex_pairs_width:  curr_space_object.ex_pairs_width,
@@ -201,7 +201,8 @@
                     sort_area_height: 700,
                     prompt: 'Which of the two pictures below are associated with this Christmas toy?',
                     choices: ['1', '2'],
-                    response_ends_trial: true
+                    response_ends_trial: true,
+                    post_trial_gap: 500
 
                     // foil_img: baseTrialArray[0].foilImg,            
                     // fb_assoc1_img: '',
