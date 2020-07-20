@@ -44,6 +44,10 @@
             sort_area_height: 700,
             prompt_target_width: 70,
             prompt_target_height: 70,
+            get prompt_img_x_coords() {
+                return this.sort_area_width/2 - this.prompt_target_width/2;
+            },
+            prompt_img_y_coords: 50,            
 
             // Targets
             nTargets: 3,
@@ -51,7 +55,11 @@
             timer_till_fb: 3000,
             timer_after_response: 1000,
             timer_no_resp_fb_freeze: 2000,
-            timer_response_window: 3000
+            timer_response_window: 3000,
+
+            // Feedback items
+            fb_correct_img: './img/feedback/green_tick.png',
+            fb_incorrect_img: './img/feedback/Red_x.png'
         }
 
         // Create arrays with point and img names with appropriate number of targets at appropriate locations
@@ -237,8 +245,8 @@
                     prompt_img_path: jsPsych.timelineVariable('prompt_img_path'),
                     prompt_img_width: basic_parameters.prompt_target_width,
                     prompt_img_height: basic_parameters.prompt_target_height,
-                    prompt_img_x_coords: basic_parameters.sort_area_width/2 - basic_parameters.prompt_target_width/2,
-                    prompt_img_y_coords: 50,
+                    prompt_img_x_coords: basic_parameters.prompt_img_x_coords,
+                    prompt_img_y_coords: basic_parameters.prompt_img_y_coords,
                     
                     ex_pairs_img:    jsPsych.timelineVariable('ex_pairs_img'),
                     ex_pairs_width:  curr_space_object.ex_pairs_width,
@@ -249,6 +257,10 @@
                     onscreen_idx_x_coords: curr_space_object.onscreen_idx_x_coords,
                     onscreen_idx_y_coords: curr_space_object.onscreen_idx_y_coords,                    
                                          
+
+                    fb_correct_img: basic_parameters.fb_correct_img,
+                    fb_incorrect_img: basic_parameters.fb_incorrect_img,
+
                     fb_img1_path: jsPsych.timelineVariable('item1_img_path'),
                     fb_img2_path: jsPsych.timelineVariable('item2_img_path'),
 
@@ -266,7 +278,8 @@
                     timer_after_response: basic_parameters.timer_after_response,
                     timer_no_resp_fb_freeze: basic_parameters.timer_no_resp_fb_freeze,
                     timer_response_window: basic_parameters.timer_response_window,
-                    post_trial_gap: 500
+                    post_trial_gap: 500,
+                    correct_response: jsPsych.timelineVariable('prompt_item_idx')
 
                     // foil_img: baseTrialArray[0].foilImg,            
                     // fb_assoc1_img: '',

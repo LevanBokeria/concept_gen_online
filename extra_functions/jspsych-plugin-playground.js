@@ -68,6 +68,18 @@ jsPsych.plugins["plugin-playground"] = (function() {
         default: 100,
         description: 'Width of images in pixels'
       },     
+      fb_correct_img: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Green Tick',
+        default: undefined,
+        description: 'Green tick.'
+      },       
+      fb_incorrect_img: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Red X',
+        default: undefined,
+        description: 'Red X.'
+      },             
       onscreen_idx: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'On screen indices',
@@ -112,7 +124,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
         pretty_name: 'Feedback img 2 y coordinates',
         default: undefined,
         description: 'Y coordinates Feedback img 2'
-      },          
+      },                  
       timer_till_fb: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Feedback timer',
@@ -142,7 +154,13 @@ jsPsych.plugins["plugin-playground"] = (function() {
         pretty_name: 'Response window',
         default: null,
         description: 'How long to wait for a response, until automatic feedback is given.'
-      },     
+      },
+      correct_response: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Correct response',
+        default: undefined,
+        description: 'Correct response.'
+      },           
       // fb_target_x_coords: {
       //   type: jsPsych.plugins.parameterType.INT,
       //   pretty_name: 'Stimulus x coordinates',
@@ -386,6 +404,29 @@ jsPsych.plugins["plugin-playground"] = (function() {
     // fb_img2.style.visibility = 'hidden'      
 
 
+    // ADD FEEDBACK TEXT
+    const fb_text = document.createElement('P')
+    fb_text.innerText = ''
+    fb_text.id = 'fb_text'
+    fb_text.style = 'position: absolute; top:' + (trial.prompt_img_y_coords) + 'px; left:' 
+      + (trial.prompt_img_x_coords+trial.prompt_img_width+10) + 'px;'
+
+    feedback_element.appendChild(fb_text)
+
+    // ADD FEEDBACK SYMBOL IMAGE
+    const fb_accu_img = document.createElement('img')
+
+    fb_accu_img.id = 'fb_accu_img'
+
+    feedback_element.appendChild(fb_accu_img)
+
+    fb_accu_img.width = trial.prompt_img_width/2
+    fb_accu_img.height = trial.prompt_img_height/2
+
+    fb_accu_img.style = 'position: absolute; top:' + (trial.prompt_img_y_coords+20) + 'px; left:' 
+      + (trial.prompt_img_x_coords - trial.prompt_img_width/2 - 5)  + 'px;'
+
+
     ////////////////////////////////////////////////////////////////////
     // store response
     var response = {
@@ -403,11 +444,16 @@ jsPsych.plugins["plugin-playground"] = (function() {
         response = info;
       }
 
+      // Was it correct or not?
+      response.correct = (response.key == '49' & trial.correct_response == 1) |
+                         (response.key == '50' & trial.correct_response == 2)
+
+
       // Clear the timer for showing feedback if no response
       clearTimeout(ticking_till_fb)
 
       // Show feedback
-      show_feedback()
+      show_feedback(response.correct)
 
       if (trial.response_ends_trial) {
 
@@ -462,8 +508,19 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
     // Function to show feedback
 
-    var show_feedback = function(){
+    var show_feedback = function(correct){
+      
+      // let feedback_text = '';
 
+      if (correct == 1){
+        fb_text.innerText = 'correct!'
+        fb_accu_img.src = trial.fb_correct_img
+      } else if (correct == 0){
+        fb_text.innerText = 'incorrect...'
+        fb_accu_img.src = trial.fb_incorrect_img
+      }
+
+      // Display the feedback items
       display_element.querySelector('.feedback_items').style.visibility = 'visible';
 
       // display_element.querySelector('#fb_img1').style.visibility = 'visible';
