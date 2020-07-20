@@ -418,14 +418,13 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
     fb_accu_img.id = 'fb_accu_img'
 
-    feedback_element.appendChild(fb_accu_img)
-
     fb_accu_img.width = trial.prompt_img_width/2
     fb_accu_img.height = trial.prompt_img_height/2
 
     fb_accu_img.style = 'position: absolute; top:' + (trial.prompt_img_y_coords+20) + 'px; left:' 
       + (trial.prompt_img_x_coords - trial.prompt_img_width/2 - 5)  + 'px;'
 
+    feedback_element.appendChild(fb_accu_img)
 
     ////////////////////////////////////////////////////////////////////
     // store response
@@ -486,9 +485,8 @@ jsPsych.plugins["plugin-playground"] = (function() {
       document.querySelector("#ex_pairs_img").style.visibility = 'hidden';
       document.querySelector("#onscreen_idx_0").style.visibility = 'hidden';
       document.querySelector("#onscreen_idx_1").style.visibility = 'hidden';
-      document.querySelector("#fb_img2").style.visibility = 'hidden';
-      document.querySelector("#fb_img1").style.visibility = 'hidden';
-      document.querySelector("#fb_img2").style.visibility = 'hidden';            
+      display_element.querySelector('.feedback_items').style.visibility = 'hidden';
+          
 
       // move on to the next trial
       jsPsych.finishTrial(trial_data);
@@ -518,6 +516,9 @@ jsPsych.plugins["plugin-playground"] = (function() {
       } else if (correct == 0){
         fb_text.innerText = 'incorrect...'
         fb_accu_img.src = trial.fb_incorrect_img
+      } else if (correct == 2){
+        fb_text.innerText = 'missed...'
+        fb_accu_img.style.visibility = 'hidden'
       }
 
       // Display the feedback items
@@ -557,8 +558,11 @@ jsPsych.plugins["plugin-playground"] = (function() {
         jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
       }
       
+      // Record a miss
+      response.correct = 2
+
       // Show feedback
-      show_feedback()
+      show_feedback(response.correct)
 
       // Freeze feedback, then end the trial
       jsPsych.pluginAPI.setTimeout(end_trial, trial.timer_no_resp_fb_freeze)
