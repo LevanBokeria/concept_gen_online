@@ -100,7 +100,14 @@ jsPsych.plugins["plugin-playground"] = (function() {
         pretty_name: 'Red X',
         default: undefined,
         description: 'Red X.'
-      },             
+      },    
+			audio_stimuli: {
+				type: jsPsych.plugins.parameterType.AUDIO,
+        pretty_name: 'Audio feedback',
+        default: undefined,
+        array: true,
+				description: 'Correct and incorrect audio to be played.'
+			},               
       onscreen_idx: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'On screen indices',
@@ -182,92 +189,6 @@ jsPsych.plugins["plugin-playground"] = (function() {
         default: undefined,
         description: 'Correct response.'
       },           
-      // fb_target_x_coords: {
-      //   type: jsPsych.plugins.parameterType.INT,
-      //   pretty_name: 'Stimulus x coordinates',
-      //   default: 100,
-      //   description: 'X coordinate of images.'
-      // },
-      // fb_target_y_coords: {
-      //   type: jsPsych.plugins.parameterType.INT,
-      //   pretty_name: 'Stimulus y coordinates',
-      //   default: 100,
-      //   description: 'Y coordinates of images'
-      // },
-      // fb_foil_x_coords: {
-      //   type: jsPsych.plugins.parameterType.INT,
-      //   pretty_name: 'Stimulus x coordinates',
-      //   default: 100,
-      //   description: 'X coordinate of images.'
-      // },
-      // fb_foil_y_coords: {
-      //   type: jsPsych.plugins.parameterType.INT,
-      //   pretty_name: 'Stimulus y coordinates',
-      //   default: 100,
-      //   description: 'Y coordinates of images'
-      // },          
-      // fb_green_tick_img: {
-      //   type: jsPsych.plugins.parameterType.STRING,
-      //   pretty_name: 'Target',
-      //   default: undefined,
-      //   array: true,
-      //   description: 'Target stimulus to display.'
-      // },      
-      // fb_green_tick_height: {
-      //   type: jsPsych.plugins.parameterType.INT,
-      //   pretty_name: 'ex pairs height',
-      //   default: 100,
-      //   description: 'Height of images in pixels.'
-      // },
-      // fb_green_tick_width: {
-      //   type: jsPsych.plugins.parameterType.INT,
-      //   pretty_name: 'ex pairs width',
-      //   default: 100,
-      //   description: 'Width of images in pixels'
-      // },         
-      // fb_green_tick_x_coords: {
-      //   type: jsPsych.plugins.parameterType.INT,
-      //   pretty_name: 'Stimulus x coordinates',
-      //   default: 100,
-      //   description: 'X coordinate of images.'
-      // },
-      // fb_green_tick_y_coords: {
-      //   type: jsPsych.plugins.parameterType.INT,
-      //   pretty_name: 'Stimulus y coordinates',
-      //   default: 100,
-      //   description: 'Y coordinates of images'
-      // },
-      // fb_red_x_img: {
-      //   type: jsPsych.plugins.parameterType.STRING,
-      //   pretty_name: 'Target',
-      //   default: undefined,
-      //   array: true,
-      //   description: 'Target stimulus to display.'
-      // },      
-      // fb_red_x_height: {
-      //   type: jsPsych.plugins.parameterType.INT,
-      //   pretty_name: 'ex pairs height',
-      //   default: 100,
-      //   description: 'Height of images in pixels.'
-      // },
-      // fb_red_x_width: {
-      //   type: jsPsych.plugins.parameterType.INT,
-      //   pretty_name: 'ex pairs width',
-      //   default: 100,
-      //   description: 'Width of images in pixels'
-      // },         
-      // fb_red_x_x_coords: {
-      //   type: jsPsych.plugins.parameterType.INT,
-      //   pretty_name: 'Stimulus x coordinates',
-      //   default: 100,
-      //   description: 'X coordinate of images.'
-      // },
-      // fb_red_x_y_coords: {
-      //   type: jsPsych.plugins.parameterType.INT,
-      //   pretty_name: 'Stimulus y coordinates',
-      //   default: 100,
-      //   description: 'Y coordinates of images'
-      // },                  
       sort_area_height: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Sort area height',
@@ -309,6 +230,17 @@ jsPsych.plugins["plugin-playground"] = (function() {
   } // plugin.info
 
   plugin.trial = function(display_element, trial) {
+
+    // setup audio stimulus
+    var context = jsPsych.pluginAPI.audioContext();
+    if(context !== null){
+      var source = context.createBufferSource();
+      source.buffer = jsPsych.pluginAPI.getAudioBuffer(trial.audio_stimuli);
+      source.connect(context.destination);
+    } else {
+      var audio = jsPsych.pluginAPI.getAudioBuffer(trial.audio_stimuli);
+      audio.currentTime = 0;
+    }
 
     var html = "";
     // // check if there is a prompt and if it is shown above
