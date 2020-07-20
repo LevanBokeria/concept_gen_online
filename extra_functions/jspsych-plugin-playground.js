@@ -12,6 +12,13 @@ jsPsych.plugins["plugin-playground"] = (function() {
     name: "plugin-playground",
     description: "",
     parameters: {
+      prompt_img_name: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Prompt image name',
+        default: undefined,
+        array: true,
+        description: 'Prompt image name.'
+      },      
       prompt_img_path: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Target',
@@ -68,6 +75,20 @@ jsPsych.plugins["plugin-playground"] = (function() {
         default: 100,
         description: 'Width of images in pixels'
       },     
+      item1_img_name: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Item 1 image name',
+        default: undefined,
+        array: true,
+        description: 'Item 1 image name.'
+      }, 
+      item2_img_name: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Item 2 image name',
+        default: undefined,
+        array: true,
+        description: 'Item 2 image name.'
+      },              
       fb_correct_img: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Green Tick',
@@ -340,6 +361,16 @@ jsPsych.plugins["plugin-playground"] = (function() {
     prompt_img.style = 'position: absolute; top:' + trial.prompt_img_y_coords + 'px; left:' 
       + trial.prompt_img_x_coords + 'px;'
 
+    // ADD PROMPT IMAGE NAME
+    const prompt_img_name = document.createElement('P')
+    prompt_img_name.innerText = trial.prompt_img_name
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(prompt_img_name)
+
+    prompt_img_name.style = 'position: relative; top:' + (-15) + 'px;' 
+     + 'font-size: 20px;'
+
+    prompt_img_name.id += 'prompt_img_name'
+
     // ADD ex img
     const ex_pairs_img = document.createElement('img')
     ex_pairs_img.src = trial.ex_pairs_img
@@ -402,6 +433,27 @@ jsPsych.plugins["plugin-playground"] = (function() {
     fb_img2.style = 'position: absolute; top:' + trial.fb_img2_y_coord + 'px; left:' 
       + trial.fb_img2_x_coord + 'px;'      
     // fb_img2.style.visibility = 'hidden'      
+
+    // ADD FB 1 NAME 
+    const item1_img_name = document.createElement('P')
+    item1_img_name.innerText = trial.item1_img_name
+    feedback_element.appendChild(item1_img_name)
+
+    item1_img_name.id = 'item1_img_name'
+
+    item1_img_name.style = 'position: absolute; top:' + (trial.fb_img1_y_coord-50) + 'px; left:' 
+    + (trial.fb_img1_x_coord+13) + 'px;' 
+
+    // ADD FB 2 NAME 
+    const item2_img_name = document.createElement('P')
+    item2_img_name.innerText = trial.item2_img_name
+    feedback_element.appendChild(item2_img_name)
+
+    item2_img_name.id = 'item2_img_name'
+
+    item2_img_name.style = 'position: absolute; top:' + (trial.fb_img2_y_coord-50) + 'px; left:' 
+    + (trial.fb_img2_x_coord+13) + 'px;' 
+
 
 
     // ADD FEEDBACK TEXT

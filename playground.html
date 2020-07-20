@@ -47,7 +47,7 @@
             get prompt_img_x_coords() {
                 return this.sort_area_width/2 - this.prompt_target_width/2;
             },
-            prompt_img_y_coords: 50,            
+            prompt_img_y_coords: 80,            
 
             // Targets
             nTargets: 3,
@@ -242,6 +242,7 @@
                 {
                     type: 'plugin-playground',
             
+                    prompt_img_name: jsPsych.timelineVariable('prompt_img_name'),
                     prompt_img_path: jsPsych.timelineVariable('prompt_img_path'),
                     prompt_img_width: basic_parameters.prompt_target_width,
                     prompt_img_height: basic_parameters.prompt_target_height,
@@ -263,6 +264,9 @@
 
                     fb_img1_path: jsPsych.timelineVariable('item1_img_path'),
                     fb_img2_path: jsPsych.timelineVariable('item2_img_path'),
+
+                    item1_img_name: jsPsych.timelineVariable('item1_img_name'),
+                    item2_img_name: jsPsych.timelineVariable('item2_img_name'),                    
 
                     fb_img1_x_coord: curr_space_object.fb_img_1_x_coord,
                     fb_img1_y_coord: curr_space_object.fb_img_1_y_coord,
