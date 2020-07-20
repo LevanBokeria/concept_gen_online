@@ -67,7 +67,82 @@ jsPsych.plugins["plugin-playground"] = (function() {
         pretty_name: 'ex pairs width',
         default: 100,
         description: 'Width of images in pixels'
+      },     
+      onscreen_idx: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'On screen indices',
+        default: undefined,
+        array: true,
+        description: 'On screen indices for items.'
+      },     
+      onscreen_idx_x_coords: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Index x coordinates',
+        default: undefined,
+        array: true,
+        description: 'X coordinates of indices shown.'
+      },
+      onscreen_idx_y_coords: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Index y coordinates',
+        default: undefined,
+        array: true,
+        description: 'Y coordinates of indices shown.'
+      },
+      fb_img1_x_coord: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Feedback img 1 x coordinates',
+        default: undefined,
+        description: 'X coordinate of Feedback img 1.'
+      },
+      fb_img1_y_coord: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Feedback img 1 y coordinates',
+        default: undefined,
+        description: 'Y coordinates Feedback img 1'
+      },
+      fb_img2_x_coord: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Feedback img 2 x coordinates',
+        default: undefined,
+        description: 'X coordinate of Feedback img 2.'
+      },
+      fb_img2_y_coord: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Feedback img 2 y coordinates',
+        default: undefined,
+        description: 'Y coordinates Feedback img 2'
+      },          
+      timer_till_fb: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Feedback timer',
+        default: null,
+        description: 'How long to wait until feedback is automatically given.'
+      },
+      timer_after_response: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Post-response timer',
+        default: null,
+        description: 'How long to wait until next trial starts automatically after response.'
       },         
+      timer_no_resp_fb_freeze: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Post-no-response freeze timer',
+        default: null,
+        description: 'If there is no response, how long to freeze the feedback.'
+      },       
+      timer_no_resp_fb_freeze: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Post-no-response freeze timer',
+        default: null,
+        description: 'If there is no response, how long to freeze the feedback.'
+      },                   
+      timer_response_window: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Response window',
+        default: null,
+        description: 'How long to wait for a response, until automatic feedback is given.'
+      },     
       // fb_target_x_coords: {
       //   type: jsPsych.plugins.parameterType.INT,
       //   pretty_name: 'Stimulus x coordinates',
@@ -218,6 +293,13 @@ jsPsych.plugins["plugin-playground"] = (function() {
     // store initial location data
     var init_locations = [];
 
+    // Create an element for all the feedback with class = 'feedback'
+    const feedback_element = document.createElement('div')
+    feedback_element.className = 'feedback_items'
+    feedback_element.style.visibility = 'hidden'
+
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(feedback_element)
+
     // ADD PROMPT TEXT
     const prompt = document.createElement('P')
     prompt.innerText = trial.prompt
@@ -255,6 +337,55 @@ jsPsych.plugins["plugin-playground"] = (function() {
     ex_pairs_img.style = 'position: absolute; top:' + (trial.prompt_img_y_coords + trial.prompt_img_height + 30) + 
                               'px; left:' + (trial.sort_area_width/2 - trial.ex_pairs_width/2) + 'px;'
 
+    // ADD INDICES ONSCREEN TEXT
+    // debugger
+    for (i=0; i<trial.onscreen_idx.length; i++){
+
+      let idx_element = document.createElement('P')
+      idx_element.innerText = trial.onscreen_idx[i]
+
+      display_element.querySelector("#jspsych-free-sort-arena").appendChild(idx_element)
+      idx_element.id = 'onscreen_idx_' + i
+      idx_element.style = 'position: absolute; top:' + trial.onscreen_idx_y_coords[i] + 
+        'px; left:' + trial.onscreen_idx_x_coords[i] + 'px;' + 
+        'font-size: 25px; font-weight: bold'
+
+    }
+
+    // ADD FEEDBACK IMAGES
+    const fb_img1 = document.createElement('img')
+    fb_img1.src = trial.fb_img1_path
+    fb_img1.dataset.src = trial.fb_img1_path
+
+    fb_img1.id = 'fb_img1'
+
+    // display_element.querySelector("#jspsych-free-sort-arena").appendChild(fb_img1)
+    feedback_element.appendChild(fb_img1)
+
+    fb_img1.width = trial.prompt_img_width
+    fb_img1.height = trial.prompt_img_height
+
+    fb_img1.style = 'position: absolute; top:' + trial.fb_img1_y_coord + 'px; left:' 
+      + trial.fb_img1_x_coord + 'px;'
+    // fb_img1.style.visibility = 'hidden'
+
+    const fb_img2 = document.createElement('img')
+    fb_img2.src = trial.fb_img2_path
+    fb_img2.dataset.src = trial.fb_img2_path
+
+    fb_img2.id = 'fb_img2'
+
+    // display_element.querySelector("#jspsych-free-sort-arena").appendChild(fb_img2)
+    feedback_element.appendChild(fb_img2)
+
+    fb_img2.width = trial.prompt_img_width
+    fb_img2.height = trial.prompt_img_height
+
+    fb_img2.style = 'position: absolute; top:' + trial.fb_img2_y_coord + 'px; left:' 
+      + trial.fb_img2_x_coord + 'px;'      
+    // fb_img2.style.visibility = 'hidden'      
+
+
     ////////////////////////////////////////////////////////////////////
     // store response
     var response = {
@@ -272,8 +403,16 @@ jsPsych.plugins["plugin-playground"] = (function() {
         response = info;
       }
 
+      // Clear the timer for showing feedback if no response
+      clearTimeout(ticking_till_fb)
+
+      // Show feedback
+      show_feedback()
+
       if (trial.response_ends_trial) {
-        end_trial();
+
+        // End the trial after 2 seconds 
+        jsPsych.pluginAPI.setTimeout(end_trial, trial.timer_after_response)
       }
     };
 
@@ -298,7 +437,12 @@ jsPsych.plugins["plugin-playground"] = (function() {
       // clear the display
       // display_element.innerHTML = '';
       document.querySelector("#prompt_img").style.visibility = 'hidden';
-      document.querySelector("#ex_pairs_img").style.visibility = 'hidden';      
+      document.querySelector("#ex_pairs_img").style.visibility = 'hidden';
+      document.querySelector("#onscreen_idx_0").style.visibility = 'hidden';
+      document.querySelector("#onscreen_idx_1").style.visibility = 'hidden';
+      document.querySelector("#fb_img2").style.visibility = 'hidden';
+      document.querySelector("#fb_img1").style.visibility = 'hidden';
+      document.querySelector("#fb_img2").style.visibility = 'hidden';            
 
       // move on to the next trial
       jsPsych.finishTrial(trial_data);
@@ -316,6 +460,19 @@ jsPsych.plugins["plugin-playground"] = (function() {
       };
     }
 
+    // Function to show feedback
+
+    var show_feedback = function(){
+
+      display_element.querySelector('.feedback_items').style.visibility = 'visible';
+
+      // display_element.querySelector('#fb_img1').style.visibility = 'visible';
+      // display_element.querySelector('#fb_img2').style.visibility = 'visible';
+
+    }
+
+
+
     // //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -329,6 +486,27 @@ jsPsych.plugins["plugin-playground"] = (function() {
         allow_held_key: false
       });
     }
+
+    // Show feedback if timing is set
+    if (trial.timer_till_fb !== null) {
+      var ticking_till_fb = jsPsych.pluginAPI.setTimeout(show_feedback, trial.timer_till_fb);
+    }
+
+    // If no response in time, show feedback and freeze the feedback for a while
+    var ticking_response_window = jsPsych.pluginAPI.setTimeout(function(){
+      
+      // kill keyboard listeners
+      if (typeof keyboardListener !== 'undefined') {
+        jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
+      }
+      
+      // Show feedback
+      show_feedback()
+
+      // Freeze feedback, then end the trial
+      jsPsych.pluginAPI.setTimeout(end_trial, trial.timer_no_resp_fb_freeze)
+
+    }, trial.timer_response_window)
 
 
     // end trial if trial_duration is set

@@ -47,7 +47,11 @@
 
             // Targets
             nTargets: 3,
-            targetPoints: [1,7,14]
+            targetPoints: [1,7,14],
+            timer_till_fb: 3000,
+            timer_after_response: 1000,
+            timer_no_resp_fb_freeze: 2000,
+            timer_response_window: 3000
         }
 
         // Create arrays with point and img names with appropriate number of targets at appropriate locations
@@ -131,11 +135,10 @@
 
         }
 
-        var neck_legs_space = new ConceptSpaceCreator('neck_legs_space','birds',
-            'neck','legs',500,350,10,10,10,400,600,400,70,200,170,300)
+        // var neck_legs_space = new ConceptSpaceCreator('neck_legs_space','birds',
+        //     'neck','legs',500,350,10,10,10,400,600,400,70,200,170,300)
             
-        debugger
-
+        // debugger
 
         var neck_legs_space = {
             concept_space: 'neck_legs_space',
@@ -146,9 +149,11 @@
             ex_pairs_width: 350,
             ex_pairs_x_coord: 10,
             ex_pairs_y_coord: 10,
-            fb_img_1_x_coord: 10,
-            fb_img_1_y_coord: 400,
-            fb_img_2_x_coord: 600,
+            onscreen_idx_x_coords: [170,525],
+            onscreen_idx_y_coords: [350,400],
+            fb_img_1_x_coord: 90,
+            fb_img_1_y_coord: 350,
+            fb_img_2_x_coord: 560,
             fb_img_2_y_coord: 400,            
             fb_text_1_x_coord: 70,
             fb_text_1_y_coord: 200,
@@ -181,11 +186,22 @@
                 [baseTrialArray[i].item1, baseTrialArray[i].item2] = [baseTrialArray[i].item2, baseTrialArray[i].item1]               
             }
 
+            // img name for item 1:
+            baseTrialArray[i].item1_img_name = targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].item1)]
+            // img name for item 2:
+            baseTrialArray[i].item2_img_name = targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].item2)]            
+
+            // img path for item 1:
+            baseTrialArray[i].item1_img_path = './img/targets/' + baseTrialArray[i].item1_img_name + '.png'
+            // img path for item 2:
+            baseTrialArray[i].item2_img_path = './img/targets/' + baseTrialArray[i].item2_img_name + '.png'
+
             // point name of the prompt item?
             baseTrialArray[i].prompt_point_name = baseTrialArray[i]["item" + baseTrialArray[i].prompt_item_idx]
             // target name of the prompt item?
             baseTrialArray[i].prompt_img_name = 
                 targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].prompt_point_name)]
+
             // prompt img path?
             baseTrialArray[i].prompt_img_path = './img/targets/' + baseTrialArray[i].prompt_img_name + '.png'
 
@@ -204,8 +220,9 @@
             baseTrialArray[i].item2_point_idx = targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].item2)+1            
 
             // Exemplar img to load?
-            baseTrialArray[i].ex_pairs_img = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' + 
-                baseTrialArray[i].item1_point_idx + '_' + baseTrialArray[i].item2_point_idx + '.png'
+            // baseTrialArray[i].ex_pairs_img = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' + 
+            //     baseTrialArray[i].item1_point_idx + '_' + baseTrialArray[i].item2_point_idx + '.png'
+            baseTrialArray[i].ex_pairs_img = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_16_16.png'                
         }
 
         // Shuffle base trial array
@@ -227,12 +244,28 @@
                     ex_pairs_width:  curr_space_object.ex_pairs_width,
                     ex_pairs_height: curr_space_object.ex_pairs_height,
                     maintain_aspect_ratio: true,
-                                                    
+
+                    onscreen_idx: ['1','2'],
+                    onscreen_idx_x_coords: curr_space_object.onscreen_idx_x_coords,
+                    onscreen_idx_y_coords: curr_space_object.onscreen_idx_y_coords,                    
+                                         
+                    fb_img1_path: jsPsych.timelineVariable('item1_img_path'),
+                    fb_img2_path: jsPsych.timelineVariable('item2_img_path'),
+
+                    fb_img1_x_coord: curr_space_object.fb_img_1_x_coord,
+                    fb_img1_y_coord: curr_space_object.fb_img_1_y_coord,
+                    fb_img2_x_coord: curr_space_object.fb_img_2_x_coord,
+                    fb_img2_y_coord: curr_space_object.fb_img_2_y_coord,                                                            
+
                     sort_area_width: 750,
                     sort_area_height: 700,
                     prompt: 'Which of the two pictures below are associated with this Christmas toy?',
                     choices: ['1', '2'],
                     response_ends_trial: true,
+                    timer_till_fb: basic_parameters.timer_till_fb,
+                    timer_after_response: basic_parameters.timer_after_response,
+                    timer_no_resp_fb_freeze: basic_parameters.timer_no_resp_fb_freeze,
+                    timer_response_window: basic_parameters.timer_response_window,
                     post_trial_gap: 500
 
                     // foil_img: baseTrialArray[0].foilImg,            
