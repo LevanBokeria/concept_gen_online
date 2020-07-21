@@ -6,7 +6,9 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
   var plugin = {};
 
-  jsPsych.pluginAPI.registerPreload('plugin-playground', 'stimuli', 'image');
+  // jsPsych.pluginAPI.registerPreload('plugin-playground', 'stimuli', 'image');
+  jsPsych.pluginAPI.registerPreload('plugin-playground', 'audio_stimulus', 'audio');
+
 
   plugin.info = {
     name: "plugin-playground",
@@ -101,11 +103,10 @@ jsPsych.plugins["plugin-playground"] = (function() {
         default: undefined,
         description: 'Red X.'
       },    
-			audio_stimuli: {
+			audio_stimulus: {
 				type: jsPsych.plugins.parameterType.AUDIO,
         pretty_name: 'Audio feedback',
         default: undefined,
-        array: true,
 				description: 'Correct and incorrect audio to be played.'
 			},               
       onscreen_idx: {
@@ -235,10 +236,10 @@ jsPsych.plugins["plugin-playground"] = (function() {
     var context = jsPsych.pluginAPI.audioContext();
     if(context !== null){
       var source = context.createBufferSource();
-      source.buffer = jsPsych.pluginAPI.getAudioBuffer(trial.audio_stimuli);
+      source.buffer = jsPsych.pluginAPI.getAudioBuffer(trial.audio_stimulus);
       source.connect(context.destination);
     } else {
-      var audio = jsPsych.pluginAPI.getAudioBuffer(trial.audio_stimuli);
+      var audio = jsPsych.pluginAPI.getAudioBuffer(trial.audio_stimulus);
       audio.currentTime = 0;
     }
 
@@ -448,6 +449,17 @@ jsPsych.plugins["plugin-playground"] = (function() {
     // function to end trial when it is time
     var end_trial = function() {
 
+      // stop the audio file if it is playing
+			// remove end event listeners if they exist
+			if(context !== null){
+				source.stop();
+				source.onended = function() { }
+			} else {
+				audio.pause();
+				audio.removeEventListener('ended', end_trial);
+			}
+
+
       // kill any remaining setTimeout handlers
       jsPsych.pluginAPI.clearAllTimeouts();
 
@@ -497,6 +509,16 @@ jsPsych.plugins["plugin-playground"] = (function() {
       if (correct == 1){
         fb_text.innerText = 'correct!'
         fb_accu_img.src = trial.fb_correct_img
+
+        // Play the sound
+        if(context !== null){
+          startTime = context.currentTime;
+          source.start(startTime);
+        } else {
+          audio.play();
+        }
+
+
       } else if (correct == 0){
         fb_text.innerText = 'incorrect...'
         fb_accu_img.src = trial.fb_incorrect_img
