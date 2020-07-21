@@ -256,7 +256,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
     html += '<div '+
       'id="jspsych-free-sort-arena" '+
       'class="jspsych-free-sort-arena" '+
-      'style="position: relative; width:'+trial.sort_area_width+'px; height:'+trial.sort_area_height+'px; border:2px solid #444;"'+
+      'style="background-color: white; position: relative; width:'+trial.sort_area_width+'px; height:'+trial.sort_area_height+'px; border:2px solid #444;"'+
       '></div>';
 
     display_element.innerHTML = html;

@@ -12,11 +12,10 @@
         <script src='./extra_functions/jspsych-free-sort-modified.js'></script>        
         <link href='./jspsych-6.1.0/css/jspsych.css' rel='stylesheet' type='text/css'></link>
     </head>
-    <body></body>
+    <body style="background-color:#99a3a4;"></body>
     <script>
 
         var baseTrialArray = []
-
 
         // Now, allocate coordinates for all empty location
         var targetCoordsNames = {
@@ -29,6 +28,7 @@
             pointXCoord: [],
             pointYCoord: []
         }
+        
         for (iX = 0; iX < 4; iX++){
             for (iY = 0; iY < 4; iY++){
                 targetCoordsNames.pointXCoord.push(iX * 50 + 100);
