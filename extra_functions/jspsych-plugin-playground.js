@@ -256,7 +256,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
     score_box.id = 'score_box'
     score_box.className = 'score_box'
 
-    score_box.style = 'position: absolute; top: 570px; left: 10px; width: 170px; height: 100px; border: 2px solid #444;'
+    score_box.style = 'position: absolute; top: 590px; left: 10px; width: 170px; height: 100px; border: 2px solid #444;'
 
     display_element.querySelector("#jspsych-free-sort-arena").appendChild(score_box)
 
@@ -287,14 +287,6 @@ jsPsych.plugins["plugin-playground"] = (function() {
       ongoingPerfText.style = 'position: absolute; top: 55px; left: 30px; font-weight: bold;'
 
       score_box.appendChild(ongoingPerfText)
-
-
-    // Create an element for all the feedback with class = 'feedback'
-    const feedback_element = document.createElement('div')
-    feedback_element.className = 'feedback_items'
-    feedback_element.style.visibility = 'hidden'
-
-    display_element.querySelector("#jspsych-free-sort-arena").appendChild(feedback_element)
 
     // ADD PROMPT TEXT
     const prompt = document.createElement('P')
@@ -328,15 +320,21 @@ jsPsych.plugins["plugin-playground"] = (function() {
     // ADD ex img
     const ex_pairs_img_path = document.createElement('img')
     ex_pairs_img_path.src = trial.ex_pairs_img_path
-    ex_pairs_img_path.dataset.src = trial.ex_pairs_img_path
     ex_pairs_img_path.id = 'ex_pairs_img_path'
 
     ex_pairs_img_path.width = trial.ex_pairs_img_width
-    ex_pairs_img_path.style = 'position: absolute; top:' + (trial.prompt_img_y_coords + trial.prompt_img_height + 30) + 
+    ex_pairs_img_path.style = 'position: absolute; z-index: 0; top:' + (trial.prompt_img_y_coords + trial.prompt_img_height + 30) + 
                               'px; left:' + (trial.sort_area_width/2 - trial.ex_pairs_img_width/2) + 'px;'
 
     display_element.querySelector("#jspsych-free-sort-arena").appendChild(ex_pairs_img_path)
 
+
+    // Create an element for all the feedback with class = 'feedback'
+    const feedback_element = document.createElement('div')
+    feedback_element.className = 'feedback_items'
+    feedback_element.style.visibility = 'hidden'
+
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(feedback_element)
 
     // Add elements
     for (iImg=0; iImg<trial.fb_img_paths.length; iImg++){
@@ -350,7 +348,6 @@ jsPsych.plugins["plugin-playground"] = (function() {
         'px; left:' + trial.onscreen_idx_x_coords[iImg] + 'px;' + 
         'font-size: 25px; font-weight: bold'
       display_element.querySelector("#jspsych-free-sort-arena").appendChild(idx_element)
-
 
       // Images
       let i_fb_img = document.createElement('img')

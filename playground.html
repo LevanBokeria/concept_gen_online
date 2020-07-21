@@ -166,7 +166,7 @@
             concept_object: 'birds',
             dim1_name: 'neck',
             dim2_name: 'legs',
-            ex_pairs_img_height: 500, 
+            ex_pairs_img_height: undefined, 
             ex_pairs_img_width: 350,
             ex_pairs_x_coord: 10,
             ex_pairs_y_coord: 10,
@@ -182,18 +182,18 @@
             concept_object: 'birds',
             dim1_name: 'beak',
             dim2_name: 'tail',
-            ex_pairs_img_height: 500, 
-            ex_pairs_img_width: 350,
+            ex_pairs_img_height: undefined, 
+            ex_pairs_img_width: 650,
             ex_pairs_x_coord: 10,
             ex_pairs_y_coord: 10,
-            onscreen_idx_x_coords: [170,525],
-            onscreen_idx_y_coords: [350,400],
+            onscreen_idx_x_coords: [220,310],
+            onscreen_idx_y_coords: [220,400],
             
-            fb_imgs_x_coords: [90,560],
-            fb_imgs_y_coords: [350,400],            
+            fb_imgs_x_coords: [90,180],
+            fb_imgs_y_coords: [250,450],            
         }        
 
-        var curr_space_object = neck_legs_space
+        var curr_space_object = beak_tail_space
 
         // Create a counterballanced array indicating which item is the prompt item
         for(i = 0, j=0; i < baseTrialArray.length; i+=2, j++){
