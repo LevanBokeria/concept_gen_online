@@ -28,7 +28,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
         array: true,
         description: 'Target stimulus to display.'
       },      
-      maintain_aspect_ratio: {
+      ex_pairs_maintain_aspect_ratio: {
         type: jsPsych.plugins.parameterType.BOOL,
         pretty_name: 'Maintain aspect ratio',
         default: true,
@@ -58,39 +58,32 @@ jsPsych.plugins["plugin-playground"] = (function() {
         default: 100,
         description: 'Y coordinates of images'
       },
-      ex_pairs_img: {
+      ex_pairs_img_path: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Target',
         default: undefined,
         array: true,
         description: 'Target stimulus to display.'
       },      
-      ex_pairs_height: {
+      ex_pairs_img_height: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'ex pairs height',
         default: 100,
         description: 'Height of images in pixels.'
       },
-      ex_pairs_width: {
+      ex_pairs_img_width: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'ex pairs width',
         default: 100,
         description: 'Width of images in pixels'
       },     
-      item1_img_name: {
+      item_img_names: {
         type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: 'Item 1 image name',
+        pretty_name: 'Item image names',
         default: undefined,
         array: true,
-        description: 'Item 1 image name.'
-      }, 
-      item2_img_name: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: 'Item 2 image name',
-        default: undefined,
-        array: true,
-        description: 'Item 2 image name.'
-      },              
+        description: 'Item image name.'
+      },       
       fb_correct_img: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Green Tick',
@@ -137,30 +130,27 @@ jsPsych.plugins["plugin-playground"] = (function() {
         array: true,
         description: 'Y coordinates of indices shown.'
       },
-      fb_img1_x_coord: {
-        type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Feedback img 1 x coordinates',
+      fb_img_paths: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Paths to feedback images',
         default: undefined,
-        description: 'X coordinate of Feedback img 1.'
-      },
-      fb_img1_y_coord: {
+        array: true,
+        description: 'Paths to feedback images'
+      },       
+      fb_imgs_x_coords: {
         type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Feedback img 1 y coordinates',
+        pretty_name: 'Feedback img x coordinates',
         default: undefined,
-        description: 'Y coordinates Feedback img 1'
-      },
-      fb_img2_x_coord: {
+        array: true,
+        description: 'X coordinate of Feedback imgs.'
+      },     
+      fb_imgs_y_coords: {
         type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Feedback img 2 x coordinates',
+        pretty_name: 'Feedback img y coordinates',
         default: undefined,
-        description: 'X coordinate of Feedback img 2.'
-      },
-      fb_img2_y_coord: {
-        type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Feedback img 2 y coordinates',
-        default: undefined,
-        description: 'Y coordinates Feedback img 2'
-      },                  
+        array: true,
+        description: 'Y coordinate of Feedback imgs.'
+      }, 
       timer_till_fb: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Feedback timer',
@@ -340,19 +330,19 @@ jsPsych.plugins["plugin-playground"] = (function() {
     prompt_img_name.id += 'prompt_img_name'
 
     // ADD ex img
-    const ex_pairs_img = document.createElement('img')
-    ex_pairs_img.src = trial.ex_pairs_img
-    ex_pairs_img.dataset.src = trial.ex_pairs_img
+    const ex_pairs_img_path = document.createElement('img')
+    ex_pairs_img_path.src = trial.ex_pairs_img_path
+    ex_pairs_img_path.dataset.src = trial.ex_pairs_img_path
 
-    ex_pairs_img.id = 'ex_pairs_img'
+    ex_pairs_img_path.id = 'ex_pairs_img_path'
 
 
-    display_element.querySelector("#jspsych-free-sort-arena").appendChild(ex_pairs_img)
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(ex_pairs_img_path)
 
-    ex_pairs_img.width = trial.ex_pairs_width
+    ex_pairs_img_path.width = trial.ex_pairs_img_width
 
-    ex_pairs_img.style = 'position: absolute; top:' + (trial.prompt_img_y_coords + trial.prompt_img_height + 30) + 
-                              'px; left:' + (trial.sort_area_width/2 - trial.ex_pairs_width/2) + 'px;'
+    ex_pairs_img_path.style = 'position: absolute; top:' + (trial.prompt_img_y_coords + trial.prompt_img_height + 30) + 
+                              'px; left:' + (trial.sort_area_width/2 - trial.ex_pairs_img_width/2) + 'px;'
 
     // ADD INDICES ONSCREEN TEXT
     // debugger
@@ -369,60 +359,30 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
     }
 
-    // ADD FEEDBACK IMAGES
-    const fb_img1 = document.createElement('img')
-    fb_img1.src = trial.fb_img1_path
-    fb_img1.dataset.src = trial.fb_img1_path
+    // Add elements
+    for (iImg=0; iImg<trial.fb_img_paths.length; iImg++){
 
-    fb_img1.id = 'fb_img1'
+      // Images
+      let i_fb_img = document.createElement('img')
+      i_fb_img.src = trial.fb_img_paths[iImg]
+      i_fb_img.id = 'fb_img' + (iImg+1)
+      i_fb_img.width = trial.prompt_img_width
+      i_fb_img.height = trial.prompt_img_height
+      i_fb_img.style = 'position: absolute; top:' + trial.fb_imgs_y_coords[iImg] + 'px; left:' 
+        + trial.fb_imgs_x_coords[iImg] + 'px;'
 
-    // display_element.querySelector("#jspsych-free-sort-arena").appendChild(fb_img1)
-    feedback_element.appendChild(fb_img1)
+      feedback_element.appendChild(i_fb_img)
 
-    fb_img1.width = trial.prompt_img_width
-    fb_img1.height = trial.prompt_img_height
+      // Image names
+      let i_item_img_name = document.createElement('P')
+      i_item_img_name.innerText = trial.item_img_names[iImg]
+      i_item_img_name.id = 'item_img_name' + (iImg+1)
+      i_item_img_name.style = 'position: absolute; top:' + (trial.fb_imgs_y_coords[iImg]-50) + 'px; left:' 
+      + (trial.fb_imgs_x_coords[iImg]+13) + 'px;'       
 
-    fb_img1.style = 'position: absolute; top:' + trial.fb_img1_y_coord + 'px; left:' 
-      + trial.fb_img1_x_coord + 'px;'
-    // fb_img1.style.visibility = 'hidden'
+      feedback_element.appendChild(i_item_img_name)
 
-    const fb_img2 = document.createElement('img')
-    fb_img2.src = trial.fb_img2_path
-    fb_img2.dataset.src = trial.fb_img2_path
-
-    fb_img2.id = 'fb_img2'
-
-    // display_element.querySelector("#jspsych-free-sort-arena").appendChild(fb_img2)
-    feedback_element.appendChild(fb_img2)
-
-    fb_img2.width = trial.prompt_img_width
-    fb_img2.height = trial.prompt_img_height
-
-    fb_img2.style = 'position: absolute; top:' + trial.fb_img2_y_coord + 'px; left:' 
-      + trial.fb_img2_x_coord + 'px;'      
-    // fb_img2.style.visibility = 'hidden'      
-
-    // ADD FB 1 NAME 
-    const item1_img_name = document.createElement('P')
-    item1_img_name.innerText = trial.item1_img_name
-    feedback_element.appendChild(item1_img_name)
-
-    item1_img_name.id = 'item1_img_name'
-
-    item1_img_name.style = 'position: absolute; top:' + (trial.fb_img1_y_coord-50) + 'px; left:' 
-    + (trial.fb_img1_x_coord+13) + 'px;' 
-
-    // ADD FB 2 NAME 
-    const item2_img_name = document.createElement('P')
-    item2_img_name.innerText = trial.item2_img_name
-    feedback_element.appendChild(item2_img_name)
-
-    item2_img_name.id = 'item2_img_name'
-
-    item2_img_name.style = 'position: absolute; top:' + (trial.fb_img2_y_coord-50) + 'px; left:' 
-    + (trial.fb_img2_x_coord+13) + 'px;' 
-
-
+    }
 
     // ADD FEEDBACK TEXT
     const fb_text = document.createElement('P')
@@ -435,12 +395,9 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
     // ADD FEEDBACK SYMBOL IMAGE
     const fb_accu_img = document.createElement('img')
-
     fb_accu_img.id = 'fb_accu_img'
-
     fb_accu_img.width = trial.prompt_img_width/2
     fb_accu_img.height = trial.prompt_img_height/2
-
     fb_accu_img.style = 'position: absolute; top:' + (trial.prompt_img_y_coords+20) + 'px; left:' 
       + (trial.prompt_img_x_coords - trial.prompt_img_width/2 - 5)  + 'px;'
 
@@ -513,7 +470,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
       // clear the display
       // display_element.innerHTML = '';
       document.querySelector("#prompt_img").style.visibility = 'hidden';
-      document.querySelector("#ex_pairs_img").style.visibility = 'hidden';
+      document.querySelector("#ex_pairs_img_path").style.visibility = 'hidden';
       document.querySelector("#onscreen_idx_0").style.visibility = 'hidden';
       document.querySelector("#onscreen_idx_1").style.visibility = 'hidden';
       display_element.querySelector('.feedback_items').style.visibility = 'hidden';
