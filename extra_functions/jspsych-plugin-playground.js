@@ -20,7 +20,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
         default: undefined,
         array: true,
         description: 'Prompt image name.'
-      },      
+      },  
       prompt_img_path: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Target',
@@ -108,7 +108,14 @@ jsPsych.plugins["plugin-playground"] = (function() {
         pretty_name: 'Audio feedback',
         default: undefined,
 				description: 'Correct and incorrect audio to be played.'
-			},               
+      },        
+      score_box_target_names: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Score box targets',
+        default: undefined,
+        array: true,
+        description: 'Image paths for the score board.'
+      },             
       onscreen_idx: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'On screen indices',
@@ -255,20 +262,20 @@ jsPsych.plugins["plugin-playground"] = (function() {
     display_element.innerHTML = html;
 
     // Create a smaller box to display the ongoing performance
-    const perf_box = document.createElement('div')
-    perf_box.id = 'perf_box'
-    perf_box.className = 'perf_box'
+    const score_box = document.createElement('div')
+    score_box.id = 'score_box'
+    score_box.className = 'score_box'
 
-    perf_box.style = 'position: absolute; top: 570px; left: 10px; width: 170px; height: 100px; border: 2px solid #444;'
+    score_box.style = 'position: absolute; top: 570px; left: 10px; width: 170px; height: 100px; border: 2px solid #444;'
 
-    display_element.querySelector("#jspsych-free-sort-arena").appendChild(perf_box)
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(score_box)
 
       // Add the images of targets and the text to the performance box
       for (i=0; i<3; i++){
 
         let iTarget = document.createElement('img')
-        iTarget.src = './img/targets/Bell.png'
-        perf_box.appendChild(iTarget)
+        iTarget.src = trial.score_box_target_names[i]
+        score_box.appendChild(iTarget)
 
         iTarget.id = 'iTarget' + i
         iTarget.style = 'height: 40px; width: 40px; position: absolute; top:5px; left: ' + (5 + i*60) + 'px'
@@ -276,7 +283,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
         let iPerf = document.createElement('P')
         iPerf.innerText = '100%'
   
-        perf_box.appendChild(iPerf)
+        score_box.appendChild(iPerf)
         
         iPerf.id = 'iPerf' + i
         iPerf.style = 'font-size: 15px; position: absolute; top:30px; left: ' + (7 + i*60) + 'px'
@@ -286,7 +293,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
       // Add text "ongoing pefromance"
       const ongoingPerfText = document.createElement('P')
       ongoingPerfText.innerText = 'Your scores'
-      perf_box.appendChild(ongoingPerfText)
+      score_box.appendChild(ongoingPerfText)
 
       ongoingPerfText.id = 'ongoingPerfText'
       ongoingPerfText.style = 'position: absolute; top: 55px; left: 30px; font-weight: bold;'

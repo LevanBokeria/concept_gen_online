@@ -60,10 +60,20 @@
             // Feedback items
             fb_correct_img: './img/feedback/green_tick.png',
             fb_incorrect_img: './img/feedback/Red_x.png',
-            audio_stimulus: './img/feedback/success.wav'
+            audio_stimulus: './img/feedback/success.wav',
+
+            // Peformance box
+            score_box_width: 100,
+            score_box_height: 100,
+            score_box_target_width: 50,
+            score_box_target_height: 50,
+            score_box_score_font_size: 13,
+            score_box_description_font_size: 15,
         }
 
         // Create arrays with point and img names with appropriate number of targets at appropriate locations
+        var score_box_target_names = []
+
         for (i=0; i<basic_parameters.nTargets; i++){
 
             targetCoordsNames.pointNamesUsed[basic_parameters.targetPoints[i]-1] = 
@@ -71,6 +81,9 @@
 
             targetCoordsNames.imgNamesUsed[basic_parameters.targetPoints[i]-1] = 
                 targetCoordsNames.imgNamesTarget[i]
+
+            // For the score box, create names of the target itesm
+            score_box_target_names[i] = './img/targets/' + targetCoordsNames.imgNamesTarget[i] + '.png'
         }
 
         // Create all the combinations of targets and empty locations (imported from Matlab)
@@ -276,6 +289,8 @@
                     fb_img2_x_coord: curr_space_object.fb_img_2_x_coord,
                     fb_img2_y_coord: curr_space_object.fb_img_2_y_coord,                                                            
 
+                    score_box_target_names: score_box_target_names,
+
                     sort_area_width: 750,
                     sort_area_height: 700,
                     prompt: 'Which of the two pictures below are associated with this Christmas toy?',
@@ -287,31 +302,6 @@
                     timer_response_window: basic_parameters.timer_response_window,
                     post_trial_gap: 500,
                     correct_response: jsPsych.timelineVariable('prompt_item_idx')
-
-                    // foil_img: baseTrialArray[0].foilImg,            
-                    // fb_assoc1_img: '',
-                    // fb_assoc2_img: '',
-
-                    // fb_assoc1_x_coords: 50,
-                    // fb_assoc1_y_coords: 300,
-                    // fb_assoc2_x_coords: 650,
-                    // fb_assoc2_y_coords: 400,
-                    // fb_img1_x_coords: 50,
-                    // fb_img1_y_coords: 300,
-                    // fb_img2_x_coords: 650,
-                    // fb_img2_y_coords: 400,            
-                    
-                    // fb_green_tick_img: './img/fb/green_tick.png',
-                    // fb_green_tick_width: 20,
-                    // fb_green_tick_height: 20,
-                    // fb_red_x_img: './img/fb/red_X.png',
-                    // fb_red_x_width: 20,
-                    // fb_red_x_height: 20,
-                    
-                    // fb_correct_text: 'correct!',
-                    // fb_incorrect_text: 'incorrect',
-                    // post_response_text: 'press the SPACE key for next trial',   
-
                 }
             ],
 
