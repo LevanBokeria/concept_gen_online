@@ -243,11 +243,8 @@ jsPsych.plugins["plugin-playground"] = (function() {
       audio.currentTime = 0;
     }
 
+    // Start defining the html
     var html = "";
-    // // check if there is a prompt and if it is shown above
-    // if (trial.prompt !== null && trial.prompt_location == "above") {
-    //   html += trial.prompt;
-    // }
 
     html += '<div '+
       'id="jspsych-free-sort-arena" '+
@@ -255,15 +252,46 @@ jsPsych.plugins["plugin-playground"] = (function() {
       'style="position: relative; width:'+trial.sort_area_width+'px; height:'+trial.sort_area_height+'px; border:2px solid #444;"'+
       '></div>';
 
-    // // check if prompt exists and if it is shown below
-    // if (trial.prompt !== null && trial.prompt_location == "below") {
-    //   html += trial.prompt;
-    // }
-
     display_element.innerHTML = html;
 
-    // store initial location data
-    var init_locations = [];
+    // Create a smaller box to display the ongoing performance
+    const perf_box = document.createElement('div')
+    perf_box.id = 'perf_box'
+    perf_box.className = 'perf_box'
+
+    perf_box.style = 'position: absolute; top: 570px; left: 10px; width: 170px; height: 100px; border: 2px solid #444;'
+
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(perf_box)
+
+      // Add the images of targets and the text to the performance box
+      for (i=0; i<3; i++){
+
+        let iTarget = document.createElement('img')
+        iTarget.src = './img/targets/Bell.png'
+        perf_box.appendChild(iTarget)
+
+        iTarget.id = 'iTarget' + i
+        iTarget.style = 'height: 40px; width: 40px; position: absolute; top:5px; left: ' + (5 + i*60) + 'px'
+
+        let iPerf = document.createElement('P')
+        iPerf.innerText = '100%'
+  
+        perf_box.appendChild(iPerf)
+        
+        iPerf.id = 'iPerf' + i
+        iPerf.style = 'font-size: 15px; position: absolute; top:30px; left: ' + (7 + i*60) + 'px'
+
+      }
+
+      // Add text "ongoing pefromance"
+      const ongoingPerfText = document.createElement('P')
+      ongoingPerfText.innerText = 'Your scores'
+      perf_box.appendChild(ongoingPerfText)
+
+      ongoingPerfText.id = 'ongoingPerfText'
+      ongoingPerfText.style = 'position: absolute; top: 55px; left: 30px; font-weight: bold;'
+
+
 
     // Create an element for all the feedback with class = 'feedback'
     const feedback_element = document.createElement('div')
