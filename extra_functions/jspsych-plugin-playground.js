@@ -283,11 +283,10 @@ jsPsych.plugins["plugin-playground"] = (function() {
       // Add text "ongoing pefromance"
       const ongoingPerfText = document.createElement('P')
       ongoingPerfText.innerText = 'Your scores'
-      score_box.appendChild(ongoingPerfText)
-
       ongoingPerfText.id = 'ongoingPerfText'
       ongoingPerfText.style = 'position: absolute; top: 55px; left: 30px; font-weight: bold;'
 
+      score_box.appendChild(ongoingPerfText)
 
 
     // Create an element for all the feedback with class = 'feedback'
@@ -300,67 +299,58 @@ jsPsych.plugins["plugin-playground"] = (function() {
     // ADD PROMPT TEXT
     const prompt = document.createElement('P')
     prompt.innerText = trial.prompt
+    prompt.id = 'prompt_text'
     display_element.querySelector("#jspsych-free-sort-arena").appendChild(prompt)
 
-    prompt.id = 'prompt'
 
     // ADD PROMPT IMAGE
     const prompt_img = document.createElement('img')
     prompt_img.src = trial.prompt_img_path
-    prompt_img.dataset.src = trial.prompt_img_path
-
     prompt_img.id = 'prompt_img'
+    prompt_img.width = trial.prompt_img_width
+    prompt_img.height = trial.prompt_img_height
+    prompt_img.style = 'position: absolute; top:' + trial.prompt_img_y_coords + 'px; left:' 
+      + trial.prompt_img_x_coords + 'px;'
 
     display_element.querySelector("#jspsych-free-sort-arena").appendChild(prompt_img)
 
-    prompt_img.width = trial.prompt_img_width
-    prompt_img.height = trial.prompt_img_height
-
-    prompt_img.style = 'position: absolute; top:' + trial.prompt_img_y_coords + 'px; left:' 
-      + trial.prompt_img_x_coords + 'px;'
 
     // ADD PROMPT IMAGE NAME
     const prompt_img_name = document.createElement('P')
     prompt_img_name.innerText = trial.prompt_img_name
-    display_element.querySelector("#jspsych-free-sort-arena").appendChild(prompt_img_name)
-
     prompt_img_name.style = 'position: relative; top:' + (-15) + 'px;' 
      + 'font-size: 20px;'
-
     prompt_img_name.id += 'prompt_img_name'
+
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(prompt_img_name)
+
 
     // ADD ex img
     const ex_pairs_img_path = document.createElement('img')
     ex_pairs_img_path.src = trial.ex_pairs_img_path
     ex_pairs_img_path.dataset.src = trial.ex_pairs_img_path
-
     ex_pairs_img_path.id = 'ex_pairs_img_path'
 
-
-    display_element.querySelector("#jspsych-free-sort-arena").appendChild(ex_pairs_img_path)
-
     ex_pairs_img_path.width = trial.ex_pairs_img_width
-
     ex_pairs_img_path.style = 'position: absolute; top:' + (trial.prompt_img_y_coords + trial.prompt_img_height + 30) + 
                               'px; left:' + (trial.sort_area_width/2 - trial.ex_pairs_img_width/2) + 'px;'
 
-    // ADD INDICES ONSCREEN TEXT
-    // debugger
-    for (i=0; i<trial.onscreen_idx.length; i++){
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(ex_pairs_img_path)
 
-      let idx_element = document.createElement('P')
-      idx_element.innerText = trial.onscreen_idx[i]
-
-      display_element.querySelector("#jspsych-free-sort-arena").appendChild(idx_element)
-      idx_element.id = 'onscreen_idx_' + i
-      idx_element.style = 'position: absolute; top:' + trial.onscreen_idx_y_coords[i] + 
-        'px; left:' + trial.onscreen_idx_x_coords[i] + 'px;' + 
-        'font-size: 25px; font-weight: bold'
-
-    }
 
     // Add elements
     for (iImg=0; iImg<trial.fb_img_paths.length; iImg++){
+
+      // Indices of images
+      let idx_element = document.createElement('P')
+      idx_element.innerText = trial.onscreen_idx[iImg]
+
+      idx_element.id = 'onscreen_idx_' + iImg
+      idx_element.style = 'position: absolute; top:' + trial.onscreen_idx_y_coords[iImg] + 
+        'px; left:' + trial.onscreen_idx_x_coords[iImg] + 'px;' + 
+        'font-size: 25px; font-weight: bold'
+      display_element.querySelector("#jspsych-free-sort-arena").appendChild(idx_element)
+
 
       // Images
       let i_fb_img = document.createElement('img')
@@ -384,7 +374,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
     }
 
-    // ADD FEEDBACK TEXT
+    // ADD FEEDBACK TEXT: "correct" "incorrect..."
     const fb_text = document.createElement('P')
     fb_text.innerText = ''
     fb_text.id = 'fb_text'
@@ -393,7 +383,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
     feedback_element.appendChild(fb_text)
 
-    // ADD FEEDBACK SYMBOL IMAGE
+    // ADD FEEDBACK SYMBOL IMAGE: green tick or red X.
     const fb_accu_img = document.createElement('img')
     fb_accu_img.id = 'fb_accu_img'
     fb_accu_img.width = trial.prompt_img_width/2

@@ -132,30 +132,29 @@
             {item1: "T3", item2: "E16"},
         ]
 
-        // Create a constructor function for creating an object with info for each space
-        function ConceptSpaceCreator(concept_space,concept_object,dim1_name,dim2_name,
-            ex_pairs_img_height,ex_pairs_img_width,ex_pairs_x_coord,ex_pairs_y_coord,
-            fb_img_1_x_coord,fb_img_1_y_coord,fb_img_2_x_coord,fb_img_2_y_coord,
-            fb_text_1_x_coord,fb_text_1_y_coord,fb_text_2_x_coord,fb_text_2_y_coord,){
+        // // Create a constructor function for creating an object with info for each space
+        // function ConceptSpaceCreator(concept_space,concept_object,dim1_name,dim2_name,
+        //     ex_pairs_img_height,ex_pairs_img_width,ex_pairs_x_coord,ex_pairs_y_coord,
+        //     fb_img_1_x_coord,fb_img_1_y_coord,fb_img_2_x_coord,fb_img_2_y_coord,
+        //     fb_text_1_x_coord,fb_text_1_y_coord,fb_text_2_x_coord,fb_text_2_y_coord,){
 
-                this.concept_space     = concept_space,
-                this.concept_object    = concept_object,
-                this.dim1_name         = dim1_name,
-                this.dim2_name         = dim2_name,
-                this.ex_pairs_img_height   = ex_pairs_img_height,
-                this.ex_pairs_img_width    = ex_pairs_img_width,
-                this.ex_pairs_x_coord  = ex_pairs_x_coord,
-                this.ex_pairs_y_coord  = ex_pairs_y_coord,
-                this.fb_img_1_x_coord  = fb_img_1_x_coord,
-                this.fb_img_1_y_coord  = fb_img_1_y_coord,
-                this.fb_img_2_x_coord  = fb_img_2_x_coord,
-                this.fb_img_2_y_coord  = fb_img_2_y_coord,
-                this.fb_text_1_x_coord = fb_text_1_x_coord,
-                this.fb_text_1_y_coord = fb_text_1_y_coord,
-                this.fb_text_2_x_coord = fb_text_2_x_coord,
-                this.fb_text_2_y_coord = fb_text_2_y_coord                
-
-        }
+        //         this.concept_space     = concept_space,
+        //         this.concept_object    = concept_object,
+        //         this.dim1_name         = dim1_name,
+        //         this.dim2_name         = dim2_name,
+        //         this.ex_pairs_img_height   = ex_pairs_img_height,
+        //         this.ex_pairs_img_width    = ex_pairs_img_width,
+        //         this.ex_pairs_x_coord  = ex_pairs_x_coord,
+        //         this.ex_pairs_y_coord  = ex_pairs_y_coord,
+        //         this.fb_img_1_x_coord  = fb_img_1_x_coord,
+        //         this.fb_img_1_y_coord  = fb_img_1_y_coord,
+        //         this.fb_img_2_x_coord  = fb_img_2_x_coord,
+        //         this.fb_img_2_y_coord  = fb_img_2_y_coord,
+        //         this.fb_text_1_x_coord = fb_text_1_x_coord,
+        //         this.fb_text_1_y_coord = fb_text_1_y_coord,
+        //         this.fb_text_2_x_coord = fb_text_2_x_coord,
+        //         this.fb_text_2_y_coord = fb_text_2_y_coord                
+        // }
 
         // var neck_legs_space = new ConceptSpaceCreator('neck_legs_space','birds',
         //     'neck','legs',500,350,10,10,10,400,600,400,70,200,170,300)
@@ -175,21 +174,24 @@
             onscreen_idx_y_coords: [350,400],
             
             fb_imgs_x_coords: [90,560],
-            fb_imgs_y_coords: [350,400],
-
-            fb_img_1_x_coord: 90,
-            fb_img_1_y_coord: 350,
-            fb_img_2_x_coord: 560,
-            fb_img_2_y_coord: 400,            
-
-            // fb_text_x_coords: [70,170],
-            // fb_text_y_coords: [200,300],
-
-            // fb_text_1_x_coord: 70,
-            // fb_text_1_y_coord: 200,
-            // fb_text_2_x_coord: 170,
-            // fb_text_2_y_coord: 300
+            fb_imgs_y_coords: [350,400],            
         }
+
+        var beak_tail_space = {
+            concept_space: 'beak_tail_space',
+            concept_object: 'birds',
+            dim1_name: 'beak',
+            dim2_name: 'tail',
+            ex_pairs_img_height: 500, 
+            ex_pairs_img_width: 350,
+            ex_pairs_x_coord: 10,
+            ex_pairs_y_coord: 10,
+            onscreen_idx_x_coords: [170,525],
+            onscreen_idx_y_coords: [350,400],
+            
+            fb_imgs_x_coords: [90,560],
+            fb_imgs_y_coords: [350,400],            
+        }        
 
         var curr_space_object = neck_legs_space
 
@@ -226,24 +228,13 @@
                 baseTrialArray[i].item_point_idxs[j] = targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i]['item'+(j+1)])+1
             }
 
-            // img name for item 1:
-            baseTrialArray[i].item1_img_name = targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].item1)]
-            // img name for item 2:
-            baseTrialArray[i].item2_img_name = targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].item2)]            
-            // img path for item 1:
-            baseTrialArray[i].item1_img_path = './img/targets/' + baseTrialArray[i].item1_img_name + '.png'
-            // img path for item 2:
-            baseTrialArray[i].item2_img_path = './img/targets/' + baseTrialArray[i].item2_img_name + '.png'
-
             // point name of the prompt item?
             baseTrialArray[i].prompt_point_name = baseTrialArray[i]["item" + baseTrialArray[i].prompt_item_idx]
             // target name of the prompt item?
             baseTrialArray[i].prompt_img_name = 
                 targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].prompt_point_name)]
-
             // prompt img path?
             baseTrialArray[i].prompt_img_path = './img/targets/' + baseTrialArray[i].prompt_img_name + '.png'
-
             // point name of the foil item?
             baseTrialArray[i].foil_point_name = baseTrialArray[i]["item" + baseTrialArray[i].foil_item_idx]
             // target name of the foil item?
@@ -251,13 +242,6 @@
                 targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].foil_point_name)]
             // foil img path?
             baseTrialArray[i].foil_img_path = './img/targets/' + baseTrialArray[i].foil_img_name + '.png'
-
-            // item1 index in point space?
-            baseTrialArray[i].item1_point_idx = targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].item1)+1
-
-            // item2 index in point space?
-            baseTrialArray[i].item2_point_idx = targetCoordsNames.pointNamesUsed.indexOf(baseTrialArray[i].item2)+1            
-
             // Exemplar img to load?
             baseTrialArray[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_16_16.png'                
         }
