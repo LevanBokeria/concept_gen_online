@@ -508,10 +508,6 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
       // Display the feedback items
       display_element.querySelector('.feedback_items').style.visibility = 'visible';
-
-      // display_element.querySelector('#fb_img1').style.visibility = 'visible';
-      // display_element.querySelector('#fb_img2').style.visibility = 'visible';
-
     }
 
 
@@ -528,11 +524,6 @@ jsPsych.plugins["plugin-playground"] = (function() {
         persist: false,
         allow_held_key: false
       });
-    }
-
-    // Show feedback if timing is set
-    if (trial.timer_till_fb !== null) {
-      var ticking_till_fb = jsPsych.pluginAPI.setTimeout(show_feedback, trial.timer_till_fb);
     }
 
     // If no response in time, show feedback and freeze the feedback for a while
