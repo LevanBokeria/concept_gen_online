@@ -411,10 +411,6 @@ jsPsych.plugins["plugin-playground"] = (function() {
       response.correct = (response.key == '49' & trial.correct_response == 1) |
                          (response.key == '50' & trial.correct_response == 2)
 
-
-      // Clear the timer for showing feedback if no response
-      clearTimeout(ticking_till_fb)
-
       // Show feedback
       show_feedback(response.correct)
 

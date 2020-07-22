@@ -9,7 +9,9 @@
         <!-- <script src='extra_functions/jspsych-html-slider-response-smooth-tracking.js'></script>
         <script src='./extra_functions/custom_functions.js'> </script> -->
         <script src='./extra_functions/jspsych-plugin-playground.js'></script>
-        <script src='./extra_functions/jspsych-free-sort-modified.js'></script>        
+        <script src='./extra_functions/jspsych-free-sort-modified.js'></script>   
+        <!-- <script src='./jspsych-6.1.0/plugins/jspsych-fullscreen.js'></script>            -->
+
         <link href='./jspsych-6.1.0/css/jspsych.css' rel='stylesheet' type='text/css'></link>
     </head>
     <body style="background-color:#99a3a4;"></body>
@@ -230,6 +232,7 @@
         // //////////// FREE SORT PLUGIN //////////////////////////////
         var session_procedure = {
             timeline: [
+        
                 {
                     type: 'plugin-playground',
             
@@ -278,7 +281,7 @@
 
             timeline_variables: baseTrialArray
         };
- 
+
         jsPsych.init({
             timeline: [session_procedure],
             use_webaudio: false
