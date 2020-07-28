@@ -252,60 +252,71 @@
         [220,310],[220,400], // onscreen idx coords
         [90,180],[250,450]) // fb_imgs coords                  
 
-    // Make the baseTrialArray for phases
+    let concepts = {
+        phase_1: neck_legs_space,
+        phase_2: beak_tail_space
+    }
+
+    // Make the session 1 trials for phases
     let phase_trials = {
       phase_1: [],
       phase_2: []
     }
     for (iPhase=1; iPhase<3; iPhase++){
       phase_trials['phase_'+iPhase][jatos.studySessionData.session_counter-1] = 
-      trialCreator(neck_legs_space,baseTrialArray,targetCoordsNames,iPhase)
+      trialCreator(concepts['phase_'+iPhase],baseTrialArray,targetCoordsNames,iPhase)
+    }
+  
+
+    // Record all these variables in JATOS
+    jatos.studySessionData.inputData = {
+      targetCoordsNames: targetCoordsNames,
+      basic_parameters: basic_parameters,
+      score_box_target_names: score_box_target_names,
+      baseTrialArray: baseTrialArray,
+      concepts: concepts,
+      phase_trials: phase_trials
     }
 
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    
-debugger
     // Add the questions for debrief:
 
 
-      // If this is squircle space, add additional text to instructions explaining what these items are
-      var space_quantifier;
-      if (jatos.studySessionData.condition.subjStim == "Squircles"){
+    //   // If this is squircle space, add additional text to instructions explaining what these items are
+    //   var space_quantifier;
+    //   if (jatos.studySessionData.condition.subjStim == "Squircles"){
 
-          space_quantifier = "";
+    //       space_quantifier = "";
 
-      }
-      else if (jatos.studySessionData.condition.subjStim == "Stripeys") {
+    //   }
+    //   else if (jatos.studySessionData.condition.subjStim == "Stripeys") {
 
-        space_quantifier = "number of ";
+    //     space_quantifier = "number of ";
 
-      } 
-      else {
-          space_quantifier = "size of ";
-      }
+    //   } 
+    //   else {
+    //       space_quantifier = "size of ";
+    //   }
 
-      jatos.studySessionData.debrief_questions = [
+    //   jatos.studySessionData.debrief_questions = [
 
-        {prompt: "How did you decide on how similar the pictures of the " + jatos.studySessionData.condition.subjStim + " were?", rows: 2, columns: 100}, 
-        {prompt: "Did you notice the " + jatos.studySessionData.condition.subjStim + " differed by their " + space_quantifier + jatos.studySessionData.condition.dim1_name + "?", rows: 2, columns: 100}
-      ]
+    //     {prompt: "How did you decide on how similar the pictures of the " + jatos.studySessionData.condition.subjStim + " were?", rows: 2, columns: 100}, 
+    //     {prompt: "Did you notice the " + jatos.studySessionData.condition.subjStim + " differed by their " + space_quantifier + jatos.studySessionData.condition.dim1_name + "?", rows: 2, columns: 100}
+    //   ]
 
 
-    if (jatos.studySessionData.pilot == 1) {
+    // if (jatos.studySessionData.pilot == 1) {
 
-      // Slice the trials
-    }
+    //   // Slice the trials
+    // }
 
-    if (jatos.studySessionData.debug == 1) {
+    // if (jatos.studySessionData.debug == 1) {
 
-      // Slice the trials
+    //   // Slice the trials
 
-    }  
+    // }  
 
     // ////////////////////////////////////////////////////////////////////////////////////////////
     // ////////////////////////////////////////////////////////////////////////////////////////////
