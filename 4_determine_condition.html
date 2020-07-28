@@ -178,7 +178,6 @@
       phase_1: [],
       phase_2: []
     }
-    debugger
     for (iPhase=1; iPhase<3; iPhase++){
       
       for (iT=0; iT<basic_parameters.nTargets; iT++){
@@ -258,9 +257,9 @@
       phase_1: [],
       phase_2: []
     }
-    debugger
     for (iPhase=1; iPhase<3; iPhase++){
-      phase_trials['phase_'+iPhase] = trialCreator(neck_legs_space,baseTrialArray,targetCoordsNames,iPhase)
+      phase_trials['phase_'+iPhase][jatos.studySessionData.session_counter-1] = 
+      trialCreator(neck_legs_space,baseTrialArray,targetCoordsNames,iPhase)
     }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -270,7 +269,7 @@
 
 
     
-
+debugger
     // Add the questions for debrief:
 
 
