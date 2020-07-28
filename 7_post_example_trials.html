@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>7 Post example trials</title>
+        <script src="jatos.js"></script>
+        <script src="./jspsych-6.1.0/jspsych.js"></script>
+        <script src="./jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
+        <script src="./jspsych-6.1.0/plugins/jspsych-html-slider-response.js"></script>
+        <script src="extra_functions/jspsych-instructions-timer-enhanced.js"></script>
+        <script src="extra_functions/jspsych-html-slider-response-smooth-tracking.js"></script>
+        <link href="./jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+        <style>	body {background-color:white; font-family: sans-serif; color: black;} </style>
+        <style> p {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px;} </style>
+        <style> ul {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px; cursor:default;} </style>
+        <style> .instruct{width:100%; color: black; text-align:center; cursor:default;} </style>
+        <style> .header {position: fixed; left:0; top:0; width:100%; background-color:#F8F8F8; color: black; text-align: center;cursor:default;} </style>
+
+    </head>
+    <body></body>
+    <script>
+    
+    
+    jatos.onLoad(function() {
+
+        var practice_trials_end = {
+            type: "instructions-timer-enhanced",
+            pages: [
+                "<div class= 'header'>"+
+					"<h1> Task Instructions.</h1>"+
+				"</div>"+	
+				"<div class='instruct'> "+
+                    '<p>This is the end of the practice trials. You will now begin the real trials. </p>' + 
+                "</div>",
+                "<div class= 'header'>"+
+					"<h1> Task Instructions.</h1>"+
+				"</div>"+	
+                "<div class='instruct'> "+
+                    '<p>The image below shows you how many trials you will do over how many sessions.</p>' + 
+                    '<p>There will be 128 pictures of pairs of ' + jatos.studySessionData.condition.subjStim + ' you will have to rate. Each will be repeated 3 times, so you will do total of 384 trials. </p>' + 
+                    '<p> There will be 6 sessions, each with 64 trials. You will have breaks in between the sessions.' + 
+                    '<p> During sessions 1 and 2, you will see all of the 128 pairs of ' + jatos.studySessionData.condition.subjStim + '. They will then be repeated during sessions 3 and 4, and once again during sessions 5 and 6.' + 
+                    "<div id='all_pictures'>" +
+                        "<img src='./img/misc_materials/expt_schema.png' alt='all_pictures' style='height:80%;width:80%;object-fit:contain;'></img>" + 
+                    "</div>",                    
+                    '<p> Remember, now you have ' + (jatos.studySessionData.trial_dur / 1000 )+ 
+                    ' seconds on each trial to make your response! </p>' + 
+                    '<p> <br> Press the button below to start the experiment. Good luck! </p>' + 
+                "</div>"
+            ],
+            show_clickable_nav: true,
+            button_label_next: "<span style='color: blue';> <strong> Next </stong></span>"
+
+        };
+
+        jsPsych.init({
+            timeline: [practice_trials_end],
+            on_finish: function(data) {
+                // submit results to JATOS
+                var result_data = {};
+                
+                result_data.prolific_ID = jatos.studySessionData.prolific_ID;
+                jatos.addJatosIds(result_data);
+
+                // Make JATOS remember that this session was run
+                jatos.studySessionData.latestFinishedComponentId  = jatos.componentId;
+                jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
+
+                result_data.component_data = jsPsych.data.get().values();
+
+                jatos.studySessionData.allData.post_practice_trials_instructions = result_data;
+
+                jatos.submitResultData("[post_ex_trials_start---" + 
+                JSON.stringify(jatos.studySessionData) +
+                "---post_ex_trials_end]", jatos.startNextComponent);
+            }
+            
+        });
+
+    });
+
+
+    </script>
+</html>

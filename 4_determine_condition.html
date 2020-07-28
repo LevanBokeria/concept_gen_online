@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>4 Determine Conditions</title>
+  <script src = "./extra_functions/jquery-3.4.1.js" type="text/javascript"></script>
+  <script src="./extra_functions/custom_functions.js"> </script>
+  <script src="jatos.js"></script>
+  </head>
+<body></body>
+<script>
+
+  jatos.onLoad(function() {
+
+    // debugger
+
+    // Counter for advancing through sessions
+    jatos.studySessionData.session_counter = 1;
+
+    // An initial variable, saying whether a session should be repeated. setting this here rather than within the session functions
+    jatos.studySessionData.repeat = 0;  
+
+    // Which scripts have which component IDs?
+    // jatos.studySessionData.script_comp_ids = {
+    //   instructions:          5,
+    //   intermediate_feedback: 15,
+    //   long_break:            16,
+    //   short_break:           17,    
+    //   qc_checks:             18,
+    //   practice_fail:         19,
+    //   data_submission:       20
+    // }
+
+    // A conditional that determines whether we are debugging or not. If debugging, fewer trials will be done.
+    // The pilot flag is for when asking labmates to test the paradigm, it just reduces the number of trials they'll have to do per sesiosn.
+    // show_correct flag: if on, will show images of pairs with the "correct" answer displayed.
+    // Auto respond: script will make random responses by itself.
+    jatos.studySessionData.debug          = 0;
+    jatos.studySessionData.debug_n_trials = 5;
+    jatos.studySessionData.show_correct   = 0;
+    jatos.studySessionData.pilot          = 0;
+    jatos.studySessionData.pilot_n_trials = 10;
+    jatos.studySessionData.auto_respond   = false;
+    jatos.studySessionData.auto_respond_trial_dur = 100; // milliseconds
+
+    // Duration of trials, breaks, ITI, etc
+    if (jatos.studySessionData.debug == 1 || jatos.studySessionData.pilot == 1) {
+      jatos.studySessionData.short_break_duration = 2; // seconds
+      jatos.studySessionData.long_break_duration  = 2; // seconds
+      jatos.studySessionData.trial_dur            = 10000; // milliseconds
+      jatos.studySessionData.post_trial_gap       = 500; // milliseconds
+      jatos.studySessionData.practice_trial_dur   = 5000; // milliseconds
+
+      // Initial exposure time (seconds)
+      jatos.studySessionData.all_pics_time = 1;
+
+      // // Number of repeat practice trials to do, if during practice trials ptp's respond wrong on the identical trials
+      // jatos.studySessionData.n_rep_practice_trials = 2;
+
+    } else {
+
+      jatos.studySessionData.short_break_duration = 15; // seconds
+      jatos.studySessionData.long_break_duration  = 30; // seconds
+      jatos.studySessionData.trial_dur            = 10000; // milliseconds
+      jatos.studySessionData.post_trial_gap       = 500; // milliseconds
+      jatos.studySessionData.practice_trial_dur   = 30000; // milliseconds
+      
+      // Initial exposure time (seconds)
+      jatos.studySessionData.all_pics_time = 10;
+
+      // // Number of repeat practice trials to do, if during practice trials ptp's respond wrong on the identical trials
+      // jatos.studySessionData.n_rep_practice_trials = 10;
+
+    };
+
+    // Add all the QC checking conditions
+    if (jatos.studySessionData.pilot || jatos.studySessionData.debug){
+
+      jatos.studySessionData.qc_criteria = {
+
+      }
+      
+    } else {
+
+      jatos.studySessionData.qc_criteria = {
+
+      }
+
+    }
+
+    // If we're auto-responding, edit the rt_check criteria, and the ITI, and break durations
+    if (jatos.studySessionData.auto_respond){
+
+      jatos.studySessionData.post_trial_gap = 5; // milliseconds
+
+      jatos.studySessionData.short_break_duration = 1; // seconds
+      jatos.studySessionData.long_break_duration  = 1; // seconds
+
+      // Initial exposure time (seconds)
+      jatos.studySessionData.all_pics_time = 1;    
+
+    }
+
+    // Create an object with pass-fail info for each criteria
+    jatos.studySessionData.qc_status = {
+      global_pass: true
+    }
+
+
+    // ////////////////////////////////////////////////////////////////////////////////////////
+    // ////////////////////////////////////////////////////////////////////////////////////////  
+
+    // Now, allocate coordinates for all empty location
+    const targetCoordsNames = {
+        pointNamesEmpty: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
+        pointNamesUsed: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
+        pointNamesTarget: ['T1','T2','T3','T4','T5','T6'],
+        imgNamesEmpty: Array(16).fill('Empty'),
+        imgNamesTarget: ['Tree','Santa','Bell','Sledge','Gingerman','Bear'],
+        imgNamesUsed: Array(16).fill('Empty'),
+        pointXCoord: [],
+        pointYCoord: []
+    }
+
+    for (iX = 0; iX < 4; iX++){
+        for (iY = 0; iY < 4; iY++){
+            targetCoordsNames.pointXCoord.push(iX * 50 + 100);
+            targetCoordsNames.pointYCoord.push(iY * 50 + 100);                
+        }
+    }
+
+    // Basic parameters, not specific to any space
+    const basic_parameters = {
+
+        // Display
+        sort_area_width: 750,
+        sort_area_height: 700,
+        prompt_target_width: 70,
+        prompt_target_height: 70,
+        get prompt_img_x_coords() {
+            return this.sort_area_width/2 - this.prompt_target_width/2;
+        },
+        prompt_img_y_coords: 80,            
+
+        // Targets
+        nTargets: 3,
+        targetPoints: [1,7,14],
+        timer_till_fb: 5000,
+        timer_after_response: 3000,
+        timer_no_resp_fb_freeze: 3000,
+        timer_response_window: 10000,
+
+        // Feedback items
+        fb_correct_img: './img/feedback/green_tick.png',
+        fb_incorrect_img: './img/feedback/Red_x.png',
+        audio_stimulus: './img/feedback/success.wav',
+
+        // Peformance box
+        score_box_width: 100,
+        score_box_height: 100,
+        score_box_target_width: 50,
+        score_box_target_height: 50,
+        score_box_score_font_size: 13, // Size of the score text, "100%"
+        score_box_description_font_size: 15, // "Your scores"
+    }
+
+    // Create arrays with point and img names with appropriate number of targets at appropriate locations
+    let score_box_target_names = []
+
+    for (i=0; i<basic_parameters.nTargets; i++){
+
+        targetCoordsNames.pointNamesUsed[basic_parameters.targetPoints[i]-1] = 
+            targetCoordsNames.pointNamesTarget[i]
+
+        targetCoordsNames.imgNamesUsed[basic_parameters.targetPoints[i]-1] = 
+            targetCoordsNames.imgNamesTarget[i]
+
+        // For the score box, create names of the target itesm
+        score_box_target_names[i] = './img/targets/' + targetCoordsNames.imgNamesTarget[i] + '.png'
+    }
+
+    // Create all the combinations of targets and empty locations (imported from Matlab)
+    let baseTrialArray = [
+        {item1: "T1", item2: "T2"},
+        {item1: "T1", item2: "T3"},
+        {item1: "T1", item2: "E2"},
+        {item1: "T1", item2: "E3"},
+        {item1: "T1", item2: "E4"},
+        {item1: "T1", item2: "E5"},
+        {item1: "T1", item2: "E6"},
+        {item1: "T1", item2: "E8"},
+        {item1: "T1", item2: "E9"},
+        {item1: "T1", item2: "E10"},
+        {item1: "T1", item2: "E11"},
+        {item1: "T1", item2: "E12"},
+        {item1: "T1", item2: "E13"},
+        {item1: "T1", item2: "E15"},
+        {item1: "T1", item2: "E16"},
+        {item1: "T2", item2: "T3"},
+        {item1: "T2", item2: "E2"},
+        {item1: "T2", item2: "E3"},
+        {item1: "T2", item2: "E4"},
+        {item1: "T2", item2: "E5"},
+        {item1: "T2", item2: "E6"},
+        {item1: "T2", item2: "E8"},
+        {item1: "T2", item2: "E9"},
+        {item1: "T2", item2: "E10"},
+        {item1: "T2", item2: "E11"},
+        {item1: "T2", item2: "E12"},
+        {item1: "T2", item2: "E13"},
+        {item1: "T2", item2: "E15"},
+        {item1: "T2", item2: "E16"},
+        {item1: "T3", item2: "E2"},
+        {item1: "T3", item2: "E3"},
+        {item1: "T3", item2: "E4"},
+        {item1: "T3", item2: "E5"},
+        {item1: "T3", item2: "E6"},
+        {item1: "T3", item2: "E8"},
+        {item1: "T3", item2: "E9"},
+        {item1: "T3", item2: "E10"},
+        {item1: "T3", item2: "E11"},
+        {item1: "T3", item2: "E12"},
+        {item1: "T3", item2: "E13"},
+        {item1: "T3", item2: "E15"},
+        {item1: "T3", item2: "E16"},
+    ]
+
+    // Define the neck_legs_space
+    let neck_legs_space = new ConceptSpaceCreator('neck_legs_space','birds',
+        'neck','legs',
+        undefined,350,10,10,
+        [170,525],[350,400], // onscreen idx coords
+        [90,560],[350,400]) // fb_imgs coords
+
+    // Define the beak_tail_space            
+    let beak_tail_space = new ConceptSpaceCreator('beak_tail_space','birds',
+        'beak','tail',
+        undefined,650,10,10,
+        [220,310],[220,400], // onscreen idx coords
+        [90,180],[250,450]) // fb_imgs coords                  
+
+    // Which space to use now
+    let curr_space_object = neck_legs_space
+
+    // Make the baseTrialArray for concept 1
+    let concept_1_trials = trialCreator(neck_legs_space,baseTrialArray,targetCoordsNames)
+    let concept_2_trials = trialCreator(beak_tail_space,baseTrialArray,targetCoordsNames)    
+
+    // Shuffle base trial array
+      
+
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    
+
+    // Add the questions for debrief:
+
+
+      // If this is squircle space, add additional text to instructions explaining what these items are
+      var space_quantifier;
+      if (jatos.studySessionData.condition.subjStim == "Squircles"){
+
+          space_quantifier = "";
+
+      }
+      else if (jatos.studySessionData.condition.subjStim == "Stripeys") {
+
+        space_quantifier = "number of ";
+
+      } 
+      else {
+          space_quantifier = "size of ";
+      }
+
+      jatos.studySessionData.debrief_questions = [
+
+        {prompt: "How did you decide on how similar the pictures of the " + jatos.studySessionData.condition.subjStim + " were?", rows: 2, columns: 100}, 
+        {prompt: "Did you notice the " + jatos.studySessionData.condition.subjStim + " differed by their " + space_quantifier + jatos.studySessionData.condition.dim1_name + "?", rows: 2, columns: 100}
+      ]
+
+
+    if (jatos.studySessionData.pilot == 1) {
+
+      // Slice the trials
+    }
+
+    if (jatos.studySessionData.debug == 1) {
+
+      // Slice the trials
+
+    }  
+
+    // ////////////////////////////////////////////////////////////////////////////////////////////
+    // ////////////////////////////////////////////////////////////////////////////////////////////
+    // Create save the sessions in jatos studySessionData.
+
+    jatos.submitResultData("[conditions_start---" + 
+    JSON.stringify(jatos.studySessionData) + "---conditions_end]", jatos.startNextComponent);
+
+  });
+
+  // All the subfunctions
+
+  // Create a constructor function for creating an object with info for each space
+  var ConceptSpaceCreator = function(concept_space,concept_object,dim1_name,dim2_name,
+      ex_pairs_img_height,ex_pairs_img_width,ex_pairs_x_coord,ex_pairs_y_coord,
+      onscreen_idx_x_coords,onscreen_idx_y_coords,
+      fb_imgs_x_coords,fb_imgs_y_coords){
+
+          this.concept_space          = concept_space,
+          this.concept_object         = concept_object,
+          this.dim1_name              = dim1_name,
+          this.dim2_name              = dim2_name,
+          this.ex_pairs_img_height    = ex_pairs_img_height,
+          this.ex_pairs_img_width     = ex_pairs_img_width,
+          this.ex_pairs_x_coord       = ex_pairs_x_coord,
+          this.ex_pairs_y_coord       = ex_pairs_y_coord,
+          this.onscreen_idx_x_coords  = onscreen_idx_x_coords,
+          this.onscreen_idx_y_coords  = onscreen_idx_y_coords,   
+          this.fb_imgs_x_coords       = fb_imgs_x_coords,
+          this.fb_imgs_y_coords       = fb_imgs_y_coords
+  }
+
+  let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames){
+
+    debugger
+
+    // Shuffle the base trial array
+    let baseTrialArrayInner = JSON.parse(JSON.stringify(shuffle(baseTrialArray)))
+
+    // Populate the baseTrialArrayInner with details for each trial
+    for(i = 0, j = 0; i < baseTrialArrayInner.length; i++, j+=2) {
+
+      // Randomize item1 and item2
+      if (i % 2 == 0){
+          [baseTrialArrayInner[i].item1, baseTrialArrayInner[i].item2] = [baseTrialArrayInner[i].item2, baseTrialArrayInner[i].item1]               
+      }
+
+      // Which one is the prompt item? If one of them is empty, prompt is the non-empty. Else, determine randomly
+      if (baseTrialArrayInner[i].item1.includes('E')){
+          baseTrialArrayInner[i].prompt_item_idx = 2
+      } else if (baseTrialArrayInner[i].item2.includes('E')){
+          baseTrialArrayInner[i].prompt_item_idx = 1
+      } else {
+          // Choose randomly
+          baseTrialArrayInner[i].prompt_item_idx = Math.floor(Math.random()*1) + 1
+      }
+      if (baseTrialArrayInner[i].prompt_item_idx == 1){
+          baseTrialArrayInner[i].foil_item_idx = 2
+      } else {
+          baseTrialArrayInner[i].foil_item_idx = 1
+      }
+
+
+
+      // img names and paths for items. Also point names
+      baseTrialArrayInner[i].item_img_names  = []
+      baseTrialArrayInner[i].item_img_paths  = []
+      baseTrialArrayInner[i].item_point_idxs = []
+      for (j=0; j<2; j++){
+          baseTrialArrayInner[i].item_img_names[j]  = targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArrayInner[i]['item'+(j+1)])] 
+          baseTrialArrayInner[i].item_img_paths[j]  = './img/targets/' + baseTrialArrayInner[i].item_img_names[j] + '.png'
+          baseTrialArrayInner[i].item_point_idxs[j] = targetCoordsNames.pointNamesUsed.indexOf(baseTrialArrayInner[i]['item'+(j+1)])+1
+      }
+
+      // point name of the prompt item?
+      baseTrialArrayInner[i].prompt_point_name = baseTrialArrayInner[i]["item" + baseTrialArrayInner[i].prompt_item_idx]
+      // target name of the prompt item?
+      baseTrialArrayInner[i].prompt_img_name = 
+          targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArrayInner[i].prompt_point_name)]
+      // prompt img path?
+      baseTrialArrayInner[i].prompt_img_path = './img/targets/' + baseTrialArrayInner[i].prompt_img_name + '.png'
+      // point name of the foil item?
+      baseTrialArrayInner[i].foil_point_name = baseTrialArrayInner[i]["item" + baseTrialArrayInner[i].foil_item_idx]
+      // target name of the foil item?
+      baseTrialArrayInner[i].foil_img_name = 
+          targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArrayInner[i].foil_point_name)]
+      // foil img path?
+      baseTrialArrayInner[i].foil_img_path = './img/targets/' + baseTrialArrayInner[i].foil_img_name + '.png'
+      // Exemplar img to load?
+      baseTrialArrayInner[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' + 
+              baseTrialArrayInner[i].item_point_idxs[0] + '_' + baseTrialArrayInner[i].item_point_idxs[1] + '.png'            
+      // baseTrialArrayInner[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_16_16.png'                
+    }
+
+    return baseTrialArrayInner
+  } // function trialCreator
+
+</script>

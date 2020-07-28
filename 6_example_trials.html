@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>6 Example Trials</title>
+        <script src="jatos.js"></script>
+        <script src="./jspsych-6.1.0/jspsych.js"></script>
+        <script src="./jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
+        <script src="./jspsych-6.1.0/plugins/jspsych-html-slider-response.js"></script>
+        <script src="extra_functions/jspsych-html-slider-response-smooth-tracking.js"></script>
+        <script src="./extra_functions/custom_functions.js"> </script>
+        <link href="./jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    </head>
+    <body></body>
+    <script>
+
+    // ////////////////////////////////////////////////////////////////////////////////////////////
+    // ////////////////////////////////////////////////////////////////////////////////////////////
+
+    jatos.onLoad(function() {
+
+        // Is this a repeat?
+        if (!jatos.studySessionData.repeat) {
+
+            // Redefine the example_trials into another variable that we can modify without impacting the original
+            jatos.studySessionData.imgs_to_use_dynamic = JSON.parse(JSON.stringify(jatos.studySessionData.example_file_names));
+
+        } else {
+
+            // Find the identical pair
+            var id_pair_indices     = jatos.studySessionData.example_file_names.map((e,i) => e.id_pair == 1 ? i : '').filter(String);
+            var non_id_pair_indices = jatos.studySessionData.example_file_names.map((e,i) => e.id_pair == 0 ? i : '').filter(String);
+
+            var id_trial      = jatos.studySessionData.example_file_names[id_pair_indices[0]];
+            var non_id_trials = index_into_array(jatos.studySessionData.example_file_names,non_id_pair_indices);
+
+            jatos.studySessionData.imgs_to_use_dynamic = JSON.parse(JSON.stringify(non_id_trials.slice(0,jatos.studySessionData.n_rep_practice_trials - 1)));
+            jatos.studySessionData.imgs_to_use_dynamic = jatos.studySessionData.imgs_to_use_dynamic.concat(id_trial);
+
+            // debugger;
+
+            // Shuffle it, so that the ID trial is not always the last one
+            jatos.studySessionData.imgs_to_use_dynamic = JSON.parse(JSON.stringify(shuffle(jatos.studySessionData.imgs_to_use_dynamic)));
+
+        };
+
+        // Determine n total images
+        n_imgs_to_use = jatos.studySessionData.imgs_to_use_dynamic.length;
+
+        imgs_to_load = only_names(jatos.studySessionData.imgs_to_use_dynamic);
+
+        // Define the procedure
+        var practice_trials_procedure = {
+            timeline: [
+                {
+                    type: 'html-slider-response-smooth-tracking',
+                    current_space: jatos.studySessionData.condition.subjSpace,
+                    n_trials: n_imgs_to_use,
+                    trial_idx: jsPsych.timelineVariable('trial'),
+                    session_idx: jsPsych.timelineVariable('session'),
+                    stimulus_img: jsPsych.timelineVariable('image'),
+                    id_pair: jsPsych.timelineVariable("id_pair"),
+                    stimulus_img_width: jatos.studySessionData.condition.subjImgWidth,
+                    maintain_aspect_ration: true,
+                    min: 1,
+                    max: 10,
+                    start: 5,
+                    step: 1,
+                    labels: jatos.studySessionData.scale_labels,
+                    slider_width: jatos.studySessionData.slider_width,
+                    prompt: "<p style='margin: 25px;'>How similar are these two pictures? Click with your mouse. </p>",
+                    trial_duration: jatos.studySessionData.practice_trial_dur,
+                    response_ends_trial: true,
+                    post_trial_gap: jatos.studySessionData.post_trial_gap,
+                    data: {test_part: "practice_trials"},
+                    auto_respond: jatos.studySessionData.auto_respond
+                }
+            ],
+
+            timeline_variables: jatos.studySessionData.imgs_to_use_dynamic
+        };
+
+        jsPsych.init({
+            timeline: [practice_trials_procedure],
+            preload_images: imgs_to_load,
+            on_finish: function(data) {
+                
+                var component_to_start;
+
+                // Make JATOS remember that this session was run
+                jatos.studySessionData.latestFinishedComponentId  = jatos.componentId;
+                jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
+                jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
+
+                // Check if any missed trials
+                jatos.studySessionData.missed_trials = data.filter({rt: null}).values();
+
+                jatos.studySessionData.missed_trial_nums = data.filter({rt: null}).values().map(value => value.trial_idx); // this is the trial_idx value, NOT its index in the array.
+                jatos.studySessionData.missed_trial_idxs = data.filter({rt: null}).values().map(value => value.trial_idx - 1); // this is the actual index of the trials in the array, not the trial number
+
+                // submit results to JATOS
+                var result_data = {};
+
+                result_data.prolific_ID = jatos.studySessionData.prolific_ID;
+                result_data.is_this_repeat = jatos.studySessionData.repeat;
+
+                jatos.addJatosIds(result_data);
+
+                // Add the session data to result data
+                result_data.trial_data = jsPsych.data.get().values();
+
+                if (!jatos.studySessionData.repeat){
+                    jatos.studySessionData.allData.practice_trials_results[0] = result_data;
+                } else {
+                    jatos.studySessionData.allData.practice_trials_results[jatos.studySessionData.allData.practice_trials_results.length] = result_data;
+                };
+
+
+                // Check if the identical pair image had a wrong response
+                var practice_id_pair = data.filter({id_pair: 1}).values();
+                
+                // debugger;
+
+                // Now, if you had the wrong response, then take to a different jatos component to repeat the instructions and practice trials
+                if (practice_id_pair[0].response != "10"){
+
+                    jatos.studySessionData.practice_id_pair = practice_id_pair;
+
+                    jatos.studySessionData.repeat = 1;
+
+                    // Update the tracker of how many times the mistake was made
+                    jatos.studySessionData.qc_status.practice_id_pair_n_reps ++;
+
+                    jatos.submitResultData("[ex_trials_start---" + 
+                    JSON.stringify(jatos.studySessionData) +  
+                    "---ex_trials_end]", function(){
+                        jatos.startComponentByPos(jatos.studySessionData.script_comp_ids.practice_fail);
+                    });
+                } else {
+
+                    // Reset the repeat flag
+                    jatos.studySessionData.repeat = 0;
+                    
+                    jatos.submitResultData("[ex_trials_start---" + 
+                    JSON.stringify(jatos.studySessionData) +  
+                    "---ex_trials_end]", function(){
+                        jatos.startComponentByPos(jatos.studySessionData.script_comp_ids.intermediate_feedback);
+                    });
+
+                }
+            }
+            
+        });
+
+    });
+
+
+    </script>
+</html>
