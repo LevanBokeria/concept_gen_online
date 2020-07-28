@@ -135,7 +135,7 @@
         ]
 
         // Create a constructor function for creating an object with info for each space
-        function ConceptSpaceCreator(concept_space,concept_object,dim1_name,dim2_name,
+        function ConceptCreator(concept_space,concept_object,dim1_name,dim2_name,
             ex_pairs_img_height,ex_pairs_img_width,ex_pairs_x_coord,ex_pairs_y_coord,
             onscreen_idx_x_coords,onscreen_idx_y_coords,
             fb_imgs_x_coords,fb_imgs_y_coords){
@@ -155,14 +155,14 @@
         }
 
         // Define the neck_legs_space
-        var neck_legs_space = new ConceptSpaceCreator('neck_legs_space','birds',
+        var neck_legs_space = new ConceptCreator('neck_legs_space','birds',
             'neck','legs',
             undefined,350,10,10,
             [170,525],[350,400], // onscreen idx coords
             [90,560],[350,400]) // fb_imgs coords
 
         // Define the beak_tail_space            
-        var beak_tail_space = new ConceptSpaceCreator('beak_tail_space','birds',
+        var beak_tail_space = new ConceptCreator('beak_tail_space','birds',
             'beak','tail',
             undefined,650,10,10,
             [220,310],[220,400], // onscreen idx coords

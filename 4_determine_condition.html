@@ -113,11 +113,17 @@
     // Now, allocate coordinates for all empty location
     const targetCoordsNames = {
         pointNamesEmpty: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
-        pointNamesUsed: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
+        pointNamesUsed: {
+          phase_1: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
+          phase_2: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16']
+        },
         pointNamesTarget: ['T1','T2','T3','T4','T5','T6'],
         imgNamesEmpty: Array(16).fill('Empty'),
         imgNamesTarget: ['Tree','Santa','Bell','Sledge','Gingerman','Bear'],
-        imgNamesUsed: Array(16).fill('Empty'),
+        imgNamesUsed: {
+          phase_1: Array(16).fill('Empty'),
+          phase_2: Array(16).fill('Empty')
+        },
         pointXCoord: [],
         pointYCoord: []
     }
@@ -144,7 +150,10 @@
 
         // Targets
         nTargets: 3,
-        targetPoints: [1,7,14],
+        targetPoints: {
+          phase_1: [1,7,14],
+          phase_2: [1,7,14],
+        },                
         timer_till_fb: 5000,
         timer_after_response: 3000,
         timer_no_resp_fb_freeze: 3000,
@@ -165,20 +174,25 @@
     }
 
     // Create arrays with point and img names with appropriate number of targets at appropriate locations
-    let score_box_target_names = []
-
-    for (i=0; i<basic_parameters.nTargets; i++){
-
-        targetCoordsNames.pointNamesUsed[basic_parameters.targetPoints[i]-1] = 
-            targetCoordsNames.pointNamesTarget[i]
-
-        targetCoordsNames.imgNamesUsed[basic_parameters.targetPoints[i]-1] = 
-            targetCoordsNames.imgNamesTarget[i]
-
-        // For the score box, create names of the target itesm
-        score_box_target_names[i] = './img/targets/' + targetCoordsNames.imgNamesTarget[i] + '.png'
+    let score_box_target_names = {
+      phase_1: [],
+      phase_2: []
     }
+    debugger
+    for (iPhase=1; iPhase<3; iPhase++){
+      
+      for (iT=0; iT<basic_parameters.nTargets; iT++){
 
+          targetCoordsNames.pointNamesUsed['phase_' + iPhase][basic_parameters.targetPoints['phase_'+iPhase][iT]-1] = 
+              targetCoordsNames.pointNamesTarget[iT]
+
+          targetCoordsNames.imgNamesUsed['phase_' + iPhase][basic_parameters.targetPoints['phase_'+iPhase][iT]-1] = 
+              targetCoordsNames.imgNamesTarget[iT]
+
+          // For the score box, create names of the target itesm
+          score_box_target_names['phase_'+iPhase][iT] = './img/targets/' + targetCoordsNames.imgNamesTarget[iT] + '.png'
+      }
+    }
     // Create all the combinations of targets and empty locations (imported from Matlab)
     let baseTrialArray = [
         {item1: "T1", item2: "T2"},
@@ -226,29 +240,28 @@
     ]
 
     // Define the neck_legs_space
-    let neck_legs_space = new ConceptSpaceCreator('neck_legs_space','birds',
+    let neck_legs_space = new ConceptCreator('neck_legs_space','birds',
         'neck','legs',
         undefined,350,10,10,
         [170,525],[350,400], // onscreen idx coords
         [90,560],[350,400]) // fb_imgs coords
 
     // Define the beak_tail_space            
-    let beak_tail_space = new ConceptSpaceCreator('beak_tail_space','birds',
+    let beak_tail_space = new ConceptCreator('beak_tail_space','birds',
         'beak','tail',
         undefined,650,10,10,
         [220,310],[220,400], // onscreen idx coords
         [90,180],[250,450]) // fb_imgs coords                  
 
-    // Which space to use now
-    let curr_space_object = neck_legs_space
-
-    // Make the baseTrialArray for concept 1
-    let concept_1_trials = trialCreator(neck_legs_space,baseTrialArray,targetCoordsNames)
-    let concept_2_trials = trialCreator(beak_tail_space,baseTrialArray,targetCoordsNames)    
-
-    // Shuffle base trial array
-      
-
+    // Make the baseTrialArray for phases
+    let phase_trials = {
+      phase_1: [],
+      phase_2: []
+    }
+    debugger
+    for (iPhase=1; iPhase<3; iPhase++){
+      phase_trials['phase_'+iPhase] = trialCreator(neck_legs_space,baseTrialArray,targetCoordsNames,iPhase)
+    }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -304,10 +317,12 @@
 
   });
 
-  // All the subfunctions
+  ////////////////////////////////////////////////////////////////////////////////////////////
+  //                            All the subfunctions
+  ////////////////////////////////////////////////////////////////////////////////////////////
 
   // Create a constructor function for creating an object with info for each space
-  var ConceptSpaceCreator = function(concept_space,concept_object,dim1_name,dim2_name,
+  let ConceptCreator = function(concept_space,concept_object,dim1_name,dim2_name,
       ex_pairs_img_height,ex_pairs_img_width,ex_pairs_x_coord,ex_pairs_y_coord,
       onscreen_idx_x_coords,onscreen_idx_y_coords,
       fb_imgs_x_coords,fb_imgs_y_coords){
@@ -325,70 +340,5 @@
           this.fb_imgs_x_coords       = fb_imgs_x_coords,
           this.fb_imgs_y_coords       = fb_imgs_y_coords
   }
-
-  let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames){
-
-    debugger
-
-    // Shuffle the base trial array
-    let baseTrialArrayInner = JSON.parse(JSON.stringify(shuffle(baseTrialArray)))
-
-    // Populate the baseTrialArrayInner with details for each trial
-    for(i = 0, j = 0; i < baseTrialArrayInner.length; i++, j+=2) {
-
-      // Randomize item1 and item2
-      if (i % 2 == 0){
-          [baseTrialArrayInner[i].item1, baseTrialArrayInner[i].item2] = [baseTrialArrayInner[i].item2, baseTrialArrayInner[i].item1]               
-      }
-
-      // Which one is the prompt item? If one of them is empty, prompt is the non-empty. Else, determine randomly
-      if (baseTrialArrayInner[i].item1.includes('E')){
-          baseTrialArrayInner[i].prompt_item_idx = 2
-      } else if (baseTrialArrayInner[i].item2.includes('E')){
-          baseTrialArrayInner[i].prompt_item_idx = 1
-      } else {
-          // Choose randomly
-          baseTrialArrayInner[i].prompt_item_idx = Math.floor(Math.random()*1) + 1
-      }
-      if (baseTrialArrayInner[i].prompt_item_idx == 1){
-          baseTrialArrayInner[i].foil_item_idx = 2
-      } else {
-          baseTrialArrayInner[i].foil_item_idx = 1
-      }
-
-
-
-      // img names and paths for items. Also point names
-      baseTrialArrayInner[i].item_img_names  = []
-      baseTrialArrayInner[i].item_img_paths  = []
-      baseTrialArrayInner[i].item_point_idxs = []
-      for (j=0; j<2; j++){
-          baseTrialArrayInner[i].item_img_names[j]  = targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArrayInner[i]['item'+(j+1)])] 
-          baseTrialArrayInner[i].item_img_paths[j]  = './img/targets/' + baseTrialArrayInner[i].item_img_names[j] + '.png'
-          baseTrialArrayInner[i].item_point_idxs[j] = targetCoordsNames.pointNamesUsed.indexOf(baseTrialArrayInner[i]['item'+(j+1)])+1
-      }
-
-      // point name of the prompt item?
-      baseTrialArrayInner[i].prompt_point_name = baseTrialArrayInner[i]["item" + baseTrialArrayInner[i].prompt_item_idx]
-      // target name of the prompt item?
-      baseTrialArrayInner[i].prompt_img_name = 
-          targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArrayInner[i].prompt_point_name)]
-      // prompt img path?
-      baseTrialArrayInner[i].prompt_img_path = './img/targets/' + baseTrialArrayInner[i].prompt_img_name + '.png'
-      // point name of the foil item?
-      baseTrialArrayInner[i].foil_point_name = baseTrialArrayInner[i]["item" + baseTrialArrayInner[i].foil_item_idx]
-      // target name of the foil item?
-      baseTrialArrayInner[i].foil_img_name = 
-          targetCoordsNames.imgNamesUsed[targetCoordsNames.pointNamesUsed.indexOf(baseTrialArrayInner[i].foil_point_name)]
-      // foil img path?
-      baseTrialArrayInner[i].foil_img_path = './img/targets/' + baseTrialArrayInner[i].foil_img_name + '.png'
-      // Exemplar img to load?
-      baseTrialArrayInner[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' + 
-              baseTrialArrayInner[i].item_point_idxs[0] + '_' + baseTrialArrayInner[i].item_point_idxs[1] + '.png'            
-      // baseTrialArrayInner[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_16_16.png'                
-    }
-
-    return baseTrialArrayInner
-  } // function trialCreator
 
 </script>
