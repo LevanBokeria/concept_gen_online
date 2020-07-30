@@ -7,7 +7,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
   var plugin = {};
 
   // jsPsych.pluginAPI.registerPreload('plugin-playground', 'stimuli', 'image');
-  jsPsych.pluginAPI.registerPreload('plugin-playground', 'audio_stimulus', 'audio');
+  // jsPsych.pluginAPI.registerPreload('plugin-playground', 'audio_stimulus', 'audio');
 
 
   plugin.info = {
@@ -162,13 +162,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
         pretty_name: 'Post-no-response freeze timer',
         default: null,
         description: 'If there is no response, how long to freeze the feedback.'
-      },       
-      timer_no_resp_fb_freeze: {
-        type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Post-no-response freeze timer',
-        default: null,
-        description: 'If there is no response, how long to freeze the feedback.'
-      },                   
+      },               
       timer_response_window: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Response window',
@@ -241,16 +235,16 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
   plugin.trial = function(display_element, trial) {
 
-    // setup audio stimulus
-    var context = jsPsych.pluginAPI.audioContext();
-    if(context !== null){
-      var source = context.createBufferSource();
-      source.buffer = jsPsych.pluginAPI.getAudioBuffer(trial.audio_stimulus);
-      source.connect(context.destination);
-    } else {
-      var audio = jsPsych.pluginAPI.getAudioBuffer(trial.audio_stimulus);
-      audio.currentTime = 0;
-    }
+    // // setup audio stimulus
+    // var context = jsPsych.pluginAPI.audioContext();
+    // if(context !== null){
+    //   var source = context.createBufferSource();
+    //   source.buffer = jsPsych.pluginAPI.getAudioBuffer(trial.audio_stimulus);
+    //   source.connect(context.destination);
+    // } else {
+    //   var audio = jsPsych.pluginAPI.getAudioBuffer(trial.audio_stimulus);
+    //   audio.currentTime = 0;
+    // }
 
     // Start defining the html
     var html = "";
@@ -432,6 +426,9 @@ jsPsych.plugins["plugin-playground"] = (function() {
     // function to handle responses by the subject
     var after_response = function(info) {
 
+      // Clear the trial duration timeout
+      clearTimeout(ticking_response_window)
+
       // only record the first response
       if (response.key == null) {
         response = info;
@@ -456,13 +453,13 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
       // stop the audio file if it is playing
 			// remove end event listeners if they exist
-			if(context !== null){
-				source.stop();
-				source.onended = function() { }
-			} else {
-				audio.pause();
-				audio.removeEventListener('ended', end_trial);
-			}
+			// if(context !== null){
+			// 	source.stop();
+			// 	source.onended = function() { }
+			// } else {
+			// 	audio.pause();
+			// 	audio.removeEventListener('ended', end_trial);
+			// }
 
 
       // kill any remaining setTimeout handlers
@@ -495,6 +492,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
       // clear the display
       // display_element.innerHTML = '';
       document.querySelector("#prompt_img").style.visibility            = 'hidden';
+      document.querySelector("#prompt_img_name").style.visibility       = 'hidden';      
       document.querySelector("#ex_pairs_img_path").style.visibility     = 'hidden';
       document.querySelector("#onscreen_idx_0").style.visibility        = 'hidden';
       document.querySelector("#onscreen_idx_1").style.visibility        = 'hidden';
@@ -515,13 +513,13 @@ jsPsych.plugins["plugin-playground"] = (function() {
         fb_text.innerText = 'correct!'
         fb_accu_img.src = trial.fb_correct_img
 
-        // Play the sound
-        if(context !== null){
-          startTime = context.currentTime;
-          source.start(startTime);
-        } else {
-          audio.play();
-        }
+        // // Play the sound
+        // if(context !== null){
+        //   startTime = context.currentTime;
+        //   source.start(startTime);
+        // } else {
+        //   audio.play();
+        // }
 
 
       } else if (correct == 0){
@@ -551,7 +549,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
         allow_held_key: false
       });
     }
-
+  
     // If no response in time, show feedback and freeze the feedback for a while
     var ticking_response_window = jsPsych.pluginAPI.setTimeout(function(){
       

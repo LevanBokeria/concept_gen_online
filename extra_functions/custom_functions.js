@@ -143,4 +143,35 @@ let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames,i
     baseTrialArrayInner = JSON.parse(JSON.stringify(shuffle(baseTrialArrayInner)))
 
     return baseTrialArrayInner
-  }; // function trialCreator
+}; // function trialCreator
+
+let calcRunningPerf = function(data) {
+    // Calculate the running             
+    let curr_phase     = jatos.studySessionData.phase_counter
+    let curr_session   = jatos.studySessionData.session_counter['phase_'+curr_phase]
+    let curr_trials = jatos.studySessionData.inputData.phase_trials['phase_'+curr_phase][curr_session-1]
+
+    curr_trials = curr_trials.slice(0,data.trial_index+1)
+    let curr_prompt_path = curr_trials[data.trial_index].prompt_img_path
+    let curr_prompt_name = curr_trials[data.trial_index].prompt_img_name                            
+
+    // Find  trials with this image:
+    let last_prompt_trials = curr_trials.filter(function(curr_trials){
+        return curr_trials.prompt_img_path == curr_prompt_path
+    })
+
+    if (data.trial_index > jatos.studySessionData.perf_check_over_n_trials-1){
+        // So we have more than 10 entries. Get only the last 10 trials
+        last_prompt_trials = prompt_trials.slice(prompt_trials.length - jatos.studySessionData.perf_check_over_n_trials, prompt_trials.length)
+    }
+
+    // Calculate the average
+    let avg = last_prompt_trials.reduce(function(total, item){
+        return total + item.correct
+    },0)
+    avg = avg / last_prompt_trials.length
+
+    // Record this avg value
+    let idx_of_score_box_target = jatos.studySessionData.inputData.score_box_target_paths['phase_'+curr_phase].indexOf(curr_prompt_path)
+    jatos.studySessionData.inputData.score_box_target_paths.running_perf[idx_of_score_box_target] = avg * 100
+};
