@@ -9,11 +9,11 @@
 	<script src="jatos.js"></script>
 	<link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" type="text/css"></link>
 	
-	<style>	body {background-color:white; font-family: sans-serif; color: black;} </style>
+	<style>	body {background-color: #b9c6c7; font-family: sans-serif; color: black;} </style>
 	<style> p {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px;} </style>
 	<style> ul {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px; cursor:default;} </style>
 	<style> .instruct{width:100%; color: black; text-align:center; cursor:default;} </style>
-	<style> .header {position: fixed; left:0; top:0; width:100%; background-color:#F8F8F8; color: black; text-align: center;cursor:default;} </style>
+	<style> .header {position: fixed; left:0; top:0; width:100%; background-color:#8f8d8d; color: black; text-align: center;cursor:default;} </style>
   </head>
 
   <body>
@@ -23,35 +23,9 @@
 		jatos.onLoad(function() {
 			
 			// debugger;
-			console.log("got till here")
-			// If this is squircle space, add additional text to instructions explaining what these items are
-			var space_specific_explanation;
-			if (jatos.studySessionData.condition.subjStim == "Squircles"){
-
-				space_specific_explanation = " - artificial objects consisting of two shapes: a square and a circle.";
-
-			}
-
-			else if (jatos.studySessionData.condition.subjStim == "Stripeys"){
-
-				space_specific_explanation = " - artificial objects consisting of two shapes: a striped square and a circle.";
-
-			}
-			else {
-				space_specific_explanation = ".";
-			}
 
 			// How many practice trials are we doing?
 			var n_practice_trials;
-
-			if (jatos.studySessionData.repeat){
-
-				// debugger;
-
-				n_practice_trials = jatos.studySessionData.n_rep_practice_trials;
-			} else {
-				n_practice_trials = jatos.studySessionData.example_file_names.length;
-			};
 
 			//make a timeline
 			var timeline =[]; 
@@ -64,85 +38,13 @@
 							"<h1> Task Instructions </h1>"+
 						"</div>"+	
 						"<div class='instruct'> <br>"+
-							"<p> <br><br> In this experiment, you will be shown two pictures of " 
-							+ jatos.studySessionData.condition.subjStim + space_specific_explanation +
-							" You will be asked to indicate on a 10-point scale how similar the two pictures look to you." + 
-							"<br><br> For example, if the pictures of " + jatos.studySessionData.condition.subjStim + " are very different from one another, " + 
-							"click on the lower number on the scale corresponding to low similarity. " + 
-							"If the pictures are very similar, click on the higher number on the scale corresponding to high similarity. " + 
-							"If the pictures look identical, then choose the highest number on the scale." + 
-							"<br><br> In the same fashion, for all intermediate levels of similarity, use the intermediate values of the scale " + 
-							"depending on your judged degree of similarity.</p>" + 
+							"<p> Welcome to the experiment.</p>" + 
 						"</div>",
-					
-						"<div class= 'header'>"+
-							"<h1> Task Instructions.</h1>"+
-						"</div>"+	
-						"<div class='instruct'> <br>"+
-							"<p> " + 
-							"<br> For the trials with pictures that are identical, we expect you to use the highest rating on the scale. " + 
-							"<br><br>For all other trials, there are no correct or incorrect answers. " + 
-							"We are interested in your subjective impression of the degree of similarity, and " + 
-							"different people are likely to have different impressions. " +
-							"<br><br>Simply look at the two pictures for a short time, and click on the number that appears to correspond to the " + 
-							"degree of similarity between them." + 
-							"</p>" + 
-						"</div>",
-
-						"<div class= 'header'>"+
-							"<h1> Task Instructions.</h1>"+
-						"</div>"+	
-							"<div class='instruct'> <br>"+
-							"<p> <br><br> To become familiar with the pictures, you will first see all 16 of the pictures of " + 
-							jatos.studySessionData.condition.subjStim + 
-							" displayed at the same time on the screen. This should give you an idea of how similar or different these pictures are to each other." + 
-							"<br><br> Click the Next button to start viewing all of the 16 pictures.</p>" + 
-						"</div>",
-
-						"</div>" + 
-						"<div class= 'instruct'> <br>" + 
-							"<p style='font-size: 80%; line-height:15px; margin-bottom:5px;margin-right:50px;margin-left:50px;'> " + 
-								"Please examine these 16 pictures for at least " + jatos.studySessionData.all_pics_time 
-								+ " seconds, to get an idea of differences between them. Then press the Next button. <br> " + 
-								"During the experiment, you will see pairs of these 16 pictures of " + jatos.studySessionData.condition.subjStim + 
-								" and you will be asked to rate their similarity. </p>" +
-						"</div>" + 	
-						"<div id='all_pictures'>" +
-							"<img src='./img/initial_all_pictures/" + jatos.studySessionData.condition.subjSpace + 
-							".png' alt='all_pictures' style='height:60%;width:60%;object-fit:contain;'></img>" + 
-						"</div>",
-
-						"<div class= 'instruct'> <br>" + 
-							"<p>" + 
-							"<br> Thank you. <br> <br>" + 
-							"This task has many trials and some participants get tired throughout the experiment. " + 
-							"<br>This is why, we will be monitoring your responses and checking certain things, " + 
-							"to make sure you are paying attention and actually performing the task. " + 
-							"<br> If your responses do not pass the quality checks we will have to stop the study " + 
-							"and pay you only for the practice session and any completed experimental sessions." + 
-							"<br> <br> Please be attentive and perform the task according to the instructions. " + 
-							"<br><b>Your data are very valuable for our students " + 
-							"</b> and will hopefully contribute to a better understanding of " +
-							"how the human mind and brain works. Thank you so much! " + 
-							"</p>" + 
-						"</div>",
-
-						"<div class= 'instruct'> <br>" + 
-							"<p> <br><br> Before you start, you will do " + 
-							n_practice_trials + " practice trials." +
-							"<br><br> For the practice trials, you will have <b>30 seconds</b> on each trial to make your response. " + 
-							"Later, for the real trials, you will only have <b>" + (jatos.studySessionData.trial_dur / 1000) + 
-							" seconds</b> to make your response. " + 
-							"<br><br> Click the Next button to start the practice trials!</p>" + 
-						"</div>"],
+					],
 					
 					show_clickable_nav: true,
-					button_label_next: "<span style='color: black';> <strong> Next </stong></span>",
-					timer_on: true,
-					pages_with_timer_on: {pages: [3]},
-					timed_key_forward: true,
-					n_seconds: jatos.studySessionData.all_pics_time,
-					show_timer: true
+					button_label_next: "<span style='color: black'd;> <strong> Next </stong></span>",
+					timer_on: false
 				}
 
 				timeline.push(instructions1);
@@ -162,9 +64,9 @@
 
 					jatos.studySessionData.allData.instructions_results = result_data;
 
-					jatos.submitResultData("instructions_start---" + 
+					jatos.submitResultData("[instructions_start---" + 
 					JSON.stringify(jatos.studySessionData) +
-					"---instructions_end", jatos.startNextComponent);
+					"---instructions_end]", jatos.startNextComponent);
 					}
 			});
 

@@ -75,7 +75,7 @@ function add_image_info_and_trial_session_idxs_practice_trials(array,session_idx
 
 };    
 
-let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames,phase){
+let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames,iPhase,iSession){
 
     // Shuffle the base trial array
     let baseTrialArrayInner = JSON.parse(JSON.stringify(shuffle(baseTrialArray)))
@@ -103,13 +103,11 @@ let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames,p
           baseTrialArrayInner[i].foil_item_idx = 1
       }
 
-
-
       // img names and paths for items. Also point names
       baseTrialArrayInner[i].item_img_names  = []
       baseTrialArrayInner[i].item_img_paths  = []
       baseTrialArrayInner[i].item_point_idxs = []
-
+      debugger
       for (k=0; k<2; k++){
           baseTrialArrayInner[i].item_img_names[k]  = targetCoordsNames.imgNamesUsed['phase_'+iPhase][targetCoordsNames.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i]['item'+(k+1)])] 
           baseTrialArrayInner[i].item_img_paths[k]  = './img/targets/' + baseTrialArrayInner[i].item_img_names[k] + '.png'
@@ -135,6 +133,10 @@ let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames,p
               baseTrialArrayInner[i].item_point_idxs[0] + '_' + baseTrialArrayInner[i].item_point_idxs[1] + '.png'            
       // baseTrialArrayInner[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_16_16.png'                
     }
+
+    // Record the phase and session
+    baseTrialArrayInner[i].phase   = iPhase
+    baseTrialArrayInner[i].session = iSession    
 
     // Shuffle once again, otherwise prompt item location is predictable 
     baseTrialArrayInner = JSON.parse(JSON.stringify(shuffle(baseTrialArrayInner)))

@@ -15,7 +15,11 @@
     // debugger
 
     // Counter for advancing through sessions
-    jatos.studySessionData.session_counter = 1;
+    jatos.studySessionData.session_counter = {
+      phase_1: 1,
+      phase_2: 1
+    }
+    jatos.studySessionData.phase_counter = 1;    
 
     // An initial variable, saying whether a session should be repeated. setting this here rather than within the session functions
     jatos.studySessionData.repeat = 0;  
@@ -263,8 +267,9 @@
       phase_2: []
     }
     for (iPhase=1; iPhase<3; iPhase++){
-      phase_trials['phase_'+iPhase][jatos.studySessionData.session_counter-1] = 
-      trialCreator(concepts['phase_'+iPhase],baseTrialArray,targetCoordsNames,iPhase)
+      debugger
+      phase_trials['phase_'+iPhase][jatos.studySessionData.session_counter['phase_'+iPhase]-1] = 
+      trialCreator(concepts['phase_'+iPhase],baseTrialArray,targetCoordsNames,iPhase,1)
     }
   
 

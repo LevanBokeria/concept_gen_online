@@ -223,11 +223,33 @@ jsPsych.plugins["plugin-playground"] = (function() {
         pretty_name: 'Trial duration',
         default: null,
         description: 'How long to show trial before it ends.'
-      }      
+      },
+      n_trials: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Total trials',
+        default: null,
+        description: 'Total trials in this session.'
+      },
+      phase: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Current phase',
+        default: null,
+        description: 'What phase is this?'
+      },
+      session: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Current session',
+        default: null,
+        description: 'What session is this? If 0 thats practice trials.'
+      }                       
     } // parameters
   } // plugin.info
 
   plugin.trial = function(display_element, trial) {
+
+    //Get current phase and session locally
+    let curr_phase = jatos.studySessionData.phase_counter
+    let curr_session = jatos.studySessionData.session_counter['phase_'+curr_phase]
 
     // setup audio stimulus
     var context = jsPsych.pluginAPI.audioContext();
@@ -251,9 +273,25 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
     display_element.innerHTML = html;
 
+    // Create an element containing text about session, trial, and phase progress
+    const progress_text = document.createElement('P')
+
+    if (trial.session == 0){
+      progress_text.innerText = 'Practice Session. Trial ' + (jsPsych.data.get().values().length + 1) + '/' + trial.n_trials + '.';
+
+    } else {
+      progress_text.innerText = '<p> Session ' + curr_session + '. Trial ' + (jsPsych.data.get().values().length + 1) + '/' + trial.n_trials + '.';
+    };
+
+    progress_text.id    = 'progress_text'
+    progress_text.style = 'font-size: 15px; position: absolute; top: 590px; left: 600px;'
+
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(progress_text)
+
+
     // Create a smaller box to display the ongoing performance
-    const score_box = document.createElement('div')
-    score_box.id = 'score_box'
+    const score_box     = document.createElement('div')
+    score_box.id        = 'score_box'
     score_box.className = 'score_box'
 
     score_box.style = 'position: absolute; top: 590px; left: 10px; width: 170px; height: 100px; border: 2px solid #444;'
@@ -452,28 +490,16 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
       // clear the display
       // display_element.innerHTML = '';
-      document.querySelector("#prompt_img").style.visibility = 'hidden';
-      document.querySelector("#ex_pairs_img_path").style.visibility = 'hidden';
-      document.querySelector("#onscreen_idx_0").style.visibility = 'hidden';
-      document.querySelector("#onscreen_idx_1").style.visibility = 'hidden';
+      document.querySelector("#prompt_img").style.visibility            = 'hidden';
+      document.querySelector("#ex_pairs_img_path").style.visibility     = 'hidden';
+      document.querySelector("#onscreen_idx_0").style.visibility        = 'hidden';
+      document.querySelector("#onscreen_idx_1").style.visibility        = 'hidden';
       display_element.querySelector('.feedback_items').style.visibility = 'hidden';
           
 
       // move on to the next trial
       jsPsych.finishTrial(trial_data);
     };
-
-    // helper functions
-
-    function random_coordinate(max_width, max_height) {
-      var rnd_x = Math.floor(Math.random() * (max_width - 1));
-      var rnd_y = Math.floor(Math.random() * (max_height - 1));
-
-      return {
-        x: rnd_x,
-        y: rnd_y
-      };
-    }
 
     // Function to show feedback
 

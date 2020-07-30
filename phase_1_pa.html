@@ -16,11 +16,14 @@
 
 
             // Get the trials for this session
-            let session_trials = jatos.studySessionData.inputData.phase_trials.phase_1[jatos.studySessionData.session_counter-1]
-            let curr_space_object = jatos.studySessionData.inputData.concepts.phase_1
-            let score_box_target_names =  jatos.studySessionData.inputData.score_box_target_names.phase_1
+            let curr_phase   = jatos.studySessionData.phase_counter
+            let curr_session = jatos.studySessionData.session_counter['phase_'+curr_phase]
 
+            let session_trials         = jatos.studySessionData.inputData.phase_trials['phase_'+curr_phase][curr_session-1]
+            let curr_space_object      = jatos.studySessionData.inputData.concepts['phase_'+curr_phase]
+            let score_box_target_names = jatos.studySessionData.inputData.score_box_target_names['phase_'+curr_phase]
 
+            let n_trials = session_trials.length
 
             debugger
 
@@ -65,12 +68,16 @@
                         prompt: 'Which of the two pictures below are associated with this Christmas toy?',
                         choices: ['1', '2'],
                         response_ends_trial: true,
-                        timer_till_fb: jatos.studySessionData.inputData.basic_parameters.timer_till_fb,
-                        timer_after_response: jatos.studySessionData.inputData.basic_parameters.timer_after_response,
+                        timer_till_fb:           jatos.studySessionData.inputData.basic_parameters.timer_till_fb,
+                        timer_after_response:    jatos.studySessionData.inputData.basic_parameters.timer_after_response,
                         timer_no_resp_fb_freeze: jatos.studySessionData.inputData.basic_parameters.timer_no_resp_fb_freeze,
-                        timer_response_window: jatos.studySessionData.inputData.basic_parameters.timer_response_window,
+                        timer_response_window:   jatos.studySessionData.inputData.basic_parameters.timer_response_window,
                         post_trial_gap: 500,
-                        correct_response: jsPsych.timelineVariable('prompt_item_idx')
+                        correct_response: jsPsych.timelineVariable('prompt_item_idx'),
+                        
+                        n_trials: n_trials,
+                        phase: jsPsych.timelineVariable('phase'),
+                        session: jsPsych.timelineVariable('session'),                        
                     }
                 ],
 
