@@ -2,157 +2,140 @@
 <html>
     <head>
         <title>6 Practice Trials</title>
-        <script src="jatos.js"></script>
-        <script src="./jspsych-6.1.0/jspsych.js"></script>
-        <script src="./jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
-        <script src="./jspsych-6.1.0/plugins/jspsych-html-slider-response.js"></script>
-        <script src="extra_functions/jspsych-html-slider-response-smooth-tracking.js"></script>
-        <script src="./extra_functions/custom_functions.js"> </script>
-        <link href="./jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+        <script src='jatos.js'></script>
+        <script src='./jspsych-6.1.0/jspsych.js'></script>        
+        <script src='./extra_functions/lodash.js'></script>
+        <script src = './extra_functions/jquery-3.4.1.js' type='text/javascript'></script>
+        <script src='./extra_functions/jspsych-plugin-playground.js'></script>
+        <link href='./jspsych-6.1.0/css/jspsych.css' rel='stylesheet' type='text/css'></link>
     </head>
-    <body></body>
+    <body style="background-color:#99a3a4;"></body>
     <script>
 
-    // ////////////////////////////////////////////////////////////////////////////////////////////
-    // ////////////////////////////////////////////////////////////////////////////////////////////
-
-    jatos.onLoad(function() {
-
-        // Is this a repeat?
-        if (!jatos.studySessionData.repeat) {
-
-            // Redefine the example_trials into another variable that we can modify without impacting the original
-            jatos.studySessionData.imgs_to_use_dynamic = JSON.parse(JSON.stringify(jatos.studySessionData.example_file_names));
-
-        } else {
-
-            // Find the identical pair
-            var id_pair_indices     = jatos.studySessionData.example_file_names.map((e,i) => e.id_pair == 1 ? i : '').filter(String);
-            var non_id_pair_indices = jatos.studySessionData.example_file_names.map((e,i) => e.id_pair == 0 ? i : '').filter(String);
-
-            var id_trial      = jatos.studySessionData.example_file_names[id_pair_indices[0]];
-            var non_id_trials = index_into_array(jatos.studySessionData.example_file_names,non_id_pair_indices);
-
-            jatos.studySessionData.imgs_to_use_dynamic = JSON.parse(JSON.stringify(non_id_trials.slice(0,jatos.studySessionData.n_rep_practice_trials - 1)));
-            jatos.studySessionData.imgs_to_use_dynamic = jatos.studySessionData.imgs_to_use_dynamic.concat(id_trial);
-
-            // debugger;
-
-            // Shuffle it, so that the ID trial is not always the last one
-            jatos.studySessionData.imgs_to_use_dynamic = JSON.parse(JSON.stringify(shuffle(jatos.studySessionData.imgs_to_use_dynamic)));
-
-        };
-
-        // Determine n total images
-        n_imgs_to_use = jatos.studySessionData.imgs_to_use_dynamic.length;
-
-        imgs_to_load = only_names(jatos.studySessionData.imgs_to_use_dynamic);
-
-        // Define the procedure
-        var practice_trials_procedure = {
-            timeline: [
-                {
-                    type: 'html-slider-response-smooth-tracking',
-                    current_space: jatos.studySessionData.condition.subjSpace,
-                    n_trials: n_imgs_to_use,
-                    trial_idx: jsPsych.timelineVariable('trial'),
-                    session_idx: jsPsych.timelineVariable('session'),
-                    stimulus_img: jsPsych.timelineVariable('image'),
-                    id_pair: jsPsych.timelineVariable("id_pair"),
-                    stimulus_img_width: jatos.studySessionData.condition.subjImgWidth,
-                    maintain_aspect_ration: true,
-                    min: 1,
-                    max: 10,
-                    start: 5,
-                    step: 1,
-                    labels: jatos.studySessionData.scale_labels,
-                    slider_width: jatos.studySessionData.slider_width,
-                    prompt: "<p style='margin: 25px;'>How similar are these two pictures? Click with your mouse. </p>",
-                    trial_duration: jatos.studySessionData.practice_trial_dur,
-                    response_ends_trial: true,
-                    post_trial_gap: jatos.studySessionData.post_trial_gap,
-                    data: {test_part: "practice_trials"},
-                    auto_respond: jatos.studySessionData.auto_respond
-                }
-            ],
-
-            timeline_variables: jatos.studySessionData.imgs_to_use_dynamic
-        };
-
-        jsPsych.init({
-            timeline: [practice_trials_procedure],
-            preload_images: imgs_to_load,
-            on_finish: function(data) {
-                
-                var component_to_start;
-
-                // Make JATOS remember that this session was run
-                jatos.studySessionData.latestFinishedComponentId  = jatos.componentId;
-                jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
-                jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
-
-                // Check if any missed trials
-                jatos.studySessionData.missed_trials = data.filter({rt: null}).values();
-
-                jatos.studySessionData.missed_trial_nums = data.filter({rt: null}).values().map(value => value.trial_idx); // this is the trial_idx value, NOT its index in the array.
-                jatos.studySessionData.missed_trial_idxs = data.filter({rt: null}).values().map(value => value.trial_idx - 1); // this is the actual index of the trials in the array, not the trial number
-
-                // submit results to JATOS
-                var result_data = {};
-
-                result_data.prolific_ID = jatos.studySessionData.prolific_ID;
-                result_data.is_this_repeat = jatos.studySessionData.repeat;
-
-                jatos.addJatosIds(result_data);
-
-                // Add the session data to result data
-                result_data.trial_data = jsPsych.data.get().values();
-
-                if (!jatos.studySessionData.repeat){
-                    jatos.studySessionData.allData.practice_trials_results[0] = result_data;
-                } else {
-                    jatos.studySessionData.allData.practice_trials_results[jatos.studySessionData.allData.practice_trials_results.length] = result_data;
-                };
+        jatos.onLoad(function() {
 
 
-                // Check if the identical pair image had a wrong response
-                var practice_id_pair = data.filter({id_pair: 1}).values();
-                
-                // debugger;
+            // Get the trials for this session
+            let curr_phase   = jatos.studySessionData.phase_counter
+            let curr_session = jatos.studySessionData.session_counter['phase_'+curr_phase]
 
-                // Now, if you had the wrong response, then take to a different jatos component to repeat the instructions and practice trials
-                if (practice_id_pair[0].response != "10"){
+            let session_trials         = jatos.studySessionData.inputData.practice_trials['phase_'+curr_phase]
+            let curr_space_object      = jatos.studySessionData.inputData.concepts['phase_'+curr_phase]
+            let score_box_target_names = jatos.studySessionData.inputData.score_box_target_names['phase_'+curr_phase]
 
-                    jatos.studySessionData.practice_id_pair = practice_id_pair;
+            let n_trials = session_trials.length
 
-                    jatos.studySessionData.repeat = 1;
-
-                    // Update the tracker of how many times the mistake was made
-                    jatos.studySessionData.qc_status.practice_id_pair_n_reps ++;
-
-                    jatos.submitResultData("[ex_trials_start---" + 
-                    JSON.stringify(jatos.studySessionData) +  
-                    "---ex_trials_end]", function(){
-                        jatos.startComponentByPos(jatos.studySessionData.script_comp_ids.practice_fail);
-                    });
-                } else {
-
-                    // Reset the repeat flag
-                    jatos.studySessionData.repeat = 0;
-                    
-                    jatos.submitResultData("[ex_trials_start---" + 
-                    JSON.stringify(jatos.studySessionData) +  
-                    "---ex_trials_end]", function(){
-                        jatos.startComponentByPos(jatos.studySessionData.script_comp_ids.intermediate_feedback);
-                    });
-
-                }
-            }
+            // //////////// PLUGIN INPUT //////////////////////////////
+            var session_procedure = {
+                timeline: [
             
+                    {
+                        type: 'plugin-playground',
+                
+                        prompt_img_name: jsPsych.timelineVariable('prompt_img_name'),
+                        prompt_img_path: jsPsych.timelineVariable('prompt_img_path'),
+                        prompt_img_width: jatos.studySessionData.inputData.basic_parameters.prompt_target_width,
+                        prompt_img_height: jatos.studySessionData.inputData.basic_parameters.prompt_target_height,
+                        prompt_img_x_coords: jatos.studySessionData.inputData.basic_parameters.prompt_img_x_coords,
+                        prompt_img_y_coords: jatos.studySessionData.inputData.basic_parameters.prompt_img_y_coords,
+                        
+                        ex_pairs_img_path:    jsPsych.timelineVariable('ex_pairs_img_path'),
+                        ex_pairs_img_width:  curr_space_object.ex_pairs_img_width,
+                        ex_pairs_img_height: curr_space_object.ex_pairs_img_height,
+                        ex_pairs_maintain_aspect_ratio: true,
+
+                        onscreen_idx: ['1','2'],
+                        onscreen_idx_x_coords: curr_space_object.onscreen_idx_x_coords,
+                        onscreen_idx_y_coords: curr_space_object.onscreen_idx_y_coords,                    
+                                            
+                        fb_correct_img: jatos.studySessionData.inputData.basic_parameters.fb_correct_img,
+                        fb_incorrect_img: jatos.studySessionData.inputData.basic_parameters.fb_incorrect_img,
+
+                        audio_stimulus: jatos.studySessionData.inputData.basic_parameters.audio_stimulus,
+
+                        fb_img_paths: jsPsych.timelineVariable('item_img_paths'),
+                        item_img_names: jsPsych.timelineVariable('item_img_names'),             
+
+                        fb_imgs_x_coords: curr_space_object.fb_imgs_x_coords,
+                        fb_imgs_y_coords: curr_space_object.fb_imgs_y_coords,                    
+
+                        score_box_target_names: score_box_target_names,
+
+                        sort_area_width: 750,
+                        sort_area_height: 700,
+                        prompt: 'Which of the two pictures below are associated with this Christmas toy?',
+                        choices: ['1', '2'],
+                        response_ends_trial: true,
+                        timer_till_fb:           jatos.studySessionData.inputData.basic_parameters.timer_till_fb,
+                        timer_after_response:    jatos.studySessionData.inputData.basic_parameters.timer_after_response,
+                        timer_no_resp_fb_freeze: jatos.studySessionData.inputData.basic_parameters.timer_no_resp_fb_freeze,
+                        timer_response_window:   jatos.studySessionData.inputData.basic_parameters.timer_response_window,
+                        post_trial_gap: 500,
+                        correct_response: jsPsych.timelineVariable('prompt_item_idx'),
+                        
+                        n_trials: n_trials,
+                        phase: jsPsych.timelineVariable('phase'),
+                        session: jsPsych.timelineVariable('session'),                        
+                    }
+                ],
+
+                timeline_variables: session_trials
+            };
+
+            jsPsych.init({
+                timeline: [session_procedure],
+                use_webaudio: false,
+                // preload_images: imgs_to_load,
+
+                // on_finish: function(data) {
+                    
+                //     // Make JATOS remember that this session was run
+                //     jatos.studySessionData.latestFinishedComponentId  = jatos.componentId;
+                //     jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
+                //     jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
+
+                //         // submit results to JATOS
+                //     var result_data = {};
+
+                //     result_data.prolific_ID = jatos.studySessionData.prolific_ID;
+                //     result_data.is_this_repeat = jatos.studySessionData.repeat;
+
+                //     jatos.addJatosIds(result_data);
+
+                //     // Add the session data to result 
+                    
+                //     result_data.trial_data = jsPsych.data.get().values();
+
+                //     // debugger;
+
+                //     if (!jatos.studySessionData.repeat){
+                //         jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1][0] = result_data;
+                //     } else {
+                //         jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1][jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1].length] = result_data;
+                //     };
+
+                //     // Create a temporary variable to hold data of the latest run session, so qc can be performed on this
+                //     jatos.studySessionData.last_session_data = 
+                //     JSON.parse(JSON.stringify(jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1]));
+
+                //     // debugger;
+
+                //     jatos.submitResultData("[ses_" + jatos.studySessionData.session_counter + "_start---" + 
+                //     JSON.stringify(jatos.studySessionData) +  
+                //     "---ses_" + jatos.studySessionData.session_counter + "_end]", function(){
+                //         jatos.startComponentByPos(jatos.studySessionData.script_comp_ids.qc_checks);
+                //     });
+                // } 
+                
+                on_finish: function(data) {
+                    console.log('Over');
+                    jsPsych.data.displayData('json');
+                }       
+            });
+   
+            // ///////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////////
         });
-
-    });
-
-
+    
     </script>
 </html>

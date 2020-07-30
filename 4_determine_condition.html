@@ -54,12 +54,10 @@
       jatos.studySessionData.trial_dur            = 10000; // milliseconds
       jatos.studySessionData.post_trial_gap       = 500; // milliseconds
       jatos.studySessionData.practice_trial_dur   = 5000; // milliseconds
+      jatos.studySessionData.n_practice_trials    = 2;
 
       // Initial exposure time (seconds)
       jatos.studySessionData.all_pics_time = 1;
-
-      // // Number of repeat practice trials to do, if during practice trials ptp's respond wrong on the identical trials
-      // jatos.studySessionData.n_rep_practice_trials = 2;
 
     } else {
 
@@ -68,6 +66,7 @@
       jatos.studySessionData.trial_dur            = 10000; // milliseconds
       jatos.studySessionData.post_trial_gap       = 500; // milliseconds
       jatos.studySessionData.practice_trial_dur   = 30000; // milliseconds
+      jatos.studySessionData.n_practice_trials    = 6;
       
       // Initial exposure time (seconds)
       jatos.studySessionData.all_pics_time = 10;
@@ -242,6 +241,16 @@
         {item1: "T3", item2: "E16"},
     ]
 
+    // Create a similar base array for practice trials
+    let basePracticeTrialArray = [
+        {item1: "T1", item2: "T2"},
+        {item1: "T1", item2: "E2"},
+        {item1: "T2", item2: "T3"},
+        {item1: "T2", item2: "E2"},
+        {item1: "T3", item2: "E2"},
+        {item1: "T3", item2: "E16"},
+    ]    
+
     // Define the neck_legs_space
     let neck_legs_space = new ConceptCreator('neck_legs_space','birds',
         'neck','legs',
@@ -266,12 +275,22 @@
       phase_1: [],
       phase_2: []
     }
+    let practice_trials = {} 
+
     for (iPhase=1; iPhase<3; iPhase++){
-      debugger
+      
+      // Session trials
       phase_trials['phase_'+iPhase][jatos.studySessionData.session_counter['phase_'+iPhase]-1] = 
       trialCreator(concepts['phase_'+iPhase],baseTrialArray,targetCoordsNames,iPhase,1)
+
+      // Now practice trials
+      practice_trials['phase_'+iPhase] = 
+      trialCreator(concepts['phase_'+iPhase],
+                   basePracticeTrialArray,
+                   targetCoordsNames,
+                   iPhase,0)
+      
     }
-  
 
     // Record all these variables in JATOS
     jatos.studySessionData.inputData = {
@@ -279,8 +298,10 @@
       basic_parameters: basic_parameters,
       score_box_target_names: score_box_target_names,
       baseTrialArray: baseTrialArray,
+      basePracticeTrialArray: basePracticeTrialArray,
       concepts: concepts,
-      phase_trials: phase_trials
+      phase_trials: phase_trials,
+      practice_trials: practice_trials
     }
 
 

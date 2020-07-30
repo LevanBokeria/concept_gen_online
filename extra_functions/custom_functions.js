@@ -107,7 +107,7 @@ let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames,i
       baseTrialArrayInner[i].item_img_names  = []
       baseTrialArrayInner[i].item_img_paths  = []
       baseTrialArrayInner[i].item_point_idxs = []
-      debugger
+    //   debugger
       for (k=0; k<2; k++){
           baseTrialArrayInner[i].item_img_names[k]  = targetCoordsNames.imgNamesUsed['phase_'+iPhase][targetCoordsNames.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i]['item'+(k+1)])] 
           baseTrialArrayInner[i].item_img_paths[k]  = './img/targets/' + baseTrialArrayInner[i].item_img_names[k] + '.png'
@@ -136,7 +136,7 @@ let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames,i
       // Record the phase and session
       baseTrialArrayInner[i].phase   = iPhase
       baseTrialArrayInner[i].session = iSession        
-      
+
     }  
 
     // Shuffle once again, otherwise prompt item location is predictable 
