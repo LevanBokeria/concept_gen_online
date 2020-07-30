@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>post practice instructions</title>
+        <script src="jatos.js"></script>
+        <script src="./jspsych-6.1.0/jspsych.js"></script>
+        <script src="./jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
+        <script src="./jspsych-6.1.0/plugins/jspsych-html-slider-response.js"></script>
+        <script src="extra_functions/jspsych-instructions-timer-enhanced.js"></script>
+        <script src="extra_functions/jspsych-html-slider-response-smooth-tracking.js"></script>
+        <link href="./jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+        <style>	body {background-color: #b9c6c7; font-family: sans-serif; color: black;} </style>
+        <style> p {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px;} </style>
+        <style> ul {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px; cursor:default;} </style>
+        <style> .instruct{width:100%; color: black; text-align:center; cursor:default;} </style>
+        <style> .header {position: fixed; left:0; top:0; width:100%; background-color:#8f8d8d; color: white; text-align: center;cursor:default;} </style>
+    </head>
+    <body></body>
+    <script>
+    
+    
+    jatos.onLoad(function() {
+
+        var practice_trials_end = {
+            type: "instructions-timer-enhanced",
+            pages: [
+                    '<p>This is the end of the practice trials. You will now begin the real trials. </p>' 
+            ],
+            show_clickable_nav: true,
+            button_label_next: "<span style='color: blue';> <strong> Next </stong></span>"
+
+        };
+
+        jsPsych.init({
+            timeline: [practice_trials_end],
+            on_finish: function(data) {
+                // // submit results to JATOS
+                // var result_data = {};
+                
+                // result_data.prolific_ID = jatos.studySessionData.prolific_ID;
+                // jatos.addJatosIds(result_data);
+
+                // // Make JATOS remember that this session was run
+                // jatos.studySessionData.latestFinishedComponentId  = jatos.componentId;
+                // jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
+
+                // result_data.component_data = jsPsych.data.get().values();
+
+                // jatos.studySessionData.allData.post_practice_trials_instructions = result_data;
+
+                jatos.submitResultData("[post_ex_trials_start---" + 
+                JSON.stringify(jatos.studySessionData) +
+                "---post_ex_trials_end]", jatos.startNextComponent);
+            }
+            
+        });
+
+    });
+
+
+    </script>
+</html>

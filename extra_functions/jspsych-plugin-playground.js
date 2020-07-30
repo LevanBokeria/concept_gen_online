@@ -151,12 +151,6 @@ jsPsych.plugins["plugin-playground"] = (function() {
         array: true,
         description: 'Y coordinate of Feedback imgs.'
       }, 
-      timer_till_fb: {
-        type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Feedback timer',
-        default: null,
-        description: 'How long to wait until feedback is automatically given.'
-      },
       timer_after_response: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Post-response timer',
@@ -429,7 +423,8 @@ jsPsych.plugins["plugin-playground"] = (function() {
     // store response
     var response = {
       rt: null,
-      key: null
+      key: null,
+      correct: null
     };
 
     // ////////////////////////////////////////////// FUNCTIONS /////////////////////////////////////////////////////
@@ -481,8 +476,16 @@ jsPsych.plugins["plugin-playground"] = (function() {
       // gather the data to store for the trial
       var trial_data = {
         "rt": response.rt,
-        "key_press": response.key
+        "key_press": response.key,
+        "correct": response.correct
       };
+
+      // Record all the information in the jatos object
+      // debugger
+      jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_practice_results'][jsPsych.data.get().values().length] = 
+      Object.assign(jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_practice_results'][jsPsych.data.get().values().length],
+                    trial_data)
+
 
       // clear the display
       // display_element.innerHTML = '';

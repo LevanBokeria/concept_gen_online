@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0">
+    <title>Intermediate Feedback</title>	
+	<script src="jspsych-6.1.0/jspsych.js" ></script>
+	<script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
+	<script src="jatos.js"></script>
+    <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" type="text/css"></link>
+	<style>	body {background-color:#b9c6c7; font-family: sans-serif; color: black;} </style>
+	<style> p {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px;} </style>
+	<style> ul {font-size: 125%; margin-top:50px; margin-right:100px; margin-bottom:20px; margin-left: 100px; cursor:default;} </style>
+	<style> .instruct{width:100%; color: black; text-align:center; cursor:default;} </style>
+	<style> .header {position: fixed; left:0; top:0; width:100%; background-color:#8f8d8d; color: white; text-align: center;cursor:default;} </style>
+  </head>
+
+  <body></body>
+
+    <script>
+
+        //start timeline
+        jatos.onLoad(function() {
+
+            //  
+
+            // Create the trials
+            var intermediate_feedback = {
+                type: 'survey-text',
+                questions: [
+                    {prompt: "Did you encounter any technical difficulties or display issues (such as cut off text or images) in the previous session? <br> If yes, please briefly describe.", rows: 10, columns: 40},
+                ],
+                button_label: "Continue"
+
+            };
+
+            jsPsych.init({
+
+                timeline: [intermediate_feedback],
+
+                on_finish: function() {
+
+                    // var component_to_start;
+
+                    // // Which session to start next?
+                    // if (jatos.studySessionData.latestFinishedComponentTitle == "6_example_trials"){
+                    
+                    //     component_to_start = jatos.studySessionData.latestFinishedComponentPos + 1;
+
+                    // } else if (jatos.studySessionData.latestFinishedComponentTitle == "8_session_1" ||
+                    //         jatos.studySessionData.latestFinishedComponentTitle == "10_session_3" ||
+                    //         jatos.studySessionData.latestFinishedComponentTitle == "12_session_5"){
+
+                    //     component_to_start = jatos.studySessionData.script_comp_ids.short_break;
+                    // } else if (jatos.studySessionData.latestFinishedComponentTitle == "13_session_6"){
+                    //     // debugger
+                    //     component_to_start = jatos.studySessionData.latestFinishedComponentPos + 1;
+
+                    // } else {
+
+                    //     component_to_start = jatos.studySessionData.script_comp_ids.long_break;
+                        
+                    // };
+
+                    // var result_data = {};
+
+                    // result_data.prolific_ID = jatos.studySessionData.prolific_ID;
+                    // jatos.addJatosIds(result_data);
+
+                    // result_data.component_data = jsPsych.data.get().values();
+
+                    // jatos.studySessionData.allData.debrief_results[jatos.studySessionData.allData.debrief_results.length] = result_data;
+
+                    jatos.submitResultData("[int_fb_start---" + 
+                    JSON.stringify(jatos.studySessionData) + 
+                    "---int_fb_end]", function(){
+                        jatos.startComponentByPos(component_to_start);
+                    });
+                    
+                    // jsPsych.data.displayData();
+                    
+                }
+            });
+
+        });
+
+
+    </script>
+</html>

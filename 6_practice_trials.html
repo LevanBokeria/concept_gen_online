@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>6 Practice Trials</title>
+        <title>Practice Trials</title>
         <script src='jatos.js'></script>
         <script src='./jspsych-6.1.0/jspsych.js'></script>        
         <script src='./extra_functions/lodash.js'></script>
@@ -69,16 +69,40 @@
                         prompt: 'Which of the two pictures below are associated with this Christmas toy?',
                         choices: ['1', '2'],
                         response_ends_trial: true,
-                        timer_till_fb:           jatos.studySessionData.inputData.basic_parameters.timer_till_fb,
-                        timer_after_response:    jatos.studySessionData.inputData.basic_parameters.timer_after_response,
-                        timer_no_resp_fb_freeze: jatos.studySessionData.inputData.basic_parameters.timer_no_resp_fb_freeze,
-                        timer_response_window:   jatos.studySessionData.inputData.basic_parameters.timer_response_window,
-                        post_trial_gap: 500,
+                        timer_after_response:    jatos.studySessionData.timer_after_response,
+                        timer_no_resp_fb_freeze: jatos.studySessionData.timer_no_resp_fb_freeze,
+                        timer_response_window:   jatos.studySessionData.timer_response_window,
+                        post_trial_gap: jatos.studySessionData.post_trial_gap,
                         correct_response: jsPsych.timelineVariable('prompt_item_idx'),
                         
                         n_trials: n_trials,
                         phase: jsPsych.timelineVariable('phase'),
-                        session: jsPsych.timelineVariable('session'),                        
+                        session: jsPsych.timelineVariable('session'),  
+                        on_finish: function(data){
+                            debugger
+
+                            // Calculate the running average
+
+                            // What prompt did we just show?
+                            let curr_trials = jatos.studySessionData.inputData.practice_trials['phase_'+jatos.studySessionData.phase_counter]
+                            curr_trials = curr_trials.slice(0,data.trial_index+1)
+                            let curr_prompt_path = curr_trials[data.trial_index].prompt_img_path
+
+                            // Find all trials with this image:
+                            let prompt_trials = curr_trials.filter(function(curr_trials){
+                                return curr_trials.prompt_img_path == curr_prompt_path
+                            })
+
+                            if (data.trial_index > jatos.studySessionData.perf_check_over_n_trials-1){
+                                // So we have more than 10 entries. Get average over the last 10
+                                
+                            } else {
+                                // We have less than 10 entries, get average over all of them
+                            }
+
+
+                            console.log('lets see')
+                        }                      
                     }
                 ],
 
@@ -97,7 +121,7 @@
                     jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
                     jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
 
-                    debugger
+                    // debugger
 
                     // submit results to JATOS
                     output_trial_data = jsPsych.data.get().values();
@@ -113,23 +137,15 @@
 
                     debugger
 
-                    if (!jatos.studySessionData.repeat){
-                        jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1][0] = result_data;
-                    } else {
-                        jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1][jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1].length] = result_data;
-                    };
+                    // // Create a temporary variable to hold data of the latest run session, so qc can be performed on this
+                    // jatos.studySessionData.last_session_data = 
+                    // JSON.parse(JSON.stringify(jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1]));
 
-                    // Create a temporary variable to hold data of the latest run session, so qc can be performed on this
-                    jatos.studySessionData.last_session_data = 
-                    JSON.parse(JSON.stringify(jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1]));
-
-                    // debugger;
+                    // // debugger;
 
                     jatos.submitResultData("[ses_" + jatos.studySessionData.session_counter + "_start---" + 
                     JSON.stringify(jatos.studySessionData) +  
-                    "---ses_" + jatos.studySessionData.session_counter + "_end]", function(){
-                        jatos.startComponentByPos(jatos.studySessionData.script_comp_ids.qc_checks);
-                    });
+                    "---ses_" + jatos.studySessionData.session_counter + "_end]",jatos.startNextComponent);
                 } 
                 
                 // on_finish: function(data) {

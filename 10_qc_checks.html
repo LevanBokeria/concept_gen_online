@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Check for QC</title>
+  <script src = "../dissimilarity_test/extra_functions/jquery-3.4.1.js" type="text/javascript"></script>
+  <script src="./jspsych-6.1.0/jspsych.js"></script>
+  <link href="./jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+  <script src="jatos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-combinatorics@0.5"></script>
+  <script src="./extra_functions/custom_functions.js"> </script>
+
+</head>
+<body></body>
+<script>
+
+
+  jatos.onLoad(function() {
+
+    // Get the data from the last session:
+
+
+    // Check the RTs
+
+    // Check if all responses are the same
+
+    // If session 2: check that response rate is > 50%
+
+    // Check the overall performance.
+
+        // If more than 80% on each PA
+
+            // Congratulate, start the next phase.
+
+        // If less than 80% on each PA
+
+            // Encourage and give a break
+
+
+      jsPsych.init({
+          timeline: timeline,
+          on_finish: function(data){
+              jatos.startComponentByPos(jatos.studySessionData.latestFinishedComponentPos);
+          }
+      })
+
+  });
+
+</script>
+
+</html>

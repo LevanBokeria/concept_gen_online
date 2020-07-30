@@ -13,7 +13,7 @@
 	<style> p {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px;} </style>
 	<style> ul {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px; cursor:default;} </style>
 	<style> .instruct{width:100%; color: black; text-align:center; cursor:default;} </style>
-	<style> .header {position: fixed; left:0; top:0; width:100%; background-color:#8f8d8d; color: black; text-align: center;cursor:default;} </style>
+	<style> .header {position: fixed; left:0; top:0; width:100%; background-color:#8f8d8d; color: white; text-align: center;cursor:default;} </style>
   </head>
 
   <body>
@@ -55,14 +55,14 @@
 
 				on_finish: function(data) {
 
-					var result_data = {};
+					// var result_data = {};
 						
-					result_data.prolific_ID = jatos.studySessionData.prolific_ID;
-					jatos.addJatosIds(result_data);
+					// result_data.prolific_ID = jatos.studySessionData.prolific_ID;
+					// jatos.addJatosIds(result_data);
 
-					result_data.component_data = jsPsych.data.get().values();
+					// result_data.component_data = jsPsych.data.get().values();
 
-					jatos.studySessionData.allData.instructions_results = result_data;
+					// jatos.studySessionData.allData.instructions_results = result_data;
 
 					jatos.submitResultData("[instructions_start---" + 
 					JSON.stringify(jatos.studySessionData) +

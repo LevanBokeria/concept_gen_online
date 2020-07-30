@@ -21,19 +21,13 @@
     }
     jatos.studySessionData.phase_counter = 1;    
 
-    // An initial variable, saying whether a session should be repeated. setting this here rather than within the session functions
-    jatos.studySessionData.repeat = 0;  
-
     // Which scripts have which component IDs?
-    // jatos.studySessionData.script_comp_ids = {
-    //   instructions:          5,
-    //   intermediate_feedback: 15,
-    //   long_break:            16,
-    //   short_break:           17,    
-    //   qc_checks:             18,
-    //   practice_fail:         19,
-    //   data_submission:       20
-    // }
+    jatos.studySessionData.script_comp_ids = {
+      instructions:          5,
+      intermediate_feedback: 9,   
+      qc_checks:             10,
+      data_submission:       12
+    }
 
     // A conditional that determines whether we are debugging or not. If debugging, fewer trials will be done.
     // The pilot flag is for when asking labmates to test the paradigm, it just reduces the number of trials they'll have to do per sesiosn.
@@ -46,15 +40,19 @@
     jatos.studySessionData.pilot_n_trials = 10;
     jatos.studySessionData.auto_respond   = false;
     jatos.studySessionData.auto_respond_trial_dur = 100; // milliseconds
+    jatos.studySessionData.perf_check_over_n_trials = 10; // Over how many previous trials is the performance calculated?
 
     // Duration of trials, breaks, ITI, etc
     if (jatos.studySessionData.debug == 1 || jatos.studySessionData.pilot == 1) {
       jatos.studySessionData.short_break_duration = 2; // seconds
       jatos.studySessionData.long_break_duration  = 2; // seconds
-      jatos.studySessionData.trial_dur            = 10000; // milliseconds
-      jatos.studySessionData.post_trial_gap       = 500; // milliseconds
-      jatos.studySessionData.practice_trial_dur   = 5000; // milliseconds
-      jatos.studySessionData.n_practice_trials    = 2;
+
+      jatos.studySessionData.timer_after_response    = 500; // milliseconds
+      jatos.studySessionData.timer_no_resp_fb_freeze = 500; // milliseconds
+      jatos.studySessionData.timer_response_window   = 2000; // milliseconds            
+      jatos.studySessionData.post_trial_gap          = 500; // milliseconds
+
+      jatos.studySessionData.n_practice_trials       = 2;
 
       // Initial exposure time (seconds)
       jatos.studySessionData.all_pics_time = 1;
@@ -63,50 +61,52 @@
 
       jatos.studySessionData.short_break_duration = 15; // seconds
       jatos.studySessionData.long_break_duration  = 30; // seconds
-      jatos.studySessionData.trial_dur            = 10000; // milliseconds
-      jatos.studySessionData.post_trial_gap       = 500; // milliseconds
-      jatos.studySessionData.practice_trial_dur   = 30000; // milliseconds
-      jatos.studySessionData.n_practice_trials    = 6;
+
+      jatos.studySessionData.timer_after_response    = 500; // milliseconds
+      jatos.studySessionData.timer_no_resp_fb_freeze = 3000; // milliseconds
+      jatos.studySessionData.timer_response_window   = 10000; // milliseconds                  
+      jatos.studySessionData.post_trial_gap          = 500; // milliseconds
+
+      jatos.studySessionData.n_practice_trials       = 6;
       
       // Initial exposure time (seconds)
       jatos.studySessionData.all_pics_time = 10;
-
-      // // Number of repeat practice trials to do, if during practice trials ptp's respond wrong on the identical trials
-      // jatos.studySessionData.n_rep_practice_trials = 10;
 
     };
 
     // Add all the QC checking conditions
     if (jatos.studySessionData.pilot || jatos.studySessionData.debug){
-
       jatos.studySessionData.qc_criteria = {
-
+        rt_min_speed:        1000,
+        rt_min_perc:         80,
+        uniform_resp_perc:   100,
+        min_perf_check_perc: 50
       }
-      
     } else {
-
       jatos.studySessionData.qc_criteria = {
-
+        rt_min_speed:        1000,
+        rt_min_perc:         80,
+        uniform_resp_perc:   100,
+        min_perf_check_perc: 50
       }
-
     }
 
     // If we're auto-responding, edit the rt_check criteria, and the ITI, and break durations
-    if (jatos.studySessionData.auto_respond){
+    // if (jatos.studySessionData.auto_respond){
+    //   jatos.studySessionData.post_trial_gap = 5; // milliseconds
+    //   jatos.studySessionData.short_break_duration = 1; // seconds
+    //   jatos.studySessionData.long_break_duration  = 1; // seconds
 
-      jatos.studySessionData.post_trial_gap = 5; // milliseconds
-
-      jatos.studySessionData.short_break_duration = 1; // seconds
-      jatos.studySessionData.long_break_duration  = 1; // seconds
-
-      // Initial exposure time (seconds)
-      jatos.studySessionData.all_pics_time = 1;    
-
-    }
+    //   // Initial exposure time (seconds)
+    //   jatos.studySessionData.all_pics_time = 1;    
+    // }
 
     // Create an object with pass-fail info for each criteria
     jatos.studySessionData.qc_status = {
-      global_pass: true
+      global_pass:       true,
+      rt_pass:           true,
+      uniform_resp_pass: true,
+      min_perf_pass:     true
     }
 
 
@@ -157,10 +157,7 @@
           phase_1: [1,7,14],
           phase_2: [1,7,14],
         },                
-        timer_till_fb: 5000,
-        timer_after_response: 3000,
-        timer_no_resp_fb_freeze: 3000,
-        timer_response_window: 10000,
+
 
         // Feedback items
         fb_correct_img: './img/feedback/green_tick.png',
@@ -179,7 +176,8 @@
     // Create arrays with point and img names with appropriate number of targets at appropriate locations
     let score_box_target_names = {
       phase_1: [],
-      phase_2: []
+      phase_2: [],
+      running_perf: [0,0,0],
     }
     for (iPhase=1; iPhase<3; iPhase++){
       
