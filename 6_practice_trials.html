@@ -21,7 +21,7 @@
 
             var session_trials         = jatos.studySessionData.inputData.practice_trials['phase_'+curr_phase]
             let curr_space_object      = jatos.studySessionData.inputData.concepts['phase_'+curr_phase]
-            let score_box_target_names = jatos.studySessionData.inputData.score_box_target_names['phase_'+curr_phase]
+            let score_box_target_paths = jatos.studySessionData.inputData.score_box_target_paths['phase_'+curr_phase]
 
             let n_trials = session_trials.length
 
@@ -62,7 +62,7 @@
                         fb_imgs_x_coords: curr_space_object.fb_imgs_x_coords,
                         fb_imgs_y_coords: curr_space_object.fb_imgs_y_coords,                    
 
-                        score_box_target_names: score_box_target_names,
+                        score_box_target_paths: score_box_target_paths,
 
                         sort_area_width: 750,
                         sort_area_height: 700,
@@ -92,13 +92,18 @@
                             let prompt_trials = curr_trials.filter(function(curr_trials){
                                 return curr_trials.prompt_img_path == curr_prompt_path
                             })
+                            let last_prompt_trials
 
                             if (data.trial_index > jatos.studySessionData.perf_check_over_n_trials-1){
-                                // So we have more than 10 entries. Get average over the last 10
-                                
-                            } else {
-                                // We have less than 10 entries, get average over all of them
+                                // So we have more than 10 entries. Get only the last 10 trials
+                                last_prompt_trials = prompt_trials.slice(prompt_trials.length - jatos.studySessionData.perf_check_over_n_trials, prompt_trials.length)
                             }
+
+                            // Calculate the average
+                            let avg = last_prompt_trials.reduce(function(total, num){
+                                return total + num
+                            })
+                            avg = avg / last_prompt_trials.length
 
 
                             console.log('lets see')

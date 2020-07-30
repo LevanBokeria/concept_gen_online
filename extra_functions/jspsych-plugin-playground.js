@@ -102,7 +102,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
         default: undefined,
 				description: 'Correct and incorrect audio to be played.'
       },        
-      score_box_target_names: {
+      score_box_target_paths: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Score box targets',
         default: undefined,
@@ -276,14 +276,14 @@ jsPsych.plugins["plugin-playground"] = (function() {
       for (i=0; i<3; i++){
 
         let iTarget = document.createElement('img')
-        iTarget.src = trial.score_box_target_names[i]
+        iTarget.src = trial.score_box_target_paths[i]
         score_box.appendChild(iTarget)
 
         iTarget.id    = 'iTarget' + i
         iTarget.style = 'height: 40px; width: 40px; position: absolute; top:5px; left: ' + (5 + i*60) + 'px'
 
         let iPerf = document.createElement('P')
-        iPerf.innerText = '100%'
+        iPerf.innerText = Math.round(jatos.studySessionData.inputData.score_box_target_paths.running_perf[i]) + '%'
   
         score_box.appendChild(iPerf)
         
@@ -481,11 +481,16 @@ jsPsych.plugins["plugin-playground"] = (function() {
       };
 
       // Record all the information in the jatos object
-      // debugger
-      jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_practice_results'][jsPsych.data.get().values().length] = 
-      Object.assign(jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_practice_results'][jsPsych.data.get().values().length],
-                    trial_data)
 
+      if (trial.session == 0){
+        jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_practice_results'][jsPsych.data.get().values().length] = 
+        Object.assign(jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_practice_results'][jsPsych.data.get().values().length],
+                      trial_data)
+      } else {
+        jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_results'][trial.session-1][jsPsych.data.get().values().length] = 
+        Object.assign(jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_results'][trial.session-1][jsPsych.data.get().values().length],
+                      trial_data)
+      }
 
       // clear the display
       // display_element.innerHTML = '';
@@ -522,7 +527,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
       } else if (correct == 0){
         fb_text.innerText = 'incorrect...'
         fb_accu_img.src = trial.fb_incorrect_img
-      } else if (correct == 2){
+      } else if (correct == null){
         fb_text.innerText = 'missed...'
         fb_accu_img.style.visibility = 'hidden'
       }
@@ -556,7 +561,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
       }
       
       // Record a miss
-      response.correct = 2
+      response.correct = null
 
       // Show feedback
       show_feedback(response.correct)

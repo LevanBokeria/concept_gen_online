@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Phase 1 PA</title>
+        <title>Phase PA</title>
         <script src='jatos.js'></script>
         <script src='./jspsych-6.1.0/jspsych.js'></script>        
         <script src='./extra_functions/lodash.js'></script>
@@ -21,11 +21,14 @@
 
             let session_trials         = jatos.studySessionData.inputData.phase_trials['phase_'+curr_phase][curr_session-1]
             let curr_space_object      = jatos.studySessionData.inputData.concepts['phase_'+curr_phase]
-            let score_box_target_names = jatos.studySessionData.inputData.score_box_target_names['phase_'+curr_phase]
+            let score_box_target_paths = jatos.studySessionData.inputData.score_box_target_paths['phase_'+curr_phase]
 
             let n_trials = session_trials.length
 
-            debugger
+            // Record the current trial array in the outputData variable
+            jatos.studySessionData.outputData['phase_'+curr_phase+'_results'][curr_session-1] = session_trials            
+
+            // debugger
 
             // //////////// PLUGIN INPUT //////////////////////////////
             var session_procedure = {
@@ -61,22 +64,56 @@
                         fb_imgs_x_coords: curr_space_object.fb_imgs_x_coords,
                         fb_imgs_y_coords: curr_space_object.fb_imgs_y_coords,                    
 
-                        score_box_target_names: score_box_target_names,
+                        score_box_target_paths: score_box_target_paths,
 
                         sort_area_width: 750,
                         sort_area_height: 700,
                         prompt: 'Which of the two pictures below are associated with this Christmas toy?',
                         choices: ['1', '2'],
                         response_ends_trial: true,
-                        timer_after_response:    jatos.studySessionData.inputData.basic_parameters.timer_after_response,
-                        timer_no_resp_fb_freeze: jatos.studySessionData.inputData.basic_parameters.timer_no_resp_fb_freeze,
-                        timer_response_window:   jatos.studySessionData.inputData.basic_parameters.timer_response_window,
+                        timer_after_response:    jatos.studySessionData.timer_after_response,
+                        timer_no_resp_fb_freeze: jatos.studySessionDatatimer_no_resp_fb_freeze,
+                        timer_response_window:   jatos.studySessionData.timer_response_window,
                         post_trial_gap: 500,
                         correct_response: jsPsych.timelineVariable('prompt_item_idx'),
                         
                         n_trials: n_trials,
                         phase: jsPsych.timelineVariable('phase'),
-                        session: jsPsych.timelineVariable('session'),                        
+                        session: jsPsych.timelineVariable('session'),     
+                        // on_finish: function(data){
+                        //     debugger
+
+                        //     // Calculate the running             
+                        //     let curr_phase     = jatos.studySessionData.phase_counter
+                        //     let curr_session   = jatos.studySessionData.session_counter['phase_'+curr_phase]
+                        //     let curr_trials = jatos.studySessionData.inputData.phase_trials['phase_'+curr_phase][curr_session-1]
+
+                        //     curr_trials = curr_trials.slice(0,data.trial_index+1)
+                        //     let curr_prompt_path = curr_trials[data.trial_index].prompt_img_path
+                        //     let curr_prompt_name = curr_trials[data.trial_index].prompt_img_name                            
+
+                        //     // Find  trials with this image:
+                        //     let last_prompt_trials = curr_trials.filter(function(curr_trials){
+                        //         return curr_trials.prompt_img_path == curr_prompt_path
+                        //     })
+
+                        //     if (data.trial_index > jatos.studySessionData.perf_check_over_n_trials-1){
+                        //         // So we have more than 10 entries. Get only the last 10 trials
+                        //         last_prompt_trials = prompt_trials.slice(prompt_trials.length - jatos.studySessionData.perf_check_over_n_trials, prompt_trials.length)
+                        //     }
+
+                        //     // Calculate the average
+                        //     let avg = last_prompt_trials.reduce(function(total, item){
+                        //         return total + item.correct
+                        //     },0)
+                        //     avg = avg / last_prompt_trials.length
+                            
+                        //     debugger
+
+                        //     // Record this avg value
+                        //     let idx_of_score_box_target = jatos.studySessionData.inputData.score_box_target_paths['phase_'+curr_phase].indexOf(curr_prompt_path)
+                        //     jatos.studySessionData.inputData.score_box_target_paths.running_perf[idx_of_score_box_target] = avg * 100
+                        // }                                                                 
                     }
                 ],
 

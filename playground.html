@@ -74,7 +74,7 @@
         }
 
         // Create arrays with point and img names with appropriate number of targets at appropriate locations
-        var score_box_target_names = []
+        var score_box_target_paths = []
 
         for (i=0; i<basic_parameters.nTargets; i++){
 
@@ -85,7 +85,7 @@
                 targetCoordsNames.imgNamesTarget[i]
 
             // For the score box, create names of the target itesm
-            score_box_target_names[i] = './img/targets/' + targetCoordsNames.imgNamesTarget[i] + '.png'
+            score_box_target_paths[i] = './img/targets/' + targetCoordsNames.imgNamesTarget[i] + '.png'
         }
 
         // Create all the combinations of targets and empty locations (imported from Matlab)
@@ -263,7 +263,7 @@
                     fb_imgs_x_coords: curr_space_object.fb_imgs_x_coords,
                     fb_imgs_y_coords: curr_space_object.fb_imgs_y_coords,                    
 
-                    score_box_target_names: score_box_target_names,
+                    score_box_target_paths: score_box_target_paths,
 
                     sort_area_width: 750,
                     sort_area_height: 700,

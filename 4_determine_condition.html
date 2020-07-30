@@ -47,8 +47,8 @@
       jatos.studySessionData.short_break_duration = 2; // seconds
       jatos.studySessionData.long_break_duration  = 2; // seconds
 
-      jatos.studySessionData.timer_after_response    = 500; // milliseconds
-      jatos.studySessionData.timer_no_resp_fb_freeze = 500; // milliseconds
+      jatos.studySessionData.timer_after_response    = 2000; // milliseconds
+      jatos.studySessionData.timer_no_resp_fb_freeze = 2000; // milliseconds
       jatos.studySessionData.timer_response_window   = 2000; // milliseconds            
       jatos.studySessionData.post_trial_gap          = 500; // milliseconds
 
@@ -174,7 +174,7 @@
     }
 
     // Create arrays with point and img names with appropriate number of targets at appropriate locations
-    let score_box_target_names = {
+    let score_box_target_paths = {
       phase_1: [],
       phase_2: [],
       running_perf: [0,0,0],
@@ -190,7 +190,7 @@
               targetCoordsNames.imgNamesTarget[iT]
 
           // For the score box, create names of the target itesm
-          score_box_target_names['phase_'+iPhase][iT] = './img/targets/' + targetCoordsNames.imgNamesTarget[iT] + '.png'
+          score_box_target_paths['phase_'+iPhase][iT] = './img/targets/' + targetCoordsNames.imgNamesTarget[iT] + '.png'
       }
     }
     // Create all the combinations of targets and empty locations (imported from Matlab)
@@ -302,7 +302,7 @@
     jatos.studySessionData.inputData = {
       targetCoordsNames: targetCoordsNames,
       basic_parameters: basic_parameters,
-      score_box_target_names: score_box_target_names,
+      score_box_target_paths: score_box_target_paths,
       baseTrialArray: baseTrialArray,
       basePracticeTrialArray: basePracticeTrialArray,
       concepts: concepts,
