@@ -132,11 +132,12 @@ let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames,i
       baseTrialArrayInner[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' + 
               baseTrialArrayInner[i].item_point_idxs[0] + '_' + baseTrialArrayInner[i].item_point_idxs[1] + '.png'            
       // baseTrialArrayInner[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_16_16.png'                
-    }
 
-    // Record the phase and session
-    baseTrialArrayInner[i].phase   = iPhase
-    baseTrialArrayInner[i].session = iSession    
+      // Record the phase and session
+      baseTrialArrayInner[i].phase   = iPhase
+      baseTrialArrayInner[i].session = iSession        
+      
+    }  
 
     // Shuffle once again, otherwise prompt item location is predictable 
     baseTrialArrayInner = JSON.parse(JSON.stringify(shuffle(baseTrialArrayInner)))
