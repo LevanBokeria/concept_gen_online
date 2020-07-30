@@ -481,7 +481,6 @@ jsPsych.plugins["plugin-playground"] = (function() {
       // gather the data to store for the trial
       var trial_data = {
         "rt": response.rt,
-        "stimulus": trial.targetStim,
         "key_press": response.key
       };
 

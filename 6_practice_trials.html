@@ -19,11 +19,14 @@
             let curr_phase   = jatos.studySessionData.phase_counter
             let curr_session = jatos.studySessionData.session_counter['phase_'+curr_phase]
 
-            let session_trials         = jatos.studySessionData.inputData.practice_trials['phase_'+curr_phase]
+            var session_trials         = jatos.studySessionData.inputData.practice_trials['phase_'+curr_phase]
             let curr_space_object      = jatos.studySessionData.inputData.concepts['phase_'+curr_phase]
             let score_box_target_names = jatos.studySessionData.inputData.score_box_target_names['phase_'+curr_phase]
 
             let n_trials = session_trials.length
+
+            // Record the current trial array in the outputData variable
+            jatos.studySessionData.outputData['phase_'+curr_phase+'_practice_results'] = session_trials
 
             // //////////// PLUGIN INPUT //////////////////////////////
             var session_procedure = {
@@ -87,50 +90,52 @@
                 use_webaudio: false,
                 // preload_images: imgs_to_load,
 
-                // on_finish: function(data) {
-                    
-                //     // Make JATOS remember that this session was run
-                //     jatos.studySessionData.latestFinishedComponentId  = jatos.componentId;
-                //     jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
-                //     jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
-
-                //         // submit results to JATOS
-                //     var result_data = {};
-
-                //     result_data.prolific_ID = jatos.studySessionData.prolific_ID;
-                //     result_data.is_this_repeat = jatos.studySessionData.repeat;
-
-                //     jatos.addJatosIds(result_data);
-
-                //     // Add the session data to result 
-                    
-                //     result_data.trial_data = jsPsych.data.get().values();
-
-                //     // debugger;
-
-                //     if (!jatos.studySessionData.repeat){
-                //         jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1][0] = result_data;
-                //     } else {
-                //         jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1][jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1].length] = result_data;
-                //     };
-
-                //     // Create a temporary variable to hold data of the latest run session, so qc can be performed on this
-                //     jatos.studySessionData.last_session_data = 
-                //     JSON.parse(JSON.stringify(jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1]));
-
-                //     // debugger;
-
-                //     jatos.submitResultData("[ses_" + jatos.studySessionData.session_counter + "_start---" + 
-                //     JSON.stringify(jatos.studySessionData) +  
-                //     "---ses_" + jatos.studySessionData.session_counter + "_end]", function(){
-                //         jatos.startComponentByPos(jatos.studySessionData.script_comp_ids.qc_checks);
-                //     });
-                // } 
-                
                 on_finish: function(data) {
-                    console.log('Over');
-                    jsPsych.data.displayData('json');
-                }       
+                    
+                    // Make JATOS remember that this session was run
+                    jatos.studySessionData.latestFinishedComponentId  = jatos.componentId;
+                    jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
+                    jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
+
+                    debugger
+
+                    // submit results to JATOS
+                    output_trial_data = jsPsych.data.get().values();
+
+                    // Combine it with trial information
+                    for (iT=0; iT<output_trial_data.length; iT++){
+                        jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_practice_results'][iT] = 
+                            Object.assign(jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_practice_results'][iT],
+                                          output_trial_data[iT])
+
+                    }
+
+
+                    debugger
+
+                    if (!jatos.studySessionData.repeat){
+                        jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1][0] = result_data;
+                    } else {
+                        jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1][jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1].length] = result_data;
+                    };
+
+                    // Create a temporary variable to hold data of the latest run session, so qc can be performed on this
+                    jatos.studySessionData.last_session_data = 
+                    JSON.parse(JSON.stringify(jatos.studySessionData.allData.session_results[jatos.studySessionData.session_counter - 1]));
+
+                    // debugger;
+
+                    jatos.submitResultData("[ses_" + jatos.studySessionData.session_counter + "_start---" + 
+                    JSON.stringify(jatos.studySessionData) +  
+                    "---ses_" + jatos.studySessionData.session_counter + "_end]", function(){
+                        jatos.startComponentByPos(jatos.studySessionData.script_comp_ids.qc_checks);
+                    });
+                } 
+                
+                // on_finish: function(data) {
+                //     console.log('Over');
+                //     jsPsych.data.displayData('json');
+                // }       
             });
    
             // ///////////////////////////////////////////////////////////////////////////////////////////////

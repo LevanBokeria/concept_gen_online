@@ -24,24 +24,15 @@
 
     jatos.onLoad(function() {
 
-      // Define what the delimiter will be, for separating output from different components
-      jatos.studySessionData.delimiterStart = "[comp--";
-      jatos.studySessionData.delimiterEnd   = "--comp]";
-      // Create a variable to hold all the results from all the components
-      jatos.studySessionData.allData = {};
-
-      jatos.studySessionData.allData.practice_trials_results = [];
-      jatos.studySessionData.allData.session_results = [];
-      
-      jatos.studySessionData.allData.consent_results   = {};
-      jatos.studySessionData.allData.instructions_results   = {};
-      jatos.studySessionData.allData.practice_trials_debrief = {};
-      jatos.studySessionData.allData.post_practice_trials_instructions = {};
-
-      jatos.studySessionData.allData.debrief_results = [];
-      jatos.studySessionData.allData.breaks_results  = [];
-      jatos.studySessionData.allData.end_debrief     = {};
-
+      // Create a variable to hold all the results from components. For some of the components, the keys will be created at the time
+      jatos.studySessionData.outputData = {
+        phase_1_results: [],
+        phase_2_results: [],
+        phase_1_practice_results: [],
+        phase_2_practice_results: [],        
+        debrief_results: [],
+        breaks_results: []
+      };
 
       // Lines below are for manual prolific ID entry:
       // $("#prolific_id").keypress(function (e) {
@@ -68,8 +59,8 @@
         prolific_ID: jatos.studySessionData.prolific_ID,
       }
       jatos.addJatosIds(result_data);
-      jatos.submitResultData(jatos.studySessionData.delimiterStart + JSON.stringify(result_data) + 
-      jatos.studySessionData.delimiterEnd, jatos.startNextComponent);     
+      jatos.submitResultData('[get_pid_comp_start---' + JSON.stringify(result_data) + 
+      '---get_pid_comp_end]', jatos.startNextComponent);     
       // Comment out the lines ABOVE to disable automatic prolicit ID assignment for debugging
 
       var w = window.innerWidth;

@@ -39,7 +39,7 @@
     // The pilot flag is for when asking labmates to test the paradigm, it just reduces the number of trials they'll have to do per sesiosn.
     // show_correct flag: if on, will show images of pairs with the "correct" answer displayed.
     // Auto respond: script will make random responses by itself.
-    jatos.studySessionData.debug          = 0;
+    jatos.studySessionData.debug          = 1;
     jatos.studySessionData.debug_n_trials = 5;
     jatos.studySessionData.show_correct   = 0;
     jatos.studySessionData.pilot          = 0;
@@ -251,6 +251,14 @@
         {item1: "T3", item2: "E16"},
     ]    
 
+    // If debug, then shorten these arrays
+    if (jatos.studySessionData.debug == 1){
+
+      baseTrialArray         = JSON.parse(JSON.stringify(shuffle(baseTrialArray).slice(0,jatos.studySessionData.debug_n_trials)))
+      basePracticeTrialArray = JSON.parse(JSON.stringify(shuffle(basePracticeTrialArray).slice(0,jatos.studySessionData.n_practice_trials)))
+
+    }
+    
     // Define the neck_legs_space
     let neck_legs_space = new ConceptCreator('neck_legs_space','birds',
         'neck','legs',
