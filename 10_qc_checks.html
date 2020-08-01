@@ -8,6 +8,7 @@
   <link href="./jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
   <script src="jatos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-combinatorics@0.5"></script>
+  <script src='./jspsych-6.1.0/plugins/jspsych-survey-text.js'></script>
   <script src="./extra_functions/custom_functions.js"> </script>
 
 </head>
@@ -96,6 +97,15 @@
 
         if (!rt_speed_pass){
           timeline.push(practice_qc_failed)
+
+          jsPsych.init({
+              timeline: timeline,
+              on_finish: function(data){
+                  jatos.startComponentByPos(jatos.studySessionData.latestFinishedComponentPos);
+              }
+          })
+
+
         } else {
           jatos.submitResultData('Phase 1 practice QC passed. Starting post practice instructions', 
             jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.post_practice_instructions))
@@ -148,12 +158,7 @@
             // Encourage and give a break
 
 
-      jsPsych.init({
-          timeline: timeline,
-          on_finish: function(data){
-              jatos.startComponentByPos(jatos.studySessionData.latestFinishedComponentPos);
-          }
-      })
+
 
   });
 

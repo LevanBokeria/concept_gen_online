@@ -146,7 +146,7 @@ let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames,i
 }; // function trialCreator
 
 let calcRunningPerf = function(data) {
-    // debugger
+
     // Calculate the running             
     let curr_phase     = jatos.studySessionData.phase_counter
     let curr_session   = jatos.studySessionData.session_counter['phase_'+curr_phase]
@@ -161,18 +161,17 @@ let calcRunningPerf = function(data) {
 
     curr_trials = curr_trials.slice(0,data.trial_index+1)
     let curr_prompt_path = curr_trials[data.trial_index].prompt_img_path
-    let curr_prompt_name = curr_trials[data.trial_index].prompt_img_name                            
 
     // Find  trials with this image:
     let last_prompt_trials = curr_trials.filter(function(curr_trials){
         return curr_trials.prompt_img_path == curr_prompt_path
     })
 
-    if (data.trial_index > jatos.studySessionData.perf_check_over_n_trials-1){
+    if (last_prompt_trials.length > jatos.studySessionData.perf_check_over_n_trials){
         // So we have more than 10 entries. Get only the last 10 trials
-        last_prompt_trials = prompt_trials.slice(prompt_trials.length - jatos.studySessionData.perf_check_over_n_trials, prompt_trials.length)
+        last_prompt_trials = last_prompt_trials.slice(last_prompt_trials.length - jatos.studySessionData.perf_check_over_n_trials, last_prompt_trials.length)
     }
-
+    // debugger
     // Calculate the average
     let avg = last_prompt_trials.reduce(function(total, item){
         return total + item.correct

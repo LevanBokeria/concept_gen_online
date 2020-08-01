@@ -15,7 +15,7 @@
 
         jatos.onLoad(function() {
             
-            debugger
+            // debugger
 
             // What phase is this?
             let curr_phase             = jatos.studySessionData.phase_counter
@@ -41,7 +41,14 @@
 
             // debugger
 
-            let imgs_to_preload = jatos.studySessionData.inputData.imgs_to_preload[phase_string]
+            let imgs_to_preload = JSON.parse(JSON.stringify(jatos.studySessionData.inputData.imgs_to_preload))
+
+            imgs_to_preload.exemplar_images = session_trials.map((item) => {
+                return item.ex_pairs_img_path
+            })
+            
+            imgs_to_preload.exemplar_images = 
+                imgs_to_preload.exemplar_images.concat(jatos.studySessionData.inputData.score_box_target_paths[phase_string])
 
             // //////////// PLUGIN INPUT //////////////////////////////
             var session_procedure = {
@@ -105,7 +112,7 @@
             jsPsych.init({
                 timeline: [session_procedure],
                 use_webaudio: false,
-                preload_images: imgs_to_preload,
+                preload_images: [...imgs_to_preload.base_images, ...imgs_to_preload.exemplar_images],
 
                 on_finish: function(data) {
                     
@@ -121,7 +128,7 @@
 
                     // submit results to JATOS
                     output_trial_data = jsPsych.data.get().values();
-
+                    // debugger
                     // Combine it with pre-existing trial information
                     if (jatos.componentProperties.title.includes('practice_trials')){
                         for (iT=0; iT<output_trial_data.length; iT++){
@@ -139,7 +146,7 @@
 
                     } else {
                         for (iT=0; iT<output_trial_data.length; iT++){
-                            jatos.studySessionData.outputData[phase_string+'_results'][iT] = 
+                            jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1][iT] = 
                                 Object.assign(jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1][iT],
                                             output_trial_data[iT])
                         }

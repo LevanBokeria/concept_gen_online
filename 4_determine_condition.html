@@ -35,8 +35,8 @@
     // The pilot flag is for when asking labmates to test the paradigm, it just reduces the number of trials they'll have to do per sesiosn.
     // show_correct flag: if on, will show images of pairs with the "correct" answer displayed.
     // Auto respond: script will make random responses by itself.
-    jatos.studySessionData.debug          = 0;
-    jatos.studySessionData.debug_n_trials = 5;
+    jatos.studySessionData.debug          = 1;
+    jatos.studySessionData.debug_n_trials = 10;
     jatos.studySessionData.show_correct   = 0;
     jatos.studySessionData.pilot          = 0;
     jatos.studySessionData.pilot_n_trials = 10;
@@ -49,10 +49,10 @@
       jatos.studySessionData.short_break_duration = 2; // seconds
       jatos.studySessionData.long_break_duration  = 2; // seconds
 
-      jatos.studySessionData.timer_after_response    = 2000; // milliseconds
-      jatos.studySessionData.timer_no_resp_fb_freeze = 2000; // milliseconds
-      jatos.studySessionData.timer_response_window   = 2000; // milliseconds            
-      jatos.studySessionData.post_trial_gap          = 500; // milliseconds
+      jatos.studySessionData.timer_after_response    = 100; // milliseconds
+      jatos.studySessionData.timer_no_resp_fb_freeze = 1000; // milliseconds
+      jatos.studySessionData.timer_response_window   = 1000; // milliseconds            
+      jatos.studySessionData.post_trial_gap          = 100; // milliseconds
 
       jatos.studySessionData.n_practice_trials       = 2;
 
@@ -82,14 +82,16 @@
         rt_min_speed:        1000,
         rt_min_perc:         80,
         uniform_resp_perc:   100,
-        min_perf_check_perc: 50
+        min_perf_check_perc: 50,
+        perc_max_missed:     40
       }
     } else {
       jatos.studySessionData.qc_criteria = {
         rt_min_speed:        1000,
         rt_min_perc:         80,
         uniform_resp_perc:   100,
-        min_perf_check_perc: 50
+        min_perf_check_perc: 50,
+        perc_max_missed:     40        
       }
     }
 
@@ -287,10 +289,8 @@
     let practice_trials = {} 
     
     let imgs_to_preload = {
-      phase_1: [],
-      phase_2: [],
-      phase_1_practice: [],
-      phase_2_practice: []
+      base_images: [],
+      exemplar_images: []
     }
 
     for (iPhase=1; iPhase<3; iPhase++){
@@ -315,12 +315,9 @@
         return item.ex_pairs_img_path
       })      
 
-      imgs_to_preload[phase_string] = [...score_box_target_paths[phase_string], basic_parameters.fb_correct_img, basic_parameters.fb_incorrect_img, ...all_ex_imgs]
-
-      imgs_to_preload[phase_string+'_practice'] = [...score_box_target_paths[phase_string], ...all_practice_ex_imgs]
-
-
     }
+
+    imgs_to_preload.base_images = [basic_parameters.fb_correct_img, basic_parameters.fb_incorrect_img]
 
     // Record all these variables in JATOS
     jatos.studySessionData.inputData = {

@@ -478,7 +478,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
       };
 
       // Record all the information in the jatos object
-
+      // debugger
       if (trial.session == 0){
         jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_practice_results'][jsPsych.data.get().values().length] = 
         Object.assign(jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_practice_results'][jsPsych.data.get().values().length],
@@ -488,7 +488,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
         Object.assign(jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_results'][trial.session-1][jsPsych.data.get().values().length],
                       trial_data)
       }
-
+      // debugger
       // clear the display
       // display_element.innerHTML = '';
       document.querySelector("#prompt_img").style.visibility            = 'hidden';

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0">
+    <title>Data Submission</title>	
+	<script src="jspsych-6.1.0/jspsych.js" ></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
+	<script src="jatos.js"></script>
+    <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" type="text/css"></link>
+	<style>	body {background-color:white; font-family: sans-serif; color: black;} </style>
+	<style> p {font-size: 100%; margin-top:0px; margin-right:100px; margin-bottom:10px; margin-left: 100px;} </style>
+	<style> ul {font-size: 100%; margin-top:0px; margin-right:100px; margin-bottom:10px; margin-left: 100px; cursor:default;} </style>
+	<style> .instruct{width:100%; color: black; text-align:center; cursor:default;} </style>
+	<style> .header {position: fixed; left:0; top:0; width:100%; background-color:#F8F8F8; color: black; text-align: center;cursor:default;} </style>
+  </head>
+
+  <body>
+  <script>
+    //'use strict';
+
+        //start timeline
+        jatos.onLoad(function() {
+
+            // end study function
+            var end_study_fn = function() {
+
+                var redirect_fn = function () {return window.location.replace(redirect_url);};
+
+                // If failed at the practice trials
+                if (jatos.studySessionData.qc_status.practice_id_pairs_n_allowed_error_pass == false){
+
+                    debugger;
+
+                    // Redirection URL with the code saying how many sessions they completed
+                    var redirect_url = "https://app.prolific.co/submissions/complete?cc=PRACTICE_FAILED";
+
+                    jatos.endStudyAjax(true, "PRACTICE_FAILED_" + jatos.studySessionData.prolific_ID, redirect_fn);
+
+                    // // Tell participants they can close the window.
+                    // var trial = {
+                    //     type: 'instructions',
+                    //     pages: [
+                    //         'Thank you. You can now close this window. <br> ',
+                    //         ],
+                    //     show_clickable_nav: false,
+                    //     allow_keys: false
+                    // }
+
+                    // jsPsych.init({
+
+                    //     timeline: [trial]
+                    // })
+
+                // If failed the qc
+                } else if (jatos.studySessionData.qc_status.global_pass == false){
+
+                    debugger;
+
+                    // Redirection URL with the code saying how many sessions they completed
+                    var redirect_url = "https://app.prolific.co/submissions/complete?cc=QC_fail_s" + jatos.studySessionData.session_counter ;
+
+                    // Create an error text
+                    var err = JSON.parse(JSON.stringify(jatos.studySessionData.qc_status));
+                    delete err.id_pair_n_reps;
+                    delete err.practice_id_pair_n_reps;
+
+                    jatos.endStudyAjax(true, "QC_FAILED_" + 
+                    jatos.studySessionData.prolific_ID + '_' + JSON.stringify(Object.values(err)), redirect_fn)
+
+                    // // Tell participants they can close the window.
+                    // var trial = {
+                    //     type: 'instructions',
+                    //     pages: [
+                    //         'Thank you. You can now close this window. <br> ',
+                    //         ],
+                    //     show_clickable_nav: false,
+                    //     allow_keys: false
+                    // }
+
+                    // jsPsych.init({
+
+                    //     timeline: [trial],
+                    // })
+
+                } else {
+
+                    debugger;
+
+                    // Redirection URL with correct completion code
+                    var redirect_url = jatos.componentJsonInput.url;
+
+                    jatos.endStudyAjax(true, "REDIRECTED_"+ jatos.studySessionData.prolific_ID, redirect_fn);
+
+                };
+                
+            } // end_study_fn    
+
+            jatos.submitResultData("[data_submission_start---" + 
+            JSON.stringify(jatos.studySessionData) +
+            "---data_submission_end]", end_study_fn);
+            
+            // jsPsych.data.displayData();
+
+        }); // on_load_function
+
+	</script>
+</body>
+</html>
