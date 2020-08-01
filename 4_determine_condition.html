@@ -22,18 +22,20 @@
     jatos.studySessionData.phase_counter = 1;    
 
     // Which scripts have which component IDs?
-    jatos.studySessionData.script_comp_ids = {
-      instructions:          5,
-      intermediate_feedback: 9,   
-      qc_checks:             10,
-      data_submission:       12
+    jatos.studySessionData.script_comp_pos = {
+      instructions:               5,
+      practice_trials:            6,
+      post_practice_instructions: 7,
+      intermediate_feedback:      9,   
+      qc_checks:                  10,
+      data_submission:            12
     }
 
     // A conditional that determines whether we are debugging or not. If debugging, fewer trials will be done.
     // The pilot flag is for when asking labmates to test the paradigm, it just reduces the number of trials they'll have to do per sesiosn.
     // show_correct flag: if on, will show images of pairs with the "correct" answer displayed.
     // Auto respond: script will make random responses by itself.
-    jatos.studySessionData.debug          = 1;
+    jatos.studySessionData.debug          = 0;
     jatos.studySessionData.debug_n_trials = 5;
     jatos.studySessionData.show_correct   = 0;
     jatos.studySessionData.pilot          = 0;

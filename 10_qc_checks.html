@@ -22,53 +22,110 @@
     let phase_string = 'phase_'+curr_phase
     let curr_session = jatos.studySessionData.session_counter[phase_string]
 
+    var timeline = []
+
+    // In case the ptp failed qc after phase 1 practice
+    var practice_qc_failed = {
+
+      type: 'survey-text',
+      questions: [jatos.studySessionData.debrief_questions],
+      button_label: "Finish",
+      preamble: "<p> <br> Unfortunately, your performance did not pass our quality checks. </p> " + 
+          "<p> As we stated in the instructions, in such a case we have to discontinue the study. </p>" +
+          "<p> You will still be paid 1.2 pounds for completing the instructions and the practice session. </p> " + 
+          "<p> But first, please answer the following questions and then click the 'Finish' button below.</p>"
+      };
+
+    // In case they failed qc
+    var qc_failed_phase_1 = {
+
+      type: 'survey-text',
+      questions: [
+      jatos.studySessionData.debrief_questions[0],
+      jatos.studySessionData.debrief_questions[1],
+      jatos.studySessionData.debrief_questions[2],
+      jatos.studySessionData.debrief_questions[3],
+      jatos.studySessionData.debrief_questions[4],
+      jatos.studySessionData.debrief_questions[7]
+      ],
+      button_label: "Finish",
+      preamble: "<p> Unfortunately, your performance did not pass our quality checks. </p> " + 
+                "<p> As we stated in the instructions, in such a case we have to discontinue the study. </p>" +
+                "<p> You will still be paid for the practice session and any completed experimental session.</p> " + 
+                "<p> But first, please answer the following questions and then click the 'Finish' button below.</p>"
+
+    };  
+
+    var qc_failed_phase_2 = {
+
+      type: 'survey-text',
+      questions: [
+      jatos.studySessionData.debrief_questions[0],
+      jatos.studySessionData.debrief_questions[1],
+      jatos.studySessionData.debrief_questions[2],
+      jatos.studySessionData.debrief_questions[3],
+      jatos.studySessionData.debrief_questions[4],
+      jatos.studySessionData.debrief_questions[7]
+      ],
+      button_label: "Finish",
+      preamble: "<p> Unfortunately, your performance did not pass our quality checks. </p> " + 
+                "<p> As we stated in the instructions, in such a case we have to discontinue the study. </p>" +
+                "<p> You will still be paid for the practice session and any completed experimental session.</p> " + 
+                "<p> But first, please answer the following questions and then click the 'Finish' button below.</p>"
+
+    };      
+
+    debugger
+
+    if (curr_phase == 1){
+
+      if (jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
+        
+        // Are we checking practice trials?
+
+        // Get the latest data
+        let last_session_data = jatos.studySessionData.last_session_data
+
+        // Check RTs not too low
+        let rt_speed_pass = false
+        last_session_data.forEach((item) => {
+          if (item.rt > jatos.studySessionData.qc_criteria.rt_min_speed){
+            rt_speed_pass = true
+          }
+        })
+
+        if (!rt_speed_pass){
+          timeline.push(practice_qc_failed)
+        } else {
+          jatos.submitResultData('Phase 1 practice QC passed. Starting post practice instructions', 
+            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.post_practice_instructions))
+        }
+      } else {
+        // Checking real sessions
 
 
+        }
 
-    if (jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
+    } else {
+
+      // So its phase 2
+
+      if (jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
       // Are we checking practice trials?
 
       // If this is phase 2, then don't check practice trials. Ptps are probably very fast on everything.
-      if (curr_phase == 2){
+      jatos.submitResultData('Phase 2, practice done. Not checking QC.', 
+      jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.post_practice_instructions))
+
 
       } else {
-        // If phase 1
 
-
-        if (fail){
-
-        } else {
-          
-        }
 
 
 
       }
-      
-
-        // If fail
-        
-
-
-
-        // If succeed
-
-
-
-    } else {
-
-      // If not, we're checking real sessions
-
-      // If fail
-
-
-      // If succeed
-
-
 
     }
-
-
     
 
     // Get the data from the last session:

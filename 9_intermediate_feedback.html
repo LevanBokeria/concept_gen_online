@@ -47,13 +47,13 @@
 
                     result_data.component_data = jsPsych.data.get().values();
 
-                    jatos.studySessionData.outputData[phase_string+'debrief_results'][jatos.studySessionData.allData[phase_string+'debrief_results'].length] = result_data;
+                    jatos.studySessionData.outputData[phase_string+'_debrief_results'][jatos.studySessionData.outputData[phase_string+'_debrief_results'].length] = result_data;
 
                     jatos.submitResultData(
                         "[int_fb_start---" + 
                         JSON.stringify(jatos.studySessionData) + 
                         "---int_fb_end]", function(){
-                            jatos.startComponentByPos(jatos.studySessionData.script_comp_ids.qc_checks);
+                            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.qc_checks);
                         }
                     );
                     

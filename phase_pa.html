@@ -14,6 +14,8 @@
     <script>
 
         jatos.onLoad(function() {
+            
+            debugger
 
             // What phase is this?
             let curr_phase             = jatos.studySessionData.phase_counter
@@ -24,12 +26,14 @@
 
             // If this for practice run?
             if (jatos.componentProperties.title.includes('practice_trials')){
-                var session_trials = jatos.studySessionData.inputData.practice_trials[phase_string]
+                var session_trials = JSON.parse(JSON.stringify(
+                    jatos.studySessionData.inputData.practice_trials[phase_string]))
                 // Record the current trial array in the outputData variable
                 jatos.studySessionData.outputData[phase_string+'_practice_results'] = session_trials
             } else {
                 // Then, check which session this is
-                let session_trials = jatos.studySessionData.inputData.phase_trials[phase_string][curr_session-1]
+                var session_trials = JSON.parse(JSON.stringify(
+                    jatos.studySessionData.inputData.phase_trials[phase_string][curr_session-1]))
                 // Record the current trial array in the outputData variable
                 jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1] = session_trials                 
             } 
@@ -130,8 +134,8 @@
                         jatos.studySessionData.last_session_data = 
                         JSON.parse(JSON.stringify(jatos.studySessionData.outputData[phase_string+'_practice_results']));
 
-                        let results_delimiter_start = "[phase_" + curr_phase + "_practice_start---"
-                        let results_delimiter_end   = "---phase_" + curr_phase + "_practice_end]"                        
+                        var results_delimiter_start = "[phase_" + curr_phase + "_practice_start---"
+                        var results_delimiter_end   = "---phase_" + curr_phase + "_practice_end]"                        
 
                     } else {
                         for (iT=0; iT<output_trial_data.length; iT++){
@@ -144,17 +148,17 @@
                         jatos.studySessionData.last_session_data = 
                         JSON.parse(JSON.stringify(jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1]));                        
 
-                        let results_delimiter_start = "[phase_" + curr_phase + "_ses_" + curr_session + "_start---"
-                        let results_delimiter_end   = "---phase_" + curr_phase + "_ses_" + curr_session + "_end]" 
+                        var results_delimiter_start = "[phase_" + curr_phase + "_ses_" + curr_session + "_start---"
+                        var results_delimiter_end   = "---phase_" + curr_phase + "_ses_" + curr_session + "_end]" 
                     }
 
-                    debugger
+                    // debugger
 
                     jatos.submitResultData(
                         results_delimiter_start + 
                         JSON.stringify(jatos.studySessionData) +  
                         results_delimiter_end, function(){
-                            jatos.startComponentByPos(jatos.studySessionData.script_comp_ids.intermediate_feedback);
+                            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.intermediate_feedback);
                         }
                     );
                 } 

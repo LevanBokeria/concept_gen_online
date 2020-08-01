@@ -146,10 +146,18 @@ let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames,i
 }; // function trialCreator
 
 let calcRunningPerf = function(data) {
+    // debugger
     // Calculate the running             
     let curr_phase     = jatos.studySessionData.phase_counter
     let curr_session   = jatos.studySessionData.session_counter['phase_'+curr_phase]
-    let curr_trials = jatos.studySessionData.inputData.phase_trials['phase_'+curr_phase][curr_session-1]
+    let curr_trials
+    if (jatos.componentPos == jatos.studySessionData.script_comp_pos.practice_trials){
+        curr_trials = JSON.parse(JSON.stringify(
+            jatos.studySessionData.outputData['phase_'+curr_phase+'_practice_results']))
+    } else {
+        curr_trials = JSON.parse(JSON.stringify(
+            jatos.studySessionData.outputData['phase_'+curr_phase+'_results'][curr_session-1]))
+    }
 
     curr_trials = curr_trials.slice(0,data.trial_index+1)
     let curr_prompt_path = curr_trials[data.trial_index].prompt_img_path
