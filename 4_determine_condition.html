@@ -355,11 +355,21 @@
     //       space_quantifier = "size of ";
     //   }
 
-    //   jatos.studySessionData.debrief_questions = [
+      jatos.studySessionData.debrief_questions = [
 
-    //     {prompt: "How did you decide on how similar the pictures of the " + jatos.studySessionData.condition.subjStim + " were?", rows: 2, columns: 100}, 
-    //     {prompt: "Did you notice the " + jatos.studySessionData.condition.subjStim + " differed by their " + space_quantifier + jatos.studySessionData.condition.dim1_name + "?", rows: 2, columns: 100}
-    //   ]
+        {prompt: 'How did you try to remember which bird was associated with which toy? Did you have any strategy?', rows: 2, columns: 100}, 
+        {prompt: 'Apart from trying to remember the associations in your memory,' +
+                 'did you use any other tool to help you respond correctly? ' + 
+                 'For example, taking a photo of the correct associations, or drawing the correct associations on a piece of paper? ' + 
+                 'Note, you will not be penalised if you did do so. You will still receive your payment, ' + 
+                 'but we will need to exclude your data from our analysis, so it is really important that we know this. ' +
+                 'Thank you!', rows: 2, columns: 100},         
+        {prompt: 'Did you notice the birds differed by their length of neck?', rows: 2, columns: 100},
+        {prompt: 'Did you notice the birds differed by their length of legs?', rows: 2, columns: 100},
+        {prompt: 'Did you notice any other way in which the birds differed from each other?', rows: 2, columns: 100},
+        {prompt: 'Was anything unclear in the instructions for the task?', rows: 2, columns: 100},        
+        {prompt: 'Is there anything that would make the experiment more fun or easier to perform?', rows: 2, columns: 100},                
+      ]
 
 
     // if (jatos.studySessionData.pilot == 1) {

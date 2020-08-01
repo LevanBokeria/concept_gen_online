@@ -17,6 +17,60 @@
 
   jatos.onLoad(function() {
 
+    // What phase is this?
+    let curr_phase   = jatos.studySessionData.phase_counter
+    let phase_string = 'phase_'+curr_phase
+    let curr_session = jatos.studySessionData.session_counter[phase_string]
+
+
+
+
+    if (jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
+      // Are we checking practice trials?
+
+      // If this is phase 2, then don't check practice trials. Ptps are probably very fast on everything.
+      if (curr_phase == 2){
+
+      } else {
+        // If phase 1
+
+
+        if (fail){
+
+        } else {
+          
+        }
+
+
+
+      }
+      
+
+        // If fail
+        
+
+
+
+        // If succeed
+
+
+
+    } else {
+
+      // If not, we're checking real sessions
+
+      // If fail
+
+
+      // If succeed
+
+
+
+    }
+
+
+    
+
     // Get the data from the last session:
 
 
