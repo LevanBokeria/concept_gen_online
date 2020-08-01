@@ -28,7 +28,8 @@
       post_practice_instructions: 7,
       intermediate_feedback:      9,   
       qc_checks:                  10,
-      data_submission:            12
+      data_submission:            12,
+      short_break:                13
     }
 
     // A conditional that determines whether we are debugging or not. If debugging, fewer trials will be done.
@@ -36,7 +37,7 @@
     // show_correct flag: if on, will show images of pairs with the "correct" answer displayed.
     // Auto respond: script will make random responses by itself.
     jatos.studySessionData.debug          = 1;
-    jatos.studySessionData.debug_n_trials = 10;
+    jatos.studySessionData.debug_n_trials = 5;
     jatos.studySessionData.show_correct   = 0;
     jatos.studySessionData.pilot          = 0;
     jatos.studySessionData.pilot_n_trials = 10;
@@ -79,11 +80,11 @@
     // Add all the QC checking conditions
     if (jatos.studySessionData.pilot || jatos.studySessionData.debug){
       jatos.studySessionData.qc_criteria = {
-        rt_min_speed:        1000,
-        rt_min_perc:         80,
+        rt_min_speed:        10,
+        rt_min_perc:         100,
         uniform_resp_perc:   100,
         min_perf_check_perc: 50,
-        perc_max_missed:     40
+        perc_max_missed:     100
       }
     } else {
       jatos.studySessionData.qc_criteria = {
@@ -95,22 +96,14 @@
       }
     }
 
-    // If we're auto-responding, edit the rt_check criteria, and the ITI, and break durations
-    // if (jatos.studySessionData.auto_respond){
-    //   jatos.studySessionData.post_trial_gap = 5; // milliseconds
-    //   jatos.studySessionData.short_break_duration = 1; // seconds
-    //   jatos.studySessionData.long_break_duration  = 1; // seconds
-
-    //   // Initial exposure time (seconds)
-    //   jatos.studySessionData.all_pics_time = 1;    
-    // }
-
     // Create an object with pass-fail info for each criteria
     jatos.studySessionData.qc_status = {
       global_pass:       true,
       rt_pass:           true,
-      uniform_resp_pass: true,
-      min_perf_pass:     true
+      uniform_resp_perc_pass: true,
+      min_perf_pass:     true,
+      practice_pass:     true,
+      perc_max_misses_pass: true
     }
 
 
@@ -329,7 +322,8 @@
       concepts: concepts,
       phase_trials: phase_trials,
       practice_trials: practice_trials,
-      imgs_to_preload: imgs_to_preload
+      imgs_to_preload: imgs_to_preload,
+      choices: ['1','2']
     }
 
 

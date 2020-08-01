@@ -10,13 +10,75 @@
   <script src="https://cdn.jsdelivr.net/npm/js-combinatorics@0.5"></script>
   <script src='./jspsych-6.1.0/plugins/jspsych-survey-text.js'></script>
   <script src="./extra_functions/custom_functions.js"> </script>
-
+ 
+  <style>	body {background-color: #b9c6c7; font-family: sans-serif; color: black;} </style>
+	<style> p {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px;} </style>
+	<style> ul {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px; cursor:default;} </style>
+	<style> .instruct{width:100%; color: black; text-align:center; cursor:default;} </style>
+	<style> .header {position: fixed; left:0; top:0; width:100%; background-color:#8f8d8d; color: white; text-align: center;cursor:default;} </style>
+ 
 </head>
+
 <body></body>
+
 <script>
 
 
   jatos.onLoad(function() {
+
+    let session_qc_check = function(last_session_data,curr_session){
+      
+      // 1. Not too many missed trials
+      let n_missed_trials    = last_session_data.filter(item => item.rt==null).length
+      let perc_missed_trials = n_missed_trials * 100 / last_session_data.length
+  
+      if (perc_missed_trials >= jatos.studySessionData.qc_criteria.perc_max_missed){
+        jatos.studySessionData.qc_status.perc_max_missed_pass = false
+        jatos.studySessionData.qc_status.global_pass          = false            
+      }
+  
+      // 2. Not too many fast trials
+      let n_fast_trials    = last_session_data.filter(item => item.rt < jatos.studySessionData.qc_criteria.rt_min_speed).length
+      let perc_fast_trials = n_fast_trials * 100 / last_session_data.length
+  
+      if (perc_fast_trials >= jatos.studySessionData.qc_criteria.rt_min_perc){
+        jatos.studySessionData.qc_status.rt_pass     = false
+        jatos.studySessionData.qc_status.global_pass = false            
+      }
+  
+      // 3. Not too many similar responses
+  
+      // Get the bin counts
+      let bin_counts = [];
+      let responded_trials = last_session_data.filter(item => item.rt !== null);
+  
+      // debugger
+      for (iElement = 0; iElement < jatos.studySessionData.inputData.choices.length; iElement++){
+        bin_counts[iElement] = responded_trials.filter(item => item.key_press == ['49','50'][iElement]).length;
+      }
+      let max_count = Math.max(...bin_counts);
+      let max_perc = max_count * 100 / responded_trials.length
+  
+      if (max_perc >= jatos.studySessionData.qc_criteria.uniform_resp_perc){
+  
+        jatos.studySessionData.qc_status.global_pass            = false;
+        jatos.studySessionData.qc_status.uniform_resp_perc_pass = false;
+  
+      }
+  
+      // 4. If session >= 2, check better than chance
+      if (curr_session >= 2){
+  
+        let n_targets_above_chance = 
+          jatos.studySessionData.inputData.score_box_target_paths.running_perf.filter(item => item > 
+            jatos.studySessionData.qc_criteria.min_perf_check_perc).length
+  
+        if (n_targets_above_chance < jatos.studySessionData.inputData.basic_parameters.nTargets) {
+          jatos.studySessionData.qc_status.global_pass   = false;
+          jatos.studySessionData.qc_status.min_perf_pass = false;
+        }
+      }
+    }
 
     // What phase is this?
     let curr_phase   = jatos.studySessionData.phase_counter
@@ -26,10 +88,10 @@
     var timeline = []
 
     // In case the ptp failed qc after phase 1 practice
-    var practice_qc_failed = {
+    var qc_failed_practice = {
 
       type: 'survey-text',
-      questions: [jatos.studySessionData.debrief_questions],
+      questions: jatos.studySessionData.debrief_questions,
       button_label: "Finish",
       preamble: "<p> <br> Unfortunately, your performance did not pass our quality checks. </p> " + 
           "<p> As we stated in the instructions, in such a case we have to discontinue the study. </p>" +
@@ -41,14 +103,7 @@
     var qc_failed_phase_1 = {
 
       type: 'survey-text',
-      questions: [
-      jatos.studySessionData.debrief_questions[0],
-      jatos.studySessionData.debrief_questions[1],
-      jatos.studySessionData.debrief_questions[2],
-      jatos.studySessionData.debrief_questions[3],
-      jatos.studySessionData.debrief_questions[4],
-      jatos.studySessionData.debrief_questions[7]
-      ],
+      questions: jatos.studySessionData.debrief_questions,
       button_label: "Finish",
       preamble: "<p> Unfortunately, your performance did not pass our quality checks. </p> " + 
                 "<p> As we stated in the instructions, in such a case we have to discontinue the study. </p>" +
@@ -60,14 +115,7 @@
     var qc_failed_phase_2 = {
 
       type: 'survey-text',
-      questions: [
-      jatos.studySessionData.debrief_questions[0],
-      jatos.studySessionData.debrief_questions[1],
-      jatos.studySessionData.debrief_questions[2],
-      jatos.studySessionData.debrief_questions[3],
-      jatos.studySessionData.debrief_questions[4],
-      jatos.studySessionData.debrief_questions[7]
-      ],
+      questions: jatos.studySessionData.debrief_questions,
       button_label: "Finish",
       preamble: "<p> Unfortunately, your performance did not pass our quality checks. </p> " + 
                 "<p> As we stated in the instructions, in such a case we have to discontinue the study. </p>" +
@@ -76,7 +124,8 @@
 
     };      
 
-    debugger
+    // Get the latest data
+    let last_session_data = jatos.studySessionData.last_session_data
 
     if (curr_phase == 1){
 
@@ -84,37 +133,66 @@
         
         // Are we checking practice trials?
 
-        // Get the latest data
-        let last_session_data = jatos.studySessionData.last_session_data
-
         // Check RTs not too low
-        let rt_speed_pass = false
+        let rt_speed_pass_practice = false
         last_session_data.forEach((item) => {
           if (item.rt > jatos.studySessionData.qc_criteria.rt_min_speed){
-            rt_speed_pass = true
+            rt_speed_pass_practice = true
           }
         })
 
-        if (!rt_speed_pass){
-          timeline.push(practice_qc_failed)
+        // record in the jatos object
+        jatos.studySessionData.qc_status.practice_pass = rt_speed_pass_practice
+
+        if (!rt_speed_pass_practice){
+
+          // Record global pass failure
+          jatos.studySessionData.qc_status.global_pass = false
+
+          timeline.push(qc_failed_practice)
 
           jsPsych.init({
               timeline: timeline,
               on_finish: function(data){
-                  jatos.startComponentByPos(jatos.studySessionData.latestFinishedComponentPos);
+                  jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.data_submission);
               }
           })
-
-
         } else {
+          // So didn't fail
           jatos.submitResultData('Phase 1 practice QC passed. Starting post practice instructions', 
             jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.post_practice_instructions))
         }
       } else {
         // Checking real sessions
+        // debugger
+        session_qc_check(last_session_data,curr_session)
 
+        debugger
+        // Has the ptp failed?
+        if (jatos.studySessionData.qc_status.global_pass == false){
+
+          // Debrief only for phase 1
+          timeline.push(qc_failed_phase_1)
+          
+          jsPsych.init({
+            timeline: timeline,
+            on_finish: function(data){
+                // jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.data_submission);
+                jsPsych.data.displayData();
+
+            }
+          }) 
+
+        } else {
+
+          // So didn't fail
+          jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC passed. Giving a break`, 
+            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.short_break))
 
         }
+
+
+      } // Checking the real sessions section
 
     } else {
 
@@ -159,8 +237,8 @@
 
 
 
-
   });
+
 
 </script>
 

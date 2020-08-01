@@ -23,35 +23,26 @@
         //start timeline
         jatos.onLoad(function() {
 
+            debugger
+            // What phase is this?
+            let curr_phase   = jatos.studySessionData.phase_counter
+            let phase_string = 'phase_'+curr_phase
+            let curr_session = jatos.studySessionData.session_counter[phase_string]
+
             // end study function
             var end_study_fn = function() {
 
                 var redirect_fn = function () {return window.location.replace(redirect_url);};
 
                 // If failed at the practice trials
-                if (jatos.studySessionData.qc_status.practice_id_pairs_n_allowed_error_pass == false){
+                if (jatos.studySessionData.qc_status.practice_pass == false){
 
                     debugger;
 
                     // Redirection URL with the code saying how many sessions they completed
-                    var redirect_url = "https://app.prolific.co/submissions/complete?cc=PRACTICE_FAILED";
+                    var redirect_url = 'https://app.prolific.co/submissions/complete?cc=PRACTICE_FAILED_' + phase_string;
 
-                    jatos.endStudyAjax(true, "PRACTICE_FAILED_" + jatos.studySessionData.prolific_ID, redirect_fn);
-
-                    // // Tell participants they can close the window.
-                    // var trial = {
-                    //     type: 'instructions',
-                    //     pages: [
-                    //         'Thank you. You can now close this window. <br> ',
-                    //         ],
-                    //     show_clickable_nav: false,
-                    //     allow_keys: false
-                    // }
-
-                    // jsPsych.init({
-
-                    //     timeline: [trial]
-                    // })
+                    jatos.endStudyAjax(true, 'PRACTICE_FAILED_' + phase_string + '_' + jatos.studySessionData.prolific_ID, redirect_fn);
 
                 // If failed the qc
                 } else if (jatos.studySessionData.qc_status.global_pass == false){
@@ -69,23 +60,9 @@
                     jatos.endStudyAjax(true, "QC_FAILED_" + 
                     jatos.studySessionData.prolific_ID + '_' + JSON.stringify(Object.values(err)), redirect_fn)
 
-                    // // Tell participants they can close the window.
-                    // var trial = {
-                    //     type: 'instructions',
-                    //     pages: [
-                    //         'Thank you. You can now close this window. <br> ',
-                    //         ],
-                    //     show_clickable_nav: false,
-                    //     allow_keys: false
-                    // }
-
-                    // jsPsych.init({
-
-                    //     timeline: [trial],
-                    // })
-
                 } else {
 
+                    // So everything's good. Finished properly
                     debugger;
 
                     // Redirection URL with correct completion code
