@@ -133,6 +133,8 @@
         
         // Are we checking practice trials?
 
+        // Check instructions weren't breezed through too fast
+        
         // Check RTs not too low
         let rt_speed_pass_practice = false
         last_session_data.forEach((item) => {
@@ -167,7 +169,6 @@
         // debugger
         session_qc_check(last_session_data,curr_session)
 
-        debugger
         // Has the ptp failed?
         if (jatos.studySessionData.qc_status.global_pass == false){
 
@@ -186,10 +187,29 @@
         } else {
 
           // So didn't fail
-          jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC passed. Giving a break`, 
-            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.short_break))
 
-        }
+            // Check, if exceeded the performance, then continue to phase 2
+            let n_targets_learned = 
+              jatos.studySessionData.inputData.score_box_target_paths.running_perf.filter(item => item >= 
+                jatos.studySessionData.training_criterion).length
+
+            if (n_targets_learned == jatos.studySessionData.inputData.basic_parameters.nTargets) {
+              // Iterate the phase 
+              jatos.studySessionData.phase_counter ++
+              // Reset the session
+              jatos.studySessionData.session_counter = 1
+            } else {
+              // Iterate session
+              jatos.studySessionData.session_coutner ++
+            }
+
+            // Give a break
+            jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC passed. Giving a break`, 
+              jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.short_break))
+
+
+
+        } // global pass fail? if/else section
 
 
       } // Checking the real sessions section

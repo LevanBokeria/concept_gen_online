@@ -15,7 +15,7 @@
 
         jatos.onLoad(function() {
             
-            // debugger
+            debugger
 
             // What phase is this?
             let curr_phase             = jatos.studySessionData.phase_counter
@@ -26,14 +26,24 @@
 
             // If this for practice run?
             if (jatos.componentProperties.title.includes('practice_trials')){
-                var session_trials = JSON.parse(JSON.stringify(
-                    jatos.studySessionData.inputData.practice_trials[phase_string]))
+
+                // Now practice trials
+                var session_trials = 
+                    trialCreator(jatos.studySessionData.inputData.concepts[phase_string],
+                                jatos.studySessionData.inputData.basePracticeTrialArray,
+                                jatos.studySessionData.inputData.targetCoordsNames,
+                                curr_phase,0)     
+
                 // Record the current trial array in the outputData variable
                 jatos.studySessionData.outputData[phase_string+'_practice_results'] = session_trials
             } else {
                 // Then, check which session this is
-                var session_trials = JSON.parse(JSON.stringify(
-                    jatos.studySessionData.inputData.phase_trials[phase_string][curr_session-1]))
+                var session_trials = 
+                    trialCreator(jatos.studySessionData.inputData.concepts[phase_string],
+                                jatos.studySessionData.inputData.baseTrialArray,
+                                jatos.studySessionData.inputData.targetCoordsNames,
+                                curr_phase,curr_session)
+
                 // Record the current trial array in the outputData variable
                 jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1] = session_trials                 
             } 

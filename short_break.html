@@ -23,6 +23,11 @@
 	//start timeline
 	jatos.onLoad(function() {
 
+		// What phase is this?
+		let curr_phase   = jatos.studySessionData.phase_counter
+		let phase_string = 'phase_'+curr_phase
+		let curr_session = jatos.studySessionData.session_counter[phase_string]
+
 		//make a timeline
 		var timeline = []; 
 
@@ -41,7 +46,40 @@
 			n_seconds: jatos.studySessionData.short_break_duration
 
 		};
-		timeline.push(short_break_trial);
+
+		//make a welcome message
+		var long_break_trial = {
+			type: 'instructions-timer',
+			pages: [
+				'<p> Wonderful! You have done a great job at staying attentive. Thank you very much once again!' +
+				'<p> For the next 2 sessions, you will be tested once more on the same 128 pairs of pictures.</p>' + 
+				'<p> The ratings you give to the upcoming pictures do not have to be the same that you gave before.' +
+				'<p><br> For example, if for a certain level of perceived similarity you previously used 5 but now you think that ' + 
+				'8 is more appropriate, you can respond with 8.</p>' + 
+				'<p><br> Click the Next button or press the right-arrow button on your keyboard once you are ready to start the next session.'
+			],
+			show_clickable_nav: true,
+			button_label_next: "<span style='color: blue';> <strong> Next </stong></span>",
+			n_seconds: jatos.studySessionData.long_break_duration
+
+		};
+
+
+		// Check, if exceeded the performance, then continue to phase 2
+		let n_targets_learned = 
+			jatos.studySessionData.inputData.score_box_target_paths.running_perf.filter(item => item >= 
+			jatos.studySessionData.training_criterion).length
+
+		if (n_targets_learned == jatos.studySessionData.inputData.basic_parameters.nTargets & curr_phase == 1) {
+			// So phase 1 completed, load instructions
+
+			timeline.push(long_break_trial)
+
+		} else {
+			// So load short break instructions
+			timeline.push(short_break_trial)
+
+		}
 
 		jsPsych.init({
 
@@ -49,14 +87,14 @@
 
 			on_finish: function() {
 
-				jatos.studySessionData.outputData.phase_1_breaks_results[
-					jatos.studySessionData.outputData.phase_1_breaks_results.length
+				jatos.studySessionData.outputData[phase_string + '_breaks_results'][
+					jatos.studySessionData.outputData[phase_string + '_breaks_results'].length
 				] = jsPsych.data.get().values();
 
 				jatos.submitResultData("[short_break_start---" + 
 				JSON.stringify(jatos.studySessionData) + 
 				"---short_break_end]", function(){
-					jatos.startComponentByPos(component_to_start);
+					jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.phase_pa);
 				});
 			}
 		});

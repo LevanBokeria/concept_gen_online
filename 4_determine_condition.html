@@ -29,7 +29,8 @@
       intermediate_feedback:      9,   
       qc_checks:                  10,
       data_submission:            12,
-      short_break:                13
+      short_break:                13,
+      phase_pa:                   8
     }
 
     // A conditional that determines whether we are debugging or not. If debugging, fewer trials will be done.
@@ -60,6 +61,9 @@
       // Initial exposure time (seconds)
       jatos.studySessionData.all_pics_time = 1;
 
+      // Minimum % correct on each item
+      jatos.studySessionData.training_criterion = 0;
+
     } else {
 
       jatos.studySessionData.short_break_duration = 15; // seconds
@@ -74,6 +78,8 @@
       
       // Initial exposure time (seconds)
       jatos.studySessionData.all_pics_time = 10;
+
+      jatos.studySessionData.training_criterion = 80;
 
     };
 
@@ -174,7 +180,7 @@
     let score_box_target_paths = {
       phase_1: [],
       phase_2: [],
-      running_perf: [0,0,0],
+      running_perf: new Array(basic_parameters.nTargets).fill(0),
     }
     for (iPhase=1; iPhase<3; iPhase++){
       let phase_string = 'phase_'+iPhase
@@ -273,41 +279,10 @@
         phase_1: neck_legs_space,
         phase_2: beak_tail_space
     }
-
-    // Make the session 1 trials for phases
-    let phase_trials = {
-      phase_1: [],
-      phase_2: []
-    }
-    let practice_trials = {} 
     
     let imgs_to_preload = {
       base_images: [],
       exemplar_images: []
-    }
-
-    for (iPhase=1; iPhase<3; iPhase++){
-      let phase_string = 'phase_'+iPhase
-
-      // Session trials
-      phase_trials[phase_string][0] = 
-      trialCreator(concepts[phase_string],baseTrialArray,targetCoordsNames,iPhase,1)
-
-      // Now practice trials
-      practice_trials[phase_string] = 
-      trialCreator(concepts[phase_string],
-                   basePracticeTrialArray,
-                   targetCoordsNames,
-                   iPhase,0)
-      
-      // Get the names of images to preload
-      let all_ex_imgs = phase_trials[phase_string][0].map(function(item){
-        return item.ex_pairs_img_path
-      })
-      let all_practice_ex_imgs = practice_trials[phase_string].map(function(item){
-        return item.ex_pairs_img_path
-      })      
-
     }
 
     imgs_to_preload.base_images = [basic_parameters.fb_correct_img, basic_parameters.fb_incorrect_img]
@@ -320,8 +295,6 @@
       baseTrialArray: baseTrialArray,
       basePracticeTrialArray: basePracticeTrialArray,
       concepts: concepts,
-      phase_trials: phase_trials,
-      practice_trials: practice_trials,
       imgs_to_preload: imgs_to_preload,
       choices: ['1','2']
     }

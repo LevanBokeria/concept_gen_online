@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+	<title>Long break</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0">
+    <title>Dissimilarity Study</title>	
+	<script src="jspsych-6.1.0/jspsych.js" ></script>
+	<script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
+	<script src="jatos.js"></script>
+	<script src="./extra_functions/jspsych-instructions-timer.js"></script>
+    <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" type="text/css"></link>
+	<style>	body {background-color:white; font-family: sans-serif; color: black;} </style>
+	<style> p {font-size: 100%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px;} </style>
+	<style> ul {font-size: 100%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px; cursor:default;} </style>
+	<style> .instruct{width:100%; color: black; text-align:center; cursor:default;} </style>
+	<style> .header {position: fixed; left:0; top:0; width:100%; background-color:#F8F8F8; color: black; text-align: center;cursor:default;} </style>
+  </head>
+
+  <body>
+  <script>
+    //'use strict';
+
+//start timeline
+jatos.onLoad(function() {
+
+	//make a timeline
+	var timeline =[]; 
+
+	//make a welcome message
+    var short_break_trial = {
+        type: 'instructions-timer',
+        pages: [
+			'<p> Wonderful! You have done a great job at staying attentive. Thank you very much once again!' +
+            '<p> You now have seen all 128 pairs of ' + jatos.studySessionData.condition.subjStim + '. </p>' + 
+            '<p><br> Please take a ' + jatos.studySessionData.long_break_duration + ' second break. </p>' + 
+            '<p> For the next 2 sessions, you will be tested once more on the same 128 pairs of pictures.</p>' + 
+            '<p> The ratings you give to the upcoming pictures do not have to be the same that you gave before.' +
+            '<p><br> For example, if for a certain level of perceived similarity you previously used 5 but now you think that ' + 
+            '8 is more appropriate, you can respond with 8.</p>' + 
+            '<p><br> Click the Next button or press the right-arrow button on your keyboard once you are ready to start the next session.'
+        ],
+        show_clickable_nav: true,
+		button_label_next: "<span style='color: blue';> <strong> Next </stong></span>",
+		n_seconds: jatos.studySessionData.long_break_duration
+
+    };
+	timeline.push(short_break_trial);
+
+	jsPsych.init({
+
+	timeline: timeline,
+
+	on_finish: function() {
+
+		  
+
+		var component_to_start;
+
+		// Which component to run next?
+		if (jatos.studySessionData.latestFinishedComponentTitle == "9_session_2"){
+			
+			component_to_start = 10;
+
+		} else if (jatos.studySessionData.latestFinishedComponentTitle == "11_session_4"){
+
+			component_to_start = 12;
+
+		};
+
+
+		var result_data = {};
+
+         		
+			
+		result_data.prolific_ID = jatos.studySessionData.prolific_ID;
+		jatos.addJatosIds(result_data);
+
+		result_data.component_data = jsPsych.data.get().values();
+
+        jatos.studySessionData.allData.breaks_results[jatos.studySessionData.allData.breaks_results.length] = result_data;
+
+
+        jatos.submitResultData("[long_break_start---" + 
+		JSON.stringify(jatos.studySessionData) + 
+		"---long_break_end]", function(){
+			jatos.startComponentByPos(component_to_start);
+		});
+		}
+	});
+
+});
+
+
+	</script>
+</body>
+</html>

@@ -21,33 +21,44 @@
 
 		//start timeline
 		jatos.onLoad(function() {
-			
-			// debugger;
-
-			// How many practice trials are we doing?
-			var n_practice_trials;
 
 			//make a timeline
-			var timeline =[]; 
+			let timeline =[]; 
 
-			//make a welcome message
-			var instructions1 = {
-				type: "instructions-timer-enhanced",
-				pages : [				
-						"<div class= 'header'>"+
-							"<h1> Task Instructions </h1>"+
-						"</div>"+	
-						"<div class='instruct'> <br>"+
-							"<p> Welcome to the experiment.</p>" + 
-						"</div>",
-					],
-					
-					show_clickable_nav: true,
-					button_label_next: "<span style='color: black'd;> <strong> Next </stong></span>",
-					timer_on: false
+			let instructions = {
+				phase_1: {
+					type: "instructions-timer-enhanced",
+					pages : [				
+							"<div class= 'header'>"+
+								"<h1> Task Instructions </h1>"+
+							"</div>"+	
+							"<div class='instruct'> <br>"+
+								"<p> Welcome to the experiment.</p>" + 
+							"</div>",
+						],
+						
+						show_clickable_nav: true,
+						button_label_next: "<span style='color: black'd;> <strong> Next </stong></span>",
+						timer_on: false
+				},
+				phase_2: {
+					type: "instructions-timer-enhanced",
+					pages : [				
+							"<div class= 'header'>"+
+								"<h1> Task Instructions </h1>"+
+							"</div>"+	
+							"<div class='instruct'> <br>"+
+								"<p> PHASE 2.</p>" + 
+							"</div>",
+						],
+						
+						show_clickable_nav: true,
+						button_label_next: "<span style='color: black'd;> <strong> Next </stong></span>",
+						timer_on: false
 				}
+			}
 
-				timeline.push(instructions1);
+			timeline.push(instructions['phase_'+jatos.studySessionData.phase_counter]);
 
 			jsPsych.init({
 				
@@ -55,21 +66,10 @@
 
 				on_finish: function(data) {
 
-
 					// Make JATOS remember that this session was run
                     jatos.studySessionData.latestFinishedComponentId    = jatos.componentId;
                     jatos.studySessionData.latestFinishedComponentPos   = jatos.componentPos;
                     jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
-
-
-					// var result_data = {};
-						
-					// result_data.prolific_ID = jatos.studySessionData.prolific_ID;
-					// jatos.addJatosIds(result_data);
-
-					// result_data.component_data = jsPsych.data.get().values();
-
-					// jatos.studySessionData.allData.instructions_results = result_data;
 
 					jatos.submitResultData("[instructions_start---" + 
 					JSON.stringify(jatos.studySessionData) +
