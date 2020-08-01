@@ -55,6 +55,13 @@
 
 				on_finish: function(data) {
 
+
+					// Make JATOS remember that this session was run
+                    jatos.studySessionData.latestFinishedComponentId    = jatos.componentId;
+                    jatos.studySessionData.latestFinishedComponentPos   = jatos.componentPos;
+                    jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
+
+
 					// var result_data = {};
 						
 					// result_data.prolific_ID = jatos.studySessionData.prolific_ID;

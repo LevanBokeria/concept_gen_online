@@ -180,17 +180,18 @@
       running_perf: [0,0,0],
     }
     for (iPhase=1; iPhase<3; iPhase++){
-      
+      let phase_string = 'phase_'+iPhase
+
       for (iT=0; iT<basic_parameters.nTargets; iT++){
 
-          targetCoordsNames.pointNamesUsed['phase_' + iPhase][basic_parameters.targetPoints['phase_'+iPhase][iT]-1] = 
+          targetCoordsNames.pointNamesUsed[phase_string][basic_parameters.targetPoints[phase_string][iT]-1] = 
               targetCoordsNames.pointNamesTarget[iT]
 
-          targetCoordsNames.imgNamesUsed['phase_' + iPhase][basic_parameters.targetPoints['phase_'+iPhase][iT]-1] = 
+          targetCoordsNames.imgNamesUsed[phase_string][basic_parameters.targetPoints[phase_string][iT]-1] = 
               targetCoordsNames.imgNamesTarget[iT]
 
           // For the score box, create names of the target itesm
-          score_box_target_paths['phase_'+iPhase][iT] = './img/targets/' + targetCoordsNames.imgNamesTarget[iT] + '.png'
+          score_box_target_paths[phase_string][iT] = './img/targets/' + targetCoordsNames.imgNamesTarget[iT] + '.png'
       }
     }
     // Create all the combinations of targets and empty locations (imported from Matlab)
@@ -291,29 +292,30 @@
     }
 
     for (iPhase=1; iPhase<3; iPhase++){
-      
+      let phase_string = 'phase_'+iPhase
+
       // Session trials
-      phase_trials['phase_'+iPhase][0] = 
-      trialCreator(concepts['phase_'+iPhase],baseTrialArray,targetCoordsNames,iPhase,1)
+      phase_trials[phase_string][0] = 
+      trialCreator(concepts[phase_string],baseTrialArray,targetCoordsNames,iPhase,1)
 
       // Now practice trials
-      practice_trials['phase_'+iPhase] = 
-      trialCreator(concepts['phase_'+iPhase],
+      practice_trials[phase_string] = 
+      trialCreator(concepts[phase_string],
                    basePracticeTrialArray,
                    targetCoordsNames,
                    iPhase,0)
       
       // Get the names of images to preload
-      let all_ex_imgs = phase_trials['phase_'+iPhase][0].map(function(item){
+      let all_ex_imgs = phase_trials[phase_string][0].map(function(item){
         return item.ex_pairs_img_path
       })
-      let all_practice_ex_imgs = practice_trials['phase_'+iPhase].map(function(item){
+      let all_practice_ex_imgs = practice_trials[phase_string].map(function(item){
         return item.ex_pairs_img_path
       })      
 
-      imgs_to_preload['phase_'+iPhase] = [...score_box_target_paths['phase_'+iPhase], basic_parameters.fb_correct_img, basic_parameters.fb_incorrect_img, ...all_ex_imgs]
+      imgs_to_preload[phase_string] = [...score_box_target_paths[phase_string], basic_parameters.fb_correct_img, basic_parameters.fb_incorrect_img, ...all_ex_imgs]
 
-      imgs_to_preload['phase_'+iPhase+'_practice'] = [...score_box_target_paths['phase_'+iPhase], ...all_practice_ex_imgs]
+      imgs_to_preload[phase_string+'_practice'] = [...score_box_target_paths[phase_string], ...all_practice_ex_imgs]
 
 
     }
