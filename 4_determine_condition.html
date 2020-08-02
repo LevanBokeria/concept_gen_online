@@ -20,7 +20,7 @@
       phase_2: 1
     }
     jatos.studySessionData.phase_counter = 1;    
-
+    
     // Which scripts have which component IDs?
     jatos.studySessionData.script_comp_pos = {
       instructions:               5,
@@ -132,8 +132,12 @@
           phase_1: Array(16).fill('Empty'),
           phase_2: Array(16).fill('Empty')
         },
+        targetNamesUsed: {
+          phase_1: [],
+          phase_2: [],
+        },
         pointXCoord: [],
-        pointYCoord: []
+        pointYCoord: [],
     }
 
     for (iX = 0; iX < 4; iX++){
@@ -194,6 +198,8 @@
 
           targetCoordsNames.imgNamesUsed[phase_string][basic_parameters.targetPoints[phase_string][iT]-1] = 
               targetCoordsNames.imgNamesTarget[iT]
+
+          targetCoordsNames.targetNamesUsed[phase_string][iT] = targetCoordsNames.imgNamesTarget[iT]             
 
           // For the score box, create names of the target itesm
           score_box_target_paths[phase_string][iT] = './img/targets/' + targetCoordsNames.imgNamesTarget[iT] + '.png'

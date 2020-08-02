@@ -182,3 +182,66 @@ let calcRunningPerf = function(data) {
     let idx_of_score_box_target = jatos.studySessionData.inputData.score_box_target_paths['phase_'+curr_phase].indexOf(curr_prompt_path)
     jatos.studySessionData.inputData.score_box_target_paths.running_perf[idx_of_score_box_target] = avg * 100
 };
+
+// Define a function to do the checks
+let session_qc_check = function(last_session_data,curr_session){
+    
+    // 1. Not too many missed trials
+    let n_missed_trials    = last_session_data.filter(item => item.rt==null).length
+    let perc_missed_trials = n_missed_trials * 100 / last_session_data.length
+
+    if (perc_missed_trials >= jatos.studySessionData.qc_criteria.perc_max_missed){
+        jatos.studySessionData.qc_status.perc_max_missed_pass = false
+        jatos.studySessionData.qc_status.global_pass          = false            
+    }
+
+    // 2. Not too many fast trials
+    let n_fast_trials    = last_session_data.filter(item => item.rt < jatos.studySessionData.qc_criteria.rt_min_speed).length
+    let perc_fast_trials = n_fast_trials * 100 / last_session_data.length
+
+    if (perc_fast_trials >= jatos.studySessionData.qc_criteria.rt_min_perc){
+        jatos.studySessionData.qc_status.rt_pass     = false
+        jatos.studySessionData.qc_status.global_pass = false            
+    }
+
+    // 3. Not too many similar responses
+
+    // Get the bin counts
+    let bin_counts = [];
+    let responded_trials = last_session_data.filter(item => item.rt !== null);
+
+    // debugger
+    for (iElement = 0; iElement < jatos.studySessionData.inputData.choices.length; iElement++){
+        bin_counts[iElement] = responded_trials.filter(item => item.key_press == ['49','50'][iElement]).length;
+    }
+    let max_count = Math.max(...bin_counts);
+    let max_perc = max_count * 100 / responded_trials.length
+
+    if (max_perc >= jatos.studySessionData.qc_criteria.uniform_resp_perc){
+
+        jatos.studySessionData.qc_status.global_pass            = false;
+        jatos.studySessionData.qc_status.uniform_resp_perc_pass = false;
+
+    }
+
+    // 4. If session >= 2, check better than chance
+    if (curr_session >= 2){
+
+        let n_targets_above_chance = 
+        jatos.studySessionData.inputData.score_box_target_paths.running_perf.filter(item => item > 
+            jatos.studySessionData.qc_criteria.min_perf_check_perc).length
+
+        if (n_targets_above_chance < jatos.studySessionData.inputData.basic_parameters.nTargets) {
+        jatos.studySessionData.qc_status.global_pass   = false;
+        jatos.studySessionData.qc_status.min_perf_pass = false;
+        }
+    }
+}; // end of the function session_qc_check
+
+let getPhaseAndSession = function(){
+    let curr_phase   = jatos.studySessionData.phase_counter; 
+    let phase_string = 'phase_' + curr_phase;
+    let curr_session = jatos.studySessionData.session_counter;
+
+    return [curr_phase, phase_string, curr_session[phase_string]];
+};

@@ -5,15 +5,17 @@
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0">
     <title>Instructions</title>	
 	<script src="jspsych-6.1.0/jspsych.js" ></script>
+	<script src='./jspsych-6.1.0/plugins/jspsych-instructions.js'></script>
 	<script src="extra_functions/jspsych-instructions-timer-enhanced.js"></script>
+	<script src='./extra_functions/custom_functions.js'></script>
 	<script src="jatos.js"></script>
 	<link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" type="text/css"></link>
 	
 	<style>	body {background-color: #b9c6c7; font-family: sans-serif; color: black;} </style>
-	<style> p {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px;} </style>
-	<style> ul {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px; cursor:default;} </style>
+	<style> p {font-size: 100%; margin-top:0px; margin-right:20px; margin-bottom:10px; margin-left: 20px;} </style>
+	<style> ul {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:10px; margin-left: 100px; cursor:default;} </style>
 	<style> .instruct{width:100%; color: black; text-align:center; cursor:default;} </style>
-	<style> .header {position: fixed; left:0; top:0; width:100%; background-color:#8f8d8d; color: white; text-align: center;cursor:default;} </style>
+	<style> .header {width:100%; color: black; text-align: center;cursor:default;} </style>
   </head>
 
   <body>
@@ -22,43 +24,123 @@
 		//start timeline
 		jatos.onLoad(function() {
 
+			// What phase and session is this?
+			let [curr_phase,phase_string,curr_session] = getPhaseAndSession() 
+
+			// Create HTML elements 
+			let targets_on_page = document.createElement('div')
+			targets_on_page.id = 'targets_on_page'
+			targets_on_page.style = 'display: flex; justify-content: center; align-items: center;'
+
+			let names_on_page = document.createElement('div')
+			names_on_page.id = 'names_on_page'
+			names_on_page.style = 'display: flex; justify-content: center; align-items: center;'
+
+			let target_array = jatos.studySessionData.inputData.score_box_target_paths[phase_string]
+			let target_names = jatos.studySessionData.inputData.targetCoordsNames.targetNamesUsed[phase_string]
+			
+			for (i=0; i<target_array.length; i++){
+				// Create the names flexbox
+				let iN = document.createElement('P')
+				iN.id = 'target_name_' + (i+1)
+				iN.innerText = target_names[i]
+				iN.style = 'height: 20px; margin: 10px; font-size: 15px; text-align: center;'
+
+				// Create the target elements
+				let iT = document.createElement('img')
+				iT.id = 'target_' + (i+1)
+				iT.src = target_array[i]
+				iT.style = 'width: 50px; height: 50px'
+
+				targets_on_page.appendChild(iT)
+				names_on_page.appendChild(iN)
+			}
+
 			//make a timeline
 			let timeline =[]; 
 
 			let instructions = {
 				phase_1: {
-					type: "instructions-timer-enhanced",
+					type: 'instructions',
 					pages : [				
-							"<div class= 'header'>"+
-								"<h1> Task Instructions </h1>"+
-							"</div>"+	
-							"<div class='instruct'> <br>"+
-								"<p> Welcome to the experiment.</p>" + 
-							"</div>",
+							'<div class= "header">'+
+								'<h1> Task Instructions </h1>'+
+							'</div>'+	
+							'<div class="instruct"> <br>'+
+								'<p> Welcome to the experiment!</p>' + 
+								'<p> This experiment will test your perception and memory skills!</p>' +
+								'<p>It consists of two learning phases. In the end, you will do a short final matching task and a debriefing survey.</p>' +
+								'<p> Lets start with phase 1 of learning. Click "Next" to read instructions. </p>' +
+							'</div>',
+							'<div class= "header">'+
+								'<h1> Phase 1 Instructions </h1>'+
+							'</div>'+	
+							'<div class="instruct">'+
+								'<p>Below, you can see some examples of ' + 
+									jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
+									' that differ from each other by the length of their ' + 
+									jatos.studySessionData.inputData.concepts[phase_string].dim1_name + ' and ' + 
+									jatos.studySessionData.inputData.concepts[phase_string].dim2_name + '.</p>' + 
+								"<div id='all_pictures'>" +
+									"<img src='./img/initial_all_pictures/neck_legs_space.png' alt='all_pictures' "+
+									"style='height:40%;width:40%; object-fit:contain;'></img>" + 
+								"</div>" +
+								'<p> '+ jatos.studySessionData.inputData.basicParameters.nTargets +
+									' of these ' + jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
+									' are associated with the '+ 
+									jatos.studySessionData.inputData.basicParameters.nTargets +
+									' toys you see below.</p>' +
+									names_on_page.outerHTML + targets_on_page.outerHTML +
+									'<p>Your job is to find out which '+ 
+									jatos.studySessionData.inputData.basicParameters.nTargets +' ' + 
+									jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
+									' are associated with which toys as fast as you can! ' + 
+								'</p>' +
+							'</div>',
+							'<div class= "header">'+
+								'<h1> Phase 1 Instructions </h1>'+
+							'</div>'+	
+							'<div class="instruct"> <br>'+
+								'<p>On each trial of learning, you will see one of the toys and two candidate ' + 
+								jatos.studySessionData.inputData.concepts[phase_string].concept_object + ' on the screen.</p>' + 
+								'<p>You will have to guess which of the two ' + 
+								jatos.studySessionData.inputData.concepts[phase_string].concept_object + ' is correctly associated with the toy you see.</p>' +
+								'<p>You can make a response using the keyboard keys "1" and "2" corresponding to the two ' + 
+								jatos.studySessionData.inputData.concepts[phase_string].concept_object + '.</p>' +
+								'<p>You will then get feedback on whether you were correct or incorrect.</p>' +								
+							'</div>',
+							'<div class= "header">'+
+								'<h1> Phase 1 Instructions </h1>'+
+							'</div>'+	
+							'<div class="instruct"> <br>'+
+								'<p>Lets do some practice trials before beginning the actual learning.</p>' + 
+								'<p>You will have ' + (jatos.studySessionData.timer_response_window/1000) + ' seconds on each trial to make your response! </p>' +
+								'<p>Click Next to begin.</p>' +								
+							'</div>',																												
 						],
 						
 						show_clickable_nav: true,
-						button_label_next: "<span style='color: black'd;> <strong> Next </stong></span>",
-						timer_on: false
+						button_label_next: '<span style="color: black"d;> <strong> Next </stong></span>',
 				},
 				phase_2: {
-					type: "instructions-timer-enhanced",
+					type: 'instructions-timer-enhanced',
 					pages : [				
-							"<div class= 'header'>"+
-								"<h1> Task Instructions </h1>"+
-							"</div>"+	
-							"<div class='instruct'> <br>"+
-								"<p> PHASE 2.</p>" + 
-							"</div>",
+							'<div class= "header">'+
+								'<h1> Task Instructions </h1>'+
+							'</div>'+	
+							'<div class="instruct"> <br>'+
+								'<p> PHASE 2.</p>' + 
+							'</div>',
 						],
 						
 						show_clickable_nav: true,
-						button_label_next: "<span style='color: black'd;> <strong> Next </stong></span>",
+						button_label_next: '<span style="color: black"d;> <strong> Next </stong></span>',
 						timer_on: false
 				}
 			}
 
-			timeline.push(instructions['phase_'+jatos.studySessionData.phase_counter]);
+			timeline.push(instructions[phase_string]);
+			// timeline.push(instructions['phase_1']);			
 
 			jsPsych.init({
 				
@@ -74,7 +156,9 @@
 					jatos.submitResultData("[instructions_start---" + 
 					JSON.stringify(jatos.studySessionData) +
 					"---instructions_end]", jatos.startNextComponent);
-					}
+
+					// jsPsych.data.displayData();
+				}
 			});
 
 		});
