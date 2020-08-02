@@ -19,9 +19,20 @@
     jatos.onLoad(function() {
 
         var practice_trials_end = {
-            type: "instructions-timer-enhanced",
+            type: "instructions",
             pages: [
-                    '<p>This is the end of the practice trials. You will now begin the real trials. </p>' 
+                    '<p>This is the end of the practice trials. </p>' + 
+                    '<p>You will now start the 1st session of learning, with '+ 
+                        + jatos.studySessionData.inputData.nTrials +
+                        'trials. </p>' +
+                    '<p>If your learning score for each toy is 80% or more, you will move to phase 2! </p>' +
+                    '<p>If not, you will get more training sessions. </p>' +
+                    '<p>Keep in mind, the scores reset at the start of each session! </p>',
+
+                    '<p>Please note that your responses are monitored automatically.</p>' +
+                    '<p>You might be disqualified during the study if you take too many sessions to learn or ' + 
+                    ' if your responses have signs of inattention. </p>' +
+                    '<p> Click next to start the 1st session! Good luck! </p>'                                          
             ],
             show_clickable_nav: true,
             button_label_next: "<span style='color: blue';> <strong> Next </stong></span>"
@@ -31,15 +42,11 @@
         jsPsych.init({
             timeline: [practice_trials_end],
             on_finish: function(data) {
-                // // submit results to JATOS
-                // var result_data = {};
-                
-                // result_data.prolific_ID = jatos.studySessionData.prolific_ID;
-                // jatos.addJatosIds(result_data);
 
-                // // Make JATOS remember that this session was run
-                // jatos.studySessionData.latestFinishedComponentId  = jatos.componentId;
-                // jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
+
+                // Make JATOS remember that this session was run
+                jatos.studySessionData.latestFinishedComponentId  = jatos.componentId;
+                jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
 
                 // result_data.component_data = jsPsych.data.get().values();
 

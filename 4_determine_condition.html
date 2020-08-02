@@ -38,7 +38,7 @@
     // show_correct flag: if on, will show images of pairs with the "correct" answer displayed.
     // Auto respond: script will make random responses by itself.
     jatos.studySessionData.debug          = 1;
-    jatos.studySessionData.debug_n_trials = 5;
+    jatos.studySessionData.debug_n_trials = 10;
     jatos.studySessionData.show_correct   = 0;
     jatos.studySessionData.pilot          = 0;
     jatos.studySessionData.pilot_n_trials = 10;
@@ -52,8 +52,8 @@
       jatos.studySessionData.long_break_duration  = 2; // seconds
 
       jatos.studySessionData.timer_after_response    = 100; // milliseconds
-      jatos.studySessionData.timer_no_resp_fb_freeze = 1000; // milliseconds
-      jatos.studySessionData.timer_response_window   = 1000; // milliseconds            
+      jatos.studySessionData.timer_no_resp_fb_freeze = 500; // milliseconds
+      jatos.studySessionData.timer_response_window   = 7000; // milliseconds            
       jatos.studySessionData.post_trial_gap          = 100; // milliseconds
 
       jatos.studySessionData.n_practice_trials       = 2;
@@ -304,7 +304,9 @@
       basePracticeTrialArray: basePracticeTrialArray,
       concepts: concepts,
       imgs_to_preload: imgs_to_preload,
-      choices: ['1','2']
+      choices: ['1','2'],
+      nTrials: baseTrialArray.length,
+      nPracticeTrials: basePracticeTrialArray.length
     }
 
 
