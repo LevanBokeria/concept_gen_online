@@ -26,6 +26,8 @@
 
   jatos.onLoad(function() {
 
+
+    // Define a function to do the checks
     let session_qc_check = function(last_session_data,curr_session){
       
       // 1. Not too many missed trials
@@ -78,7 +80,13 @@
           jatos.studySessionData.qc_status.min_perf_pass = false;
         }
       }
-    }
+
+      // 5. If took more than N sessions, disqualify
+
+
+
+
+    }; // end of the function session_qc_check
 
     // What phase is this?
     let curr_phase   = jatos.studySessionData.phase_counter
@@ -124,6 +132,8 @@
 
     };      
 
+    // ////////////////////////////////////////////// START CHECKS //////////////////////////////////////////////////////////////
+
     // Get the latest data
     let last_session_data = jatos.studySessionData.last_session_data
 
@@ -164,9 +174,13 @@
           jatos.submitResultData('Phase 1 practice QC passed. Starting post practice instructions', 
             jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.post_practice_instructions))
         }
+
+
       } else {
-        // Checking real sessions
-        // debugger
+
+        //  //////// Checking real sessions ////////////
+        // //////////////////////////////////////////////
+
         session_qc_check(last_session_data,curr_session)
 
         // Has the ptp failed?
@@ -201,63 +215,118 @@
             } else {
               // Iterate session
               jatos.studySessionData.session_coutner ++
+
             }
 
-            // Give a break
-            jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC passed. Giving a break`, 
-              jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.short_break))
+            // Check if too many sessions, then stop training
+            if (jatos.studySessionData.session_counter >= jatos.studySessionData.qc_criteria.max_training_sess){
+              
+              // Debrief only for phase 1
+              timeline.push(qc_failed_phase_1)
+          
+              jsPsych.init({
+                timeline: timeline,
+                on_finish: function(data){
+                    // jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.data_submission);
+                    jsPsych.data.displayData();
+                }
+              })
 
+            } else {
+              // Continue training
+
+              // Give a break
+              jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC passed. Giving a break`, 
+                jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.short_break))
+
+            }
 
 
         } // global pass fail? if/else section
-
-
       } // Checking the real sessions section
 
     } else {
 
-      // So its phase 2
+      // So its phase 2 //////////////////////////////////////////////////////////////////////////////////////////
+      // So its phase 2 //////////////////////////////////////////////////////////////////////////////////////////
+      // So its phase 2 //////////////////////////////////////////////////////////////////////////////////////////      
 
       if (jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
       // Are we checking practice trials?
 
-      // If this is phase 2, then don't check practice trials. Ptps are probably very fast on everything.
-      jatos.submitResultData('Phase 2, practice done. Not checking QC.', 
-      jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.post_practice_instructions))
+        // If this is phase 2, then don't check practice trials. Ptps are probably very fast on everything.
+        jatos.submitResultData('Phase 2, practice done. Not checking QC.', 
+        jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.post_practice_instructions))
 
 
       } else {
 
+        //  //////// Checking real sessions ////////////
+        // //////////////////////////////////////////////
 
+        session_qc_check(last_session_data,curr_session)
 
+        // Has the ptp failed?
+        if (jatos.studySessionData.qc_status.global_pass == false){
 
-      }
+          // Debrief only for phase 1
+          timeline.push(qc_failed_phase_1)
+          
+          jsPsych.init({
+            timeline: timeline,
+            on_finish: function(data){
+                // jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.data_submission);
+                jsPsych.data.displayData();
 
-    }
-    
+            }
+          }) 
 
-    // Get the data from the last session:
+        } else {
 
+          // So didn't fail
 
-    // Check the RTs
+            // Check, if exceeded the performance, then continue to phase 2
+            let n_targets_learned = 
+              jatos.studySessionData.inputData.score_box_target_paths.running_perf.filter(item => item >= 
+                jatos.studySessionData.training_criterion).length
 
-    // Check if all responses are the same
+            if (n_targets_learned == jatos.studySessionData.inputData.basic_parameters.nTargets) {
+              // Iterate the phase 
+              jatos.studySessionData.phase_counter ++
+              // Reset the session
+              jatos.studySessionData.session_counter = 1
+            } else {
+              // Iterate session
+              jatos.studySessionData.session_coutner ++
 
-    // If session 2: check that response rate is > 50%
+            }
 
-    // Check the overall performance.
+            // Check if too many sessions, then stop training
+            if (jatos.studySessionData.session_counter >= jatos.studySessionData.qc_criteria.max_training_sess){
+              
+              // Debrief only for phase 1
+              timeline.push(qc_failed_phase_1)
+          
+              jsPsych.init({
+                timeline: timeline,
+                on_finish: function(data){
+                    // jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.data_submission);
+                    jsPsych.data.displayData();
+                }
+              })
 
-        // If more than 80% on each PA
+            } else {
+              // Continue training
 
-            // Congratulate, start the next phase.
+              // Give a break
+              jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC passed. Giving a break`, 
+                jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.short_break))
+            }
+        } // global pass fail? if/else section
+      } // checking practice or real session?
+    } // phase bracket
 
-        // If less than 80% on each PA
-
-            // Encourage and give a break
-
-
-
-  });
+  }); // jatos IFFY
 
 
 </script>
