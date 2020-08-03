@@ -301,6 +301,8 @@ const createScoreBox = function(){
         let iName = document.createElement('P')
         iName.className = 'score_box_target_name'
         iName.innerText = iN
+        iName.style.margin = '0'
+
 
         score_box.appendChild(iName)
     }
@@ -323,10 +325,11 @@ const createScoreBox = function(){
         let iPerf = document.createElement('P')
         iPerf.className = 'score_box_perf'
         iPerf.innerText = iS + '%'
+        iPerf.style.margin = '0'
 
         score_box.appendChild(iPerf)
     } 
-    debugger
+    // debugger
     // document.body.appendChild(score_box)
     return score_box
 };

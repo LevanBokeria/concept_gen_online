@@ -257,58 +257,30 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
     display_element.innerHTML = html;
 
-    // Create a smaller box to display the ongoing performance
-    const score_box     = document.createElement('div')
-    score_box.id        = 'score_box'
-    score_box.className = 'score_box'
+    debugger
+		// Create the score box
+		let score_box_element = createScoreBox()
+    score_box_element.style.position = 'absolute'
+    score_box_element.style.top      = '580px'
+    score_box_element.style.left     = '10px'             
+    
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(score_box_element)
 
-    score_box.style = 'position: absolute; top: 590px; left: 10px; width: 170px; height: 100px; border: 2px solid #444;'
+    // Create an element containing text about session, trial, and phase progress
+    const progress_text = document.createElement('P')
+    
+    if (trial.session == 0){
+      progress_text.innerText = 'Practice. Trial ' + (jsPsych.data.get().values().length + 1) + '/' + trial.n_trials;
 
-    display_element.querySelector("#jspsych-free-sort-arena").appendChild(score_box)
+    } else {
+      progress_text.innerText = 'Session ' + trial.session + '. Trial ' + (jsPsych.data.get().values().length + 1) + '/' + trial.n_trials;
+    };
 
-      // Add the images of targets and the text to the performance box
-      for (i=0; i<3; i++){
+    progress_text.id    = 'progress_text'
+    progress_text.style = 'font-size: 15px; text-align: center; position: absolute; top: -40px; left: 10px;'
+    // progress_text.style = 'font-size: 15px; display: block; margin-left: auto; margin-right: auto;'
 
-        let iTarget = document.createElement('img')
-        iTarget.src = trial.score_box_target_paths[i]
-        score_box.appendChild(iTarget)
-
-        iTarget.id    = 'iTarget' + i
-        iTarget.style = 'height: 40px; width: 40px; position: absolute; top:5px; left: ' + (5 + i*60) + 'px'
-
-        let iPerf = document.createElement('P')
-        iPerf.innerText = Math.round(jatos.studySessionData.inputData.score_box_target_paths.running_perf[i]) + '%'
-  
-        score_box.appendChild(iPerf)
-        
-        iPerf.id    = 'iPerf' + i
-        iPerf.style = 'font-size: 15px; position: absolute; top:30px; left: ' + (7 + i*60) + 'px'
-
-      }
-
-      // Add text "ongoing pefromance"
-      const ongoingPerfText     = document.createElement('P')
-      ongoingPerfText.innerText = 'Your scores'
-      ongoingPerfText.id        = 'ongoingPerfText'
-      ongoingPerfText.style     = 'position: absolute; top: 55px; left: 30px; font-weight: bold;'
-
-      score_box.appendChild(ongoingPerfText)
-
-        // Create an element containing text about session, trial, and phase progress
-        const progress_text = document.createElement('P')
-        
-        if (trial.session == 0){
-          progress_text.innerText = 'Practice. Trial ' + (jsPsych.data.get().values().length + 1) + '/' + trial.n_trials;
-
-        } else {
-          progress_text.innerText = 'Session ' + trial.session + '. Trial ' + (jsPsych.data.get().values().length + 1) + '/' + trial.n_trials;
-        };
-
-        progress_text.id    = 'progress_text'
-        progress_text.style = 'font-size: 15px; text-align: center; position: absolute; top: -40px; left: 10px;'
-        // progress_text.style = 'font-size: 15px; display: block; margin-left: auto; margin-right: auto;'
-
-        score_box.appendChild(progress_text)
+    score_box_element.appendChild(progress_text)
 
 
     // ADD PROMPT TEXT
