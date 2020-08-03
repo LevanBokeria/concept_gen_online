@@ -55,7 +55,7 @@
                 session_trials = deepCopy(shuffle(practice_session_trials))
 
                 // Now slice it
-                session_trials = session_trials.slide(0,2)
+                session_trials = session_trials.slice(0,jatos.studySessionData.n_practice_trials)
 
                 // Record the current trial array in the outputData variable
                 jatos.studySessionData.outputData[phase_string+'_practice_results'] = session_trials
