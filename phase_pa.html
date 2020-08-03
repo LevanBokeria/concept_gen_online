@@ -31,12 +31,31 @@
             // If this for practice run?
             if (jatos.componentProperties.title.includes('practice_trials')){
 
-                // Now practice trials
+                // Generate a full array of trials for a full session
                 var session_trials = 
                     trialCreator(jatos.studySessionData.inputData.concepts[phase_string],
                                 jatos.studySessionData.inputData.baseTrialArray,
-                                jatos.studySessionData.inputData.targetCoordsNames,
+                                jatos.studySessionData.inputData.basic_parameters,
                                 curr_phase,0)     
+
+                
+
+                // Now, choose trials such that each item is used at least twice
+                var practice_session_trials = []
+                
+                for (iPointName of jatos.studySessionData.inputData.basic_parameters.targetPointNames[phase_string]){
+                    // Find trials with this target
+                    session_trials.map(item => {
+                        if(item.prompt_point_name == iPointName){
+                            practice_session_trials.push(item)
+                        }
+                    })
+                }
+                // Shuffle practice_session_trials
+                session_trials = deepCopy(shuffle(practice_session_trials))
+
+                // Now slice it
+                session_trials = session_trials.slide(0,2)
 
                 // Record the current trial array in the outputData variable
                 jatos.studySessionData.outputData[phase_string+'_practice_results'] = session_trials
@@ -45,7 +64,7 @@
                 var session_trials = 
                     trialCreator(jatos.studySessionData.inputData.concepts[phase_string],
                                 jatos.studySessionData.inputData.baseTrialArray,
-                                jatos.studySessionData.inputData.targetCoordsNames,
+                                jatos.studySessionData.inputData.basic_parameters,
                                 curr_phase,curr_session)
 
                 // Record the current trial array in the outputData variable
@@ -55,7 +74,7 @@
 
             // debugger
 
-            let imgs_to_preload = JSON.parse(JSON.stringify(jatos.studySessionData.inputData.imgs_to_preload))
+            let imgs_to_preload = deepCopy(jatos.studySessionData.inputData.imgs_to_preload)
 
             imgs_to_preload.exemplar_images = session_trials.map((item) => {
                 return item.ex_pairs_img_path
@@ -153,7 +172,7 @@
 
                         // Create a temporary variable to hold data of the latest run session, so qc can be performed on this
                         jatos.studySessionData.last_session_data = 
-                        JSON.parse(JSON.stringify(jatos.studySessionData.outputData[phase_string+'_practice_results']));
+                        deepCopy(jatos.studySessionData.outputData[phase_string+'_practice_results']);
 
                         var results_delimiter_start = "[phase_" + curr_phase + "_practice_start---"
                         var results_delimiter_end   = "---phase_" + curr_phase + "_practice_end]"                        
@@ -167,7 +186,7 @@
 
                         // Create a temporary variable to hold data of the latest run session, so qc can be performed on this
                         jatos.studySessionData.last_session_data = 
-                        JSON.parse(JSON.stringify(jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1]));                        
+                        deepCopy(jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1]);                        
 
                         var results_delimiter_start = "[phase_" + curr_phase + "_ses_" + curr_session + "_start---"
                         var results_delimiter_end   = "---phase_" + curr_phase + "_ses_" + curr_session + "_end]" 

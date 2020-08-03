@@ -17,7 +17,7 @@ function index_into_array(array,indices){
     var filtered_array = [];
 
     for(i=0; i<indices.length; i++){
-        filtered_array[i] = JSON.parse(JSON.stringify(array[indices[i]]));
+        filtered_array[i] = deepCopy(array[indices[i]]);
         filtered_array[i].trial = i + 1;
     };
 
@@ -76,9 +76,13 @@ function add_image_info_and_trial_session_idxs_practice_trials(array,session_idx
 };    
 
 const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,iPhase,iSession){
+    // debugger
+
+    // What phase is this?
+    let phase_string = 'phase_' + iPhase
 
     // Shuffle the base trial array
-    let baseTrialArrayInner = JSON.parse(JSON.stringify(shuffle(baseTrialArray)))
+    let baseTrialArrayInner = deepCopy(shuffle(baseTrialArray))
 
     // Populate the baseTrialArrayInner with details for each trial
     for(i = 0, j = 0; i < baseTrialArrayInner.length; i++, j+=2) {
@@ -97,6 +101,7 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
           // Choose randomly
           baseTrialArrayInner[i].prompt_item_idx = Math.floor(Math.random()*1) + 1
       }
+      // Choose as foil the other one   
       if (baseTrialArrayInner[i].prompt_item_idx == 1){
           baseTrialArrayInner[i].foil_item_idx = 2
       } else {
@@ -107,25 +112,30 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
       baseTrialArrayInner[i].item_img_names  = []
       baseTrialArrayInner[i].item_img_paths  = []
       baseTrialArrayInner[i].item_point_idxs = []
-    //   debugger
+      
       for (k=0; k<2; k++){
-          baseTrialArrayInner[i].item_img_names[k]  = basic_parameters.imgNamesUsed['phase_'+iPhase][basic_parameters.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i]['item'+(k+1)])] 
-          baseTrialArrayInner[i].item_img_paths[k]  = './img/targets/' + baseTrialArrayInner[i].item_img_names[k] + '.png'
-          baseTrialArrayInner[i].item_point_idxs[k] = basic_parameters.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i]['item'+(k+1)])+1
+
+        let itemString = 'item'+(k+1)
+        let pointName = baseTrialArrayInner[i][itemString]
+        let pointNameIdx = basic_parameters.pointNamesUsed[phase_string].indexOf(pointName)
+
+        baseTrialArrayInner[i].item_img_names[k]  = basic_parameters.imgNamesUsed[phase_string][pointNameIdx] 
+        baseTrialArrayInner[i].item_img_paths[k]  = './img/targets/' + baseTrialArrayInner[i].item_img_names[k] + '.png'
+        baseTrialArrayInner[i].item_point_idxs[k] = basic_parameters.pointNamesUsed[phase_string].indexOf(pointName)+1
       }
 
       // point name of the prompt item?
       baseTrialArrayInner[i].prompt_point_name = baseTrialArrayInner[i]["item" + baseTrialArrayInner[i].prompt_item_idx]
       // target name of the prompt item?
       baseTrialArrayInner[i].prompt_img_name = 
-          basic_parameters.imgNamesUsed['phase_'+iPhase][basic_parameters.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i].prompt_point_name)]
+          basic_parameters.imgNamesUsed[phase_string][basic_parameters.pointNamesUsed[phase_string].indexOf(baseTrialArrayInner[i].prompt_point_name)]
       // prompt img path?
       baseTrialArrayInner[i].prompt_img_path = './img/targets/' + baseTrialArrayInner[i].prompt_img_name + '.png'
       // point name of the foil item?
       baseTrialArrayInner[i].foil_point_name = baseTrialArrayInner[i]["item" + baseTrialArrayInner[i].foil_item_idx]
       // target name of the foil item?
       baseTrialArrayInner[i].foil_img_name = 
-          basic_parameters.imgNamesUsed['phase_'+iPhase][basic_parameters.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i].foil_point_name)]
+          basic_parameters.imgNamesUsed[phase_string][basic_parameters.pointNamesUsed[phase_string].indexOf(baseTrialArrayInner[i].foil_point_name)]
       // foil img path?
       baseTrialArrayInner[i].foil_img_path = './img/targets/' + baseTrialArrayInner[i].foil_img_name + '.png'
       // Exemplar img to load?
@@ -140,7 +150,7 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
     }  
 
     // Shuffle once again, otherwise prompt item location is predictable 
-    baseTrialArrayInner = JSON.parse(JSON.stringify(shuffle(baseTrialArrayInner)))
+    baseTrialArrayInner = deepCopy(shuffle(baseTrialArrayInner))
 
     return baseTrialArrayInner
 }; // function trialCreator
@@ -152,11 +162,11 @@ const calcRunningPerf = function(data) {
     let curr_session   = jatos.studySessionData.session_counter['phase_'+curr_phase]
     let curr_trials
     if (jatos.componentPos == jatos.studySessionData.script_comp_pos.practice_trials){
-        curr_trials = JSON.parse(JSON.stringify(
-            jatos.studySessionData.outputData['phase_'+curr_phase+'_practice_results']))
+        curr_trials = deepCopy(
+            jatos.studySessionData.outputData['phase_'+curr_phase+'_practice_results'])
     } else {
-        curr_trials = JSON.parse(JSON.stringify(
-            jatos.studySessionData.outputData['phase_'+curr_phase+'_results'][curr_session-1]))
+        curr_trials = deepCopy(
+            jatos.studySessionData.outputData['phase_'+curr_phase+'_results'][curr_session-1])
     }
 
     curr_trials = curr_trials.slice(0,data.trial_index+1)
@@ -247,13 +257,13 @@ const getPhaseAndSession = function(){
 };
 
 const createScoreBox = function(){
-    // debugger
+
     // What phase is this?
     let [curr_phase,phase_string,curr_session] = getPhaseAndSession()
 
     // Get the score box details locally
     let local_score_box_info = jatos.studySessionData.inputData.score_box_target_paths
-    let running_perf = local_score_box_info.running_perf.map(item => Math.round(item))
+    let running_perf         = local_score_box_info.running_perf.map(item => Math.round(item))
 
 
     let img_names = jatos.studySessionData.inputData.basic_parameters.targetNamesUsed[phase_string]
@@ -263,11 +273,10 @@ const createScoreBox = function(){
     let target_width  = jatos.studySessionData.inputData.basic_parameters.score_box_target_width
     let target_height = jatos.studySessionData.inputData.basic_parameters.score_box_target_height;
 
-    let score_font_size = jatos.studySessionData.inputData.basic_parameters.score_box_score_font_size
+    let score_font_size      = jatos.studySessionData.inputData.basic_parameters.score_box_score_font_size
     let your_score_font_size = jatos.studySessionData.inputData.basic_parameters.score_box_description_font_size
 
-    let nTargets = jatos.studySessionData.inputData.basic_parameters.nTargets
-
+    let nTargets        = jatos.studySessionData.inputData.basic_parameters.nTargets
     let score_box_width = nTargets * target_width + nTargets*gaps_col
 
     // Create the main grid element
@@ -333,3 +342,7 @@ const createScoreBox = function(){
     // document.body.appendChild(score_box)
     return score_box
 };
+
+const deepCopy = function(object){
+    return JSON.parse(JSON.stringify(object))
+}

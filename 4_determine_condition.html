@@ -182,6 +182,12 @@
           phase_2: chosenTargetLocations,
         },                
         
+        // Point names, i.e. T1 T2 T6 etc
+        targetPointNames: {
+          phase_1: index_into_array(targetCoordsNames.pointNamesTarget,chosenTarget_idxs.phase_1),
+          phase_2: index_into_array(targetCoordsNames.pointNamesTarget,chosenTarget_idxs.phase_2),
+        },
+
         // Which target images are used for each phase?
         targetNamesUsed: {
           phase_1: index_into_array(targetCoordsNames.imgNamesTarget.phase_1,chosenTarget_idxs.phase_1),
@@ -235,12 +241,12 @@
         basic_parameters.targetPathsUsed[phase_string][iT] = './img/targets/' + iImageName + '.png'
       }
     }
-    debugger
+
     let baseTrialArray = genBaseTrialArray(cleanEmptyCombos(getCombos(basic_parameters.pointNamesUsed['phase_1'])))
 
     // If debug, then shorten these arrays
     if (jatos.studySessionData.debug == 1){
-      baseTrialArray         = JSON.parse(JSON.stringify(shuffle(baseTrialArray).slice(0,jatos.studySessionData.debug_n_trials)))
+      baseTrialArray         = deepCopy(shuffle(baseTrialArray).slice(0,jatos.studySessionData.debug_n_trials))
     }
     
     // Define the neck_legs_space
@@ -279,7 +285,6 @@
       imgs_to_preload: imgs_to_preload,
       choices: ['1','2'],
       nTrials: baseTrialArray.length,
-      nPracticeTrials: basePracticeTrialArray.length
     }
 
 
@@ -399,7 +404,7 @@
         item2: combos[i][1],
       }
     }
-    debugger
+
     return baseTrialArray;
   };
 

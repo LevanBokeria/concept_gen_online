@@ -53,7 +53,7 @@
                     var redirect_url = "https://app.prolific.co/submissions/complete?cc=QC_fail_s" + curr_session;
 
                     // Create an error text
-                    var err = JSON.parse(JSON.stringify(jatos.studySessionData.qc_status));
+                    var err = deepCopy(jatos.studySessionData.qc_status);
                     delete err.id_pair_n_reps;
                     delete err.practice_id_pair_n_reps;
 
