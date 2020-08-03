@@ -238,69 +238,9 @@
     debugger
     let baseTrialArray = genBaseTrialArray(cleanEmptyCombos(getCombos(basic_parameters.pointNamesUsed['phase_1'])))
 
-
-    // // Create all the combinations of targets and empty locations (imported from Matlab)
-    // let baseTrialArray = [
-    //     {item1: "T1", item2: "T2"},
-    //     {item1: "T1", item2: "T3"},
-    //     {item1: "T1", item2: "E2"},
-    //     {item1: "T1", item2: "E3"},
-    //     {item1: "T1", item2: "E4"},
-    //     {item1: "T1", item2: "E5"},
-    //     {item1: "T1", item2: "E6"},
-    //     {item1: "T1", item2: "E8"},
-    //     {item1: "T1", item2: "E9"},
-    //     {item1: "T1", item2: "E10"},
-    //     {item1: "T1", item2: "E11"},
-    //     {item1: "T1", item2: "E12"},
-    //     {item1: "T1", item2: "E13"},
-    //     {item1: "T1", item2: "E15"},
-    //     {item1: "T1", item2: "E16"},
-    //     {item1: "T2", item2: "T3"},
-    //     {item1: "T2", item2: "E2"},
-    //     {item1: "T2", item2: "E3"},
-    //     {item1: "T2", item2: "E4"},
-    //     {item1: "T2", item2: "E5"},
-    //     {item1: "T2", item2: "E6"},
-    //     {item1: "T2", item2: "E8"},
-    //     {item1: "T2", item2: "E9"},
-    //     {item1: "T2", item2: "E10"},
-    //     {item1: "T2", item2: "E11"},
-    //     {item1: "T2", item2: "E12"},
-    //     {item1: "T2", item2: "E13"},
-    //     {item1: "T2", item2: "E15"},
-    //     {item1: "T2", item2: "E16"},
-    //     {item1: "T3", item2: "E2"},
-    //     {item1: "T3", item2: "E3"},
-    //     {item1: "T3", item2: "E4"},
-    //     {item1: "T3", item2: "E5"},
-    //     {item1: "T3", item2: "E6"},
-    //     {item1: "T3", item2: "E8"},
-    //     {item1: "T3", item2: "E9"},
-    //     {item1: "T3", item2: "E10"},
-    //     {item1: "T3", item2: "E11"},
-    //     {item1: "T3", item2: "E12"},
-    //     {item1: "T3", item2: "E13"},
-    //     {item1: "T3", item2: "E15"},
-    //     {item1: "T3", item2: "E16"},
-    // ]
-
-    // // Create a similar base array for practice trials
-    // let basePracticeTrialArray = [
-    //     {item1: "T1", item2: "T2"},
-    //     {item1: "T1", item2: "E2"},
-    //     {item1: "T2", item2: "T3"},
-    //     {item1: "T2", item2: "E2"},
-    //     {item1: "T3", item2: "E2"},
-    //     {item1: "T3", item2: "E16"},
-    // ]    
-
     // If debug, then shorten these arrays
     if (jatos.studySessionData.debug == 1){
-
       baseTrialArray         = JSON.parse(JSON.stringify(shuffle(baseTrialArray).slice(0,jatos.studySessionData.debug_n_trials)))
-      basePracticeTrialArray = JSON.parse(JSON.stringify(shuffle(basePracticeTrialArray).slice(0,jatos.studySessionData.n_practice_trials)))
-
     }
     
     // Define the neck_legs_space
@@ -335,7 +275,6 @@
       basic_parameters: basic_parameters,
       score_box_target_paths: score_box_target_paths,
       baseTrialArray: baseTrialArray,
-      basePracticeTrialArray: basePracticeTrialArray,
       concepts: concepts,
       imgs_to_preload: imgs_to_preload,
       choices: ['1','2'],

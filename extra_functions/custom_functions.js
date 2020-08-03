@@ -75,7 +75,7 @@ function add_image_info_and_trial_session_idxs_practice_trials(array,session_idx
 
 };    
 
-let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames,iPhase,iSession){
+const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,iPhase,iSession){
 
     // Shuffle the base trial array
     let baseTrialArrayInner = JSON.parse(JSON.stringify(shuffle(baseTrialArray)))
@@ -109,23 +109,23 @@ let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames,i
       baseTrialArrayInner[i].item_point_idxs = []
     //   debugger
       for (k=0; k<2; k++){
-          baseTrialArrayInner[i].item_img_names[k]  = targetCoordsNames.imgNamesUsed['phase_'+iPhase][targetCoordsNames.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i]['item'+(k+1)])] 
+          baseTrialArrayInner[i].item_img_names[k]  = basic_parameters.imgNamesUsed['phase_'+iPhase][basic_parameters.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i]['item'+(k+1)])] 
           baseTrialArrayInner[i].item_img_paths[k]  = './img/targets/' + baseTrialArrayInner[i].item_img_names[k] + '.png'
-          baseTrialArrayInner[i].item_point_idxs[k] = targetCoordsNames.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i]['item'+(k+1)])+1
+          baseTrialArrayInner[i].item_point_idxs[k] = basic_parameters.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i]['item'+(k+1)])+1
       }
 
       // point name of the prompt item?
       baseTrialArrayInner[i].prompt_point_name = baseTrialArrayInner[i]["item" + baseTrialArrayInner[i].prompt_item_idx]
       // target name of the prompt item?
       baseTrialArrayInner[i].prompt_img_name = 
-          targetCoordsNames.imgNamesUsed['phase_'+iPhase][targetCoordsNames.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i].prompt_point_name)]
+          basic_parameters.imgNamesUsed['phase_'+iPhase][basic_parameters.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i].prompt_point_name)]
       // prompt img path?
       baseTrialArrayInner[i].prompt_img_path = './img/targets/' + baseTrialArrayInner[i].prompt_img_name + '.png'
       // point name of the foil item?
       baseTrialArrayInner[i].foil_point_name = baseTrialArrayInner[i]["item" + baseTrialArrayInner[i].foil_item_idx]
       // target name of the foil item?
       baseTrialArrayInner[i].foil_img_name = 
-          targetCoordsNames.imgNamesUsed['phase_'+iPhase][targetCoordsNames.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i].foil_point_name)]
+          basic_parameters.imgNamesUsed['phase_'+iPhase][basic_parameters.pointNamesUsed['phase_'+iPhase].indexOf(baseTrialArrayInner[i].foil_point_name)]
       // foil img path?
       baseTrialArrayInner[i].foil_img_path = './img/targets/' + baseTrialArrayInner[i].foil_img_name + '.png'
       // Exemplar img to load?
@@ -238,7 +238,7 @@ const session_qc_check = function(last_session_data,curr_session){
     }
 }; // end of the function session_qc_check
 
-let getPhaseAndSession = function(){
+const getPhaseAndSession = function(){
     let curr_phase   = jatos.studySessionData.phase_counter; 
     let phase_string = 'phase_' + curr_phase;
     let curr_session = jatos.studySessionData.session_counter;
@@ -256,7 +256,7 @@ const createScoreBox = function(){
     let running_perf = local_score_box_info.running_perf.map(item => Math.round(item))
 
 
-    let img_names = jatos.studySessionData.inputData.targetCoordsNames.targetNamesUsed[phase_string]
+    let img_names = jatos.studySessionData.inputData.basic_parameters.targetNamesUsed[phase_string]
     let img_paths = local_score_box_info[phase_string]
 
     let gaps_col      = 30; // gap between items in the box
