@@ -4,12 +4,14 @@
 	<title>Break</title>
     <meta charset="utf-8">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0">
-    <title>Dissimilarity Study</title>	
 	<script src="jspsych-6.1.0/jspsych.js" ></script>
 	<script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
+	<script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
 	<script src="jatos.js"></script>
 	<script src="./extra_functions/jspsych-instructions-timer.js"></script>
-    <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" type="text/css"></link>
+	<script src='./extra_functions/custom_functions.js'></script>
+	<link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" type="text/css"></link>
+	
 	<style>	body {background-color: #b9c6c7; font-family: sans-serif; color: black;} </style>
 	<style> p {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px;} </style>
 	<style> ul {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px; cursor:default;} </style>
@@ -27,21 +29,63 @@
 		let [curr_phase,phase_string,curr_session] = getPhaseAndSession()
 
 		// Create the score box
-		
+		let score_box_element = createScoreBox()
+		score_box_element.style.margin = '0 auto'
 
+		let component_to_start
 
+		debugger
 
 		//make a timeline
 		var timeline = []; 
 
-		//make a welcome message
+		// In case the ptp failed qc after phase 1 practice
+		var qc_failed_practice = {
+
+			type: 'survey-text',
+			questions: jatos.studySessionData.debrief_questions,
+			button_label: "Finish",
+			preamble: "<p> <br> Unfortunately, your performance did not pass our quality checks. </p> " + 
+				"<p> As we stated in the instructions, in such a case we have to discontinue the study. </p>" +
+				"<p> You will still be paid 1.2 pounds for completing the instructions and the practice session. </p> " + 
+				"<p> But first, please answer the following questions and then click the 'Finish' button below.</p>"
+		};
+
+		// In case they failed qc
+		var qc_failed_phase_1 = {
+
+			type: 'survey-text',
+			questions: jatos.studySessionData.debrief_questions,
+			button_label: "Finish",
+			preamble: "<p> Unfortunately, your performance did not pass our quality checks. </p> " + 
+					"<p> As we stated in the instructions, in such a case we have to discontinue the study. </p>" +
+					"<p> You will still be paid for the practice session and any completed experimental session.</p> " + 
+					"<p> But first, please answer the following questions and then click the 'Finish' button below.</p>"
+
+		};  
+
+		var qc_failed_phase_2 = {
+
+			type: 'survey-text',
+			questions: jatos.studySessionData.debrief_questions,
+			button_label: "Finish",
+			preamble: "<p> Unfortunately, your performance did not pass our quality checks. </p> " + 
+					"<p> As we stated in the instructions, in such a case we have to discontinue the study. </p>" +
+					"<p> You will still be paid for the practice session and any completed experimental session.</p> " + 
+					"<p> But first, please answer the following questions and then click the 'Finish' button below.</p>"
+
+		};      
+
 		var short_break_trial = {
 			type: 'instructions-timer',
 			pages: [
 				'<p> Thank you so much for completing this session! <br> ' + 
 				'You are doing great! <br> ' +
 				'We really appreciate you staying attentive and continuing to honestly perform the task. </p>' +
-				+ '<p> Below you can see your scores from the last session: </p>' +
+				'<p> Below you can see your scores from the last session: </p>' +
+				score_box_element.outerHTML + 
+				'<p> <br>Remember, you goal is to reach ' + 
+					jatos.studySessionData.training_criterion + '% on each of these toys!' +
 				'<p><br> Please take a ' + jatos.studySessionData.short_break_duration + 
 				' second break and click the Next button or press the right-arrow button on the keyboard to start the next session. </p>'
 			],
@@ -51,7 +95,6 @@
 
 		};
 
-		//make a welcome message
 		var long_break_trial = {
 			type: 'instructions-timer',
 			pages: [
@@ -68,22 +111,34 @@
 
 		};
 
-
-		// Check, if exceeded the performance, then continue to phase 2
-		let n_targets_learned = 
-			jatos.studySessionData.inputData.score_box_target_paths.running_perf.filter(item => item >= 
-			jatos.studySessionData.training_criterion).length
-
-		if (n_targets_learned == jatos.studySessionData.inputData.basic_parameters.nTargets & curr_phase == 1) {
-			// So phase 1 completed, load instructions
-
+		if (jatos.studySessionData.progress_state == 'advance_phase') {
 			timeline.push(long_break_trial)
 
-		} else {
-			// So load short break instructions
-			timeline.push(short_break_trial)
+			jatos.studySessionData.phase_counter ++
 
-		}
+			component_to_start = jatos.studySessionData.script_comp_pos.instructions
+
+		} else if (jatos.studySessionData.progress_state = 'advance_session'){
+			timeline.push(short_break_trial)
+			jatos.studySessionData.session_counter[phase_string] ++			
+
+			component_to_start = jatos.studySessionData.script_comp_pos.phase_pa
+
+		} else if (jatos.studySessionData.progress_state = 'qc_failed_phase_1'){			
+			timeline.push(qc_failed_phase_1)
+
+			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
+
+		} else if (jatos.studySessionData.progress_state = 'qc_failed_phase_2'){		
+			timeline.push(qc_failed_phase_2)	
+
+			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
+
+		} else if (jatos.studySessionData.progress_state = 'finished_training'){
+			timeline.push(finished_training) // not yet defined
+
+			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
+		}		
 
 		jsPsych.init({
 
@@ -95,10 +150,10 @@
 					jatos.studySessionData.outputData[phase_string + '_breaks_results'].length
 				] = jsPsych.data.get().values();
 
-				jatos.submitResultData("[short_break_start---" + 
+				jatos.submitResultData("[break_start---" + 
 				JSON.stringify(jatos.studySessionData) + 
-				"---short_break_end]", function(){
-					jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.phase_pa);
+				"---break_end]", function(){
+					jatos.startComponentByPos(component_to_start);
 				});
 			}
 		});

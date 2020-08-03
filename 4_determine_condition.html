@@ -21,6 +21,8 @@
     }
     jatos.studySessionData.phase_counter = 1;    
     
+    jatos.studySessionData.progress_state = 'starting' // a string that will say whether to advance a session, phase, fail the participant, or whatnot.
+
     // Which scripts have which component IDs?
     jatos.studySessionData.script_comp_pos = {
       instructions:               5,
@@ -38,7 +40,7 @@
     // show_correct flag: if on, will show images of pairs with the "correct" answer displayed.
     // Auto respond: script will make random responses by itself.
     jatos.studySessionData.debug          = 1;
-    jatos.studySessionData.debug_n_trials = 10;
+    jatos.studySessionData.debug_n_trials = 5;
     jatos.studySessionData.show_correct   = 0;
     jatos.studySessionData.pilot          = 0;
     jatos.studySessionData.pilot_n_trials = 10;
@@ -62,7 +64,7 @@
       jatos.studySessionData.all_pics_time = 1;
 
       // Minimum % correct on each item
-      jatos.studySessionData.training_criterion = 0;
+      jatos.studySessionData.training_criterion = 80;
 
     } else {
 
@@ -174,8 +176,6 @@
         audio_stimulus: './img/feedback/success.wav',
 
         // Peformance box
-        score_box_width: 100,
-        score_box_height: 100,
         score_box_target_width: 50,
         score_box_target_height: 50,
         score_box_score_font_size: 13, // Size of the score text, "100%"

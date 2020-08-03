@@ -15,7 +15,7 @@
 
         jatos.onLoad(function() {
             
-            debugger
+            // debugger
 
             // What phase is this?
             let curr_phase             = jatos.studySessionData.phase_counter
@@ -23,6 +23,10 @@
             let curr_session           = jatos.studySessionData.session_counter[phase_string]
             let curr_space_object      = jatos.studySessionData.inputData.concepts[phase_string]
             let score_box_target_paths = jatos.studySessionData.inputData.score_box_target_paths[phase_string]
+
+            // Reset the running performance
+            jatos.studySessionData.inputData.score_box_target_paths.running_perf = 
+                new Array(jatos.studySessionData.inputData.basic_parameters.nTargets).fill(0)
 
             // If this for practice run?
             if (jatos.componentProperties.title.includes('practice_trials')){

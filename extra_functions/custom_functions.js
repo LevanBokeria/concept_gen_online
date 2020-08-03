@@ -246,15 +246,87 @@ let getPhaseAndSession = function(){
     return [curr_phase, phase_string, curr_session[phase_string]];
 };
 
-const createScoreBox = function(running_perf){
+const createScoreBox = function(){
+    // debugger
+    // What phase is this?
+    let [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+
+    // Get the score box details locally
+    let local_score_box_info = jatos.studySessionData.inputData.score_box_target_paths
+    let running_perf = local_score_box_info.running_perf
 
 
+    let img_names = jatos.studySessionData.inputData.targetCoordsNames.targetNamesUsed[phase_string]
+    let img_paths = local_score_box_info[phase_string]
+
+    let gaps_col      = 20; // gap between items in the box
+    let target_width  = jatos.studySessionData.inputData.basic_parameters.score_box_target_width
+    let target_height = jatos.studySessionData.inputData.basic_parameters.score_box_target_height;
+
+    let score_font_size = jatos.studySessionData.inputData.basic_parameters.score_box_score_font_size
+    let your_score_font_size = jatos.studySessionData.inputData.basic_parameters.score_box_description_font_size
+
+    let nTargets = jatos.studySessionData.inputData.basic_parameters.nTargets
+
+    let score_box_width = nTargets * target_width + nTargets*gaps_col
+
+    // Create the main grid element
+    let score_box = document.createElement('div')
+    score_box.className = 'wrapper'
+    score_box.style = 
+        'display: grid;' + 
+        'grid-gap: 0px '+ gaps_col + 'px;' +
+        'grid-template-columns: repeat(' + img_paths.length +', '+ target_width + 'px);' +
+        'background-color: #fff;' +
+        'text-align: center;' +
+        'place-items: center center;' +
+        'border: 2px solid #444;' + 
+        'width: '+score_box_width+'px;' +
+        'place-content: center center;' 
+        
+    let box_header = document.createElement('div')
+    box_header.innerText = 'Your Scores:'
+    box_header.className = 'box_header'
+    box_header.style = 
+        'grid-column: 1 / ' + (nTargets+1) + ';' + 
+        'grid-row: 1;' +
+        'text-align: center;' +
+        'font-weight: bold;' + 
+        'font-size: '+your_score_font_size+'px;'           
+
+    score_box.appendChild(box_header)
+
+    // Add target names
+    for (iN of img_names){
+        let iName = document.createElement('P')
+        iName.className = 'score_box_target_name'
+        iName.innerText = iN
+
+        score_box.appendChild(iName)
+    }
+
+    // Add the images 
+    for (iT of img_paths){
     
+        let iTarget = document.createElement('img')
+        iTarget.className = 'score_box_targets'
+        iTarget.src = iT
+        // iTarget.style.width = target_width
+        // iTarget.style.height = target_height    
+        iTarget.style = 'width: ' + target_width + 'px; height: ' + target_height + 'px;'        
 
+        score_box.appendChild(iTarget)
+    }    
 
+    // Add your scores
+    for (iS of running_perf){
+        let iPerf = document.createElement('P')
+        iPerf.className = 'score_box_perf'
+        iPerf.innerText = iS + '%'
 
-
-
-
-
-}
+        score_box.appendChild(iPerf)
+    } 
+    debugger
+    // document.body.appendChild(score_box)
+    return score_box
+};

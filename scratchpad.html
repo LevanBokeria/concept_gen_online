@@ -23,10 +23,11 @@
 <body>
     <script>
 
+    let getScoreBox = function(){
         let score_box_width = 170;
         let score_box_height = 100;
 
-        let gaps = 10; // gap between items in the box
+        let gaps_col = 20; // gap between items in the box
         let target_width = 50;
         let target_height = 50;
 
@@ -38,18 +39,20 @@
 
         let nTargets = img_paths.length
 
+        let score_box_widht = nTargets * target_width + nTargets*gaps_col
+
 
         let score_box = document.createElement('div')
         score_box.className = 'wrapper'
         score_box.style = 
             'display: grid;' + 
-            'grid-gap: 5px 30px;' +
+            'grid-gap: 0px '+ gaps_col + 'px;' +
             'grid-template-columns: repeat(' + img_paths.length +', '+ target_width + 'px);' +
             'background-color: #fff;' +
             'text-align: center;' +
             'place-items: center center;' +
             'border: 2px solid #444;' + 
-            'width: 250px;' +
+            'width: '+score_box_widht+'px;' +
             'place-content: center center;' 
             
         let box_header = document.createElement('div')
@@ -94,13 +97,17 @@
             score_box.appendChild(iPerf)
         } 
 
-        
 
-        
+        return score_box
+    }
 
-        document.body.appendChild(score_box)
+    let score_box = getScoreBox()
+
+        // Change position
+        score_box.style.margin = '0 auto'
 
 
+    document.body.appendChild(score_box)
 
         // // Create a smaller box to display the ongoing performance
         // const score_box     = document.createElement('div')
