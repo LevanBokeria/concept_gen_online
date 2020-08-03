@@ -257,7 +257,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
     display_element.innerHTML = html;
 
-    debugger
+    // debugger
 		// Create the score box
 		let score_box_element = createScoreBox()
     score_box_element.style.position = 'absolute'

@@ -253,13 +253,13 @@ const createScoreBox = function(){
 
     // Get the score box details locally
     let local_score_box_info = jatos.studySessionData.inputData.score_box_target_paths
-    let running_perf = local_score_box_info.running_perf
+    let running_perf = local_score_box_info.running_perf.map(item => Math.round(item))
 
 
     let img_names = jatos.studySessionData.inputData.targetCoordsNames.targetNamesUsed[phase_string]
     let img_paths = local_score_box_info[phase_string]
 
-    let gaps_col      = 20; // gap between items in the box
+    let gaps_col      = 30; // gap between items in the box
     let target_width  = jatos.studySessionData.inputData.basic_parameters.score_box_target_width
     let target_height = jatos.studySessionData.inputData.basic_parameters.score_box_target_height;
 

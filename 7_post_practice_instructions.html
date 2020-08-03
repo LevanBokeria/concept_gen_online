@@ -21,18 +21,28 @@
         var practice_trials_end = {
             type: "instructions",
             pages: [
-                    '<p>This is the end of the practice trials. </p>' + 
-                    '<p>You will now start the 1st session of learning, with '+ 
-                        + jatos.studySessionData.inputData.nTrials +
-                        'trials. </p>' +
-                    '<p>If your learning score for each toy is 80% or more, you will move to phase 2! </p>' +
-                    '<p>If not, you will get more training sessions. </p>' +
-                    '<p>Keep in mind, the scores reset at the start of each session! </p>',
+                    '<div class= "header">'+
+                        '<h1> Instructions </h1>'+
+                    '</div>'+
+                    '<div class="instruct"> <br>'+
+                        '<p>This is the end of the practice trials. </p>' + 
+                        '<p>You will now start the 1st session of learning, with '+ 
+                            + jatos.studySessionData.inputData.nTrials +
+                            ' trials. </p>' +
+                        '<p>If your learning score for each toy is 80% or more, you will move to phase 2! </p>' +
+                        '<p>If not, you will get more training sessions. </p>' +
+                        '<p>Keep in mind, the scores reset at the start of each session! </p>' +
+                    '</div>',
 
-                    '<p>Please note that your responses are monitored automatically.</p>' +
-                    '<p>You might be disqualified during the study if you take too many sessions to learn or ' + 
-                    ' if your responses have signs of inattention. </p>' +
-                    '<p> Click next to start the 1st session! Good luck! </p>'                                          
+                    '<div class= "header">'+
+                        '<h1> Instructions </h1>'+
+                    '</div>'+
+                    '<div class="instruct"> <br>'+
+                        '<p>Please note that your responses are monitored automatically.</p>' +
+                        '<p>You might be disqualified during the study if you take too many sessions to learn or ' + 
+                        ' if your responses have signs of inattention. </p>' +
+                        '<p> Click next to start the 1st session! Good luck! </p>' +
+                    '</div>',
             ],
             show_clickable_nav: true,
             button_label_next: "<span style='color: blue';> <strong> Next </stong></span>"
