@@ -5,6 +5,7 @@
   <title>4 Determine Conditions</title>
   <script src = "./extra_functions/jquery-3.4.1.js" type="text/javascript"></script>
   <script src="./extra_functions/custom_functions.js"> </script>
+  <script src='./extra_functions/lodash.js'></script>
   <script src="jatos.js"></script>
   </head>
 <body></body>
@@ -46,7 +47,7 @@
     jatos.studySessionData.pilot_n_trials = 10;
     jatos.studySessionData.auto_respond   = false;
     jatos.studySessionData.auto_respond_trial_dur = 100; // milliseconds
-    jatos.studySessionData.perf_check_over_n_trials = 10; // Over how many previous trials is the performance calculated?
+    jatos.studySessionData.perf_check_over_n_trials = 15; // Over how many previous trials is the performance calculated?
 
     // Duration of trials, breaks, ITI, etc
     if (jatos.studySessionData.debug == 1 || jatos.studySessionData.pilot == 1) {
@@ -123,20 +124,12 @@
     // Now, allocate coordinates for all empty location
     const targetCoordsNames = {
         pointNamesEmpty: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
-        pointNamesUsed: {
-          phase_1: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
-          phase_2: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16']
-        },
         pointNamesTarget: ['T1','T2','T3','T4','T5','T6'],
+
         imgNamesEmpty: Array(16).fill('Empty'),
-        imgNamesTarget: ['Tree','Santa','Bell','Sledge','Gingerman','Bear'],
-        imgNamesUsed: {
-          phase_1: Array(16).fill('Empty'),
-          phase_2: Array(16).fill('Empty')
-        },
-        targetNamesUsed: {
-          phase_1: [],
-          phase_2: [],
+        imgNamesTarget: {
+          phase_1: ['Tree','Santa','Bell','Sledge','Gingerman','Bear'], 
+          phase_2: ['Tree','Santa','Bell','Sledge','Gingerman','Bear'],
         },
         pointXCoord: [],
         pointYCoord: [],
@@ -150,6 +143,15 @@
     }
 
     // Basic parameters, not specific to any space
+
+    // Randomly choose the target indices
+    // let chosenTarget_idxs = _.sampleSize(targetCoordsNames.pointNamesTarget.length, basic_parameters.nTargets)
+    let chosenTarget_idxs = {
+      phase_1: [0,1,2], 
+      phase_2: [0,1,2],
+    }
+    let chosenTargetLocations = [1,7,14] // Are these base 0 or base 1?????????
+
     const basic_parameters = {
 
         // Display
@@ -162,14 +164,6 @@
         },
         prompt_img_y_coords: 80,            
 
-        // Targets
-        nTargets: 3,
-        targetPoints: {
-          phase_1: [1,7,14],
-          phase_2: [1,7,14],
-        },                
-
-
         // Feedback items
         fb_correct_img: './img/feedback/green_tick.png',
         fb_incorrect_img: './img/feedback/Red_x.png',
@@ -180,6 +174,37 @@
         score_box_target_height: 30,
         score_box_score_font_size: 13, // Size of the score text, "100%"
         score_box_description_font_size: 15, // "Your scores"
+
+        ///////////////////////////////////////// Targets ////////////////////////////////////
+        nTargets: 3,
+        targetPoints: {
+          phase_1: chosenTargetLocations,
+          phase_2: chosenTargetLocations,
+        },                
+        
+        // Which target images are used for each phase?
+        targetNamesUsed: {
+          phase_1: index_into_array(targetCoordsNames.imgNamesTarget.phase_1,chosenTarget_idxs.phase_1),
+          phase_2: index_into_array(targetCoordsNames.imgNamesTarget.phase_2,chosenTarget_idxs.phase_2),
+        },        
+
+        // Paths to the target images
+        targetPathsUsed: {
+          phase_1: [],
+          phase_2: [],
+        },
+
+        // For all 16 points, what are the corresponding point names?
+        pointNamesUsed: {
+          phase_1: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
+          phase_2: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16']
+        },
+
+        // For all 16 points, what are the names for corresponding image?
+        imgNamesUsed: {
+          phase_1: Array(16).fill('Empty'),
+          phase_2: Array(16).fill('Empty')
+        },
     }
 
     // Create arrays with point and img names with appropriate number of targets at appropriate locations
@@ -188,78 +213,87 @@
       phase_2: [],
       running_perf: new Array(basic_parameters.nTargets).fill(0),
     }
+
     for (iPhase=1; iPhase<3; iPhase++){
       let phase_string = 'phase_'+iPhase
 
       for (iT=0; iT<basic_parameters.nTargets; iT++){
 
-          targetCoordsNames.pointNamesUsed[phase_string][basic_parameters.targetPoints[phase_string][iT]-1] = 
-              targetCoordsNames.pointNamesTarget[iT]
+        // Which of the 16 locations are we changeing?
+        let iLocation  = basic_parameters.targetPoints[phase_string][iT]-1
+        // Whats the name of the target point? (T1, T5, etc)
+        let iPointName = targetCoordsNames.pointNamesTarget[chosenTarget_idxs[phase_string][iT]]        
+        // Whats the name of the target? (Bell, Tree, etc)a
+        let iImageName =  targetCoordsNames.imgNamesTarget[phase_string][chosenTarget_idxs[phase_string][iT]]
 
-          targetCoordsNames.imgNamesUsed[phase_string][basic_parameters.targetPoints[phase_string][iT]-1] = 
-              targetCoordsNames.imgNamesTarget[iT]
-
-          targetCoordsNames.targetNamesUsed[phase_string][iT] = targetCoordsNames.imgNamesTarget[iT]             
-
-          // For the score box, create names of the target itesm
-          score_box_target_paths[phase_string][iT] = './img/targets/' + targetCoordsNames.imgNamesTarget[iT] + '.png'
+        // Change the E1 E2 E3 etc. Intersperce it with Target point names
+        basic_parameters.pointNamesUsed[phase_string][iLocation] = iPointName
+        basic_parameters.imgNamesUsed[phase_string][iLocation]   = iImageName
+             
+        // For the score box, create names of the target itesm
+        score_box_target_paths[phase_string][iT]           = './img/targets/' + iImageName + '.png'
+        basic_parameters.targetPathsUsed[phase_string][iT] = './img/targets/' + iImageName + '.png'
       }
     }
-    // Create all the combinations of targets and empty locations (imported from Matlab)
-    let baseTrialArray = [
-        {item1: "T1", item2: "T2"},
-        {item1: "T1", item2: "T3"},
-        {item1: "T1", item2: "E2"},
-        {item1: "T1", item2: "E3"},
-        {item1: "T1", item2: "E4"},
-        {item1: "T1", item2: "E5"},
-        {item1: "T1", item2: "E6"},
-        {item1: "T1", item2: "E8"},
-        {item1: "T1", item2: "E9"},
-        {item1: "T1", item2: "E10"},
-        {item1: "T1", item2: "E11"},
-        {item1: "T1", item2: "E12"},
-        {item1: "T1", item2: "E13"},
-        {item1: "T1", item2: "E15"},
-        {item1: "T1", item2: "E16"},
-        {item1: "T2", item2: "T3"},
-        {item1: "T2", item2: "E2"},
-        {item1: "T2", item2: "E3"},
-        {item1: "T2", item2: "E4"},
-        {item1: "T2", item2: "E5"},
-        {item1: "T2", item2: "E6"},
-        {item1: "T2", item2: "E8"},
-        {item1: "T2", item2: "E9"},
-        {item1: "T2", item2: "E10"},
-        {item1: "T2", item2: "E11"},
-        {item1: "T2", item2: "E12"},
-        {item1: "T2", item2: "E13"},
-        {item1: "T2", item2: "E15"},
-        {item1: "T2", item2: "E16"},
-        {item1: "T3", item2: "E2"},
-        {item1: "T3", item2: "E3"},
-        {item1: "T3", item2: "E4"},
-        {item1: "T3", item2: "E5"},
-        {item1: "T3", item2: "E6"},
-        {item1: "T3", item2: "E8"},
-        {item1: "T3", item2: "E9"},
-        {item1: "T3", item2: "E10"},
-        {item1: "T3", item2: "E11"},
-        {item1: "T3", item2: "E12"},
-        {item1: "T3", item2: "E13"},
-        {item1: "T3", item2: "E15"},
-        {item1: "T3", item2: "E16"},
-    ]
+    debugger
+    let baseTrialArray = genBaseTrialArray(cleanEmptyCombos(getCombos(basic_parameters.pointNamesUsed['phase_1'])))
 
-    // Create a similar base array for practice trials
-    let basePracticeTrialArray = [
-        {item1: "T1", item2: "T2"},
-        {item1: "T1", item2: "E2"},
-        {item1: "T2", item2: "T3"},
-        {item1: "T2", item2: "E2"},
-        {item1: "T3", item2: "E2"},
-        {item1: "T3", item2: "E16"},
-    ]    
+
+    // // Create all the combinations of targets and empty locations (imported from Matlab)
+    // let baseTrialArray = [
+    //     {item1: "T1", item2: "T2"},
+    //     {item1: "T1", item2: "T3"},
+    //     {item1: "T1", item2: "E2"},
+    //     {item1: "T1", item2: "E3"},
+    //     {item1: "T1", item2: "E4"},
+    //     {item1: "T1", item2: "E5"},
+    //     {item1: "T1", item2: "E6"},
+    //     {item1: "T1", item2: "E8"},
+    //     {item1: "T1", item2: "E9"},
+    //     {item1: "T1", item2: "E10"},
+    //     {item1: "T1", item2: "E11"},
+    //     {item1: "T1", item2: "E12"},
+    //     {item1: "T1", item2: "E13"},
+    //     {item1: "T1", item2: "E15"},
+    //     {item1: "T1", item2: "E16"},
+    //     {item1: "T2", item2: "T3"},
+    //     {item1: "T2", item2: "E2"},
+    //     {item1: "T2", item2: "E3"},
+    //     {item1: "T2", item2: "E4"},
+    //     {item1: "T2", item2: "E5"},
+    //     {item1: "T2", item2: "E6"},
+    //     {item1: "T2", item2: "E8"},
+    //     {item1: "T2", item2: "E9"},
+    //     {item1: "T2", item2: "E10"},
+    //     {item1: "T2", item2: "E11"},
+    //     {item1: "T2", item2: "E12"},
+    //     {item1: "T2", item2: "E13"},
+    //     {item1: "T2", item2: "E15"},
+    //     {item1: "T2", item2: "E16"},
+    //     {item1: "T3", item2: "E2"},
+    //     {item1: "T3", item2: "E3"},
+    //     {item1: "T3", item2: "E4"},
+    //     {item1: "T3", item2: "E5"},
+    //     {item1: "T3", item2: "E6"},
+    //     {item1: "T3", item2: "E8"},
+    //     {item1: "T3", item2: "E9"},
+    //     {item1: "T3", item2: "E10"},
+    //     {item1: "T3", item2: "E11"},
+    //     {item1: "T3", item2: "E12"},
+    //     {item1: "T3", item2: "E13"},
+    //     {item1: "T3", item2: "E15"},
+    //     {item1: "T3", item2: "E16"},
+    // ]
+
+    // // Create a similar base array for practice trials
+    // let basePracticeTrialArray = [
+    //     {item1: "T1", item2: "T2"},
+    //     {item1: "T1", item2: "E2"},
+    //     {item1: "T2", item2: "T3"},
+    //     {item1: "T2", item2: "E2"},
+    //     {item1: "T3", item2: "E2"},
+    //     {item1: "T3", item2: "E16"},
+    // ]    
 
     // If debug, then shorten these arrays
     if (jatos.studySessionData.debug == 1){
@@ -391,5 +425,43 @@
           this.fb_imgs_x_coords       = fb_imgs_x_coords,
           this.fb_imgs_y_coords       = fb_imgs_y_coords
   }
+
+  let getCombos = function(array){
+
+    // A function to get an array with combinations of 2 items.
+    // Basically, n choose k amount of elements.
+    var result = array.flatMap(
+        (v, i) => array.slice(i+1).map( w => [v,w] )
+    );
+
+    return result
+  };
+
+  let cleanEmptyCombos = function(array){
+    // Function to delete the array items that contain empty points
+    let cleanedArray = []
+
+    for (i=0; i<array.length; i++){
+      if (array[i][0].includes('T') || array[i][1].includes('T')){
+        cleanedArray.push(array[i])
+      }
+    }
+    
+    return cleanedArray
+  };
+
+  let genBaseTrialArray = function(combos){
+
+    let baseTrialArray = []
+
+    for (i=0; i<combos.length; i++){
+      baseTrialArray[i] = {
+        item1: combos[i][0],
+        item2: combos[i][1],
+      }
+    }
+    debugger
+    return baseTrialArray;
+  };
 
 </script>
