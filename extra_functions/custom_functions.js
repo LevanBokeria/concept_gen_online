@@ -145,7 +145,7 @@ let trialCreator = function(curr_space_object,baseTrialArray,targetCoordsNames,i
     return baseTrialArrayInner
 }; // function trialCreator
 
-let calcRunningPerf = function(data) {
+const calcRunningPerf = function(data) {
 
     // Calculate the running             
     let curr_phase     = jatos.studySessionData.phase_counter
@@ -184,7 +184,7 @@ let calcRunningPerf = function(data) {
 };
 
 // Define a function to do the checks
-let session_qc_check = function(last_session_data,curr_session){
+const session_qc_check = function(last_session_data,curr_session){
     
     // 1. Not too many missed trials
     let n_missed_trials    = last_session_data.filter(item => item.rt==null).length
@@ -245,3 +245,16 @@ let getPhaseAndSession = function(){
 
     return [curr_phase, phase_string, curr_session[phase_string]];
 };
+
+const createScoreBox = function(running_perf){
+
+
+    
+
+
+
+
+
+
+
+}

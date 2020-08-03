@@ -24,9 +24,12 @@
 	jatos.onLoad(function() {
 
 		// What phase is this?
-		let curr_phase   = jatos.studySessionData.phase_counter
-		let phase_string = 'phase_'+curr_phase
-		let curr_session = jatos.studySessionData.session_counter[phase_string]
+		let [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+
+		// Create the score box
+		
+
+
 
 		//make a timeline
 		var timeline = []; 
@@ -38,6 +41,7 @@
 				'<p> Thank you so much for completing this session! <br> ' + 
 				'You are doing great! <br> ' +
 				'We really appreciate you staying attentive and continuing to honestly perform the task. </p>' +
+				+ '<p> Below you can see your scores from the last session: </p>' +
 				'<p><br> Please take a ' + jatos.studySessionData.short_break_duration + 
 				' second break and click the Next button or press the right-arrow button on the keyboard to start the next session. </p>'
 			],
