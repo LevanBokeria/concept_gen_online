@@ -41,14 +41,9 @@
         // Are we checking practice trials?
 
         // Check instructions weren't breezed through too fast
-        
+        debugger
         // Check RTs not too low. Also checks that not all trials were missed
-        let rt_speed_pass_practice = false
-        last_session_data.forEach((item) => {
-          if (item.rt > jatos.studySessionData.qc_criteria.rt_min_speed){
-            rt_speed_pass_practice = true
-          }
-        })
+        let rt_speed_pass_practice = last_session_data.some(item => item.rt > jatos.studySessionData.qc_criteria.rt_min_speed)
 
         // record in the jatos object
         jatos.studySessionData.qc_status.practice_pass = rt_speed_pass_practice
@@ -78,11 +73,11 @@
           // So didn't fail
 
             // Check, if exceeded the performance, then continue to phase 2
-            let n_targets_learned = 
-              jatos.studySessionData.inputData.score_box_target_paths.running_perf.filter(item => item >= 
-                jatos.studySessionData.training_criterion).length
+            let all_targets_learned = jatos.studySessionData.inputData.score_box_target_paths.running_perf.every(
+              item => item >= jatos.studySessionData.training_criterion
+            )
 
-            if (n_targets_learned == jatos.studySessionData.inputData.basic_parameters.nTargets) {
+            if (all_targets_learned) {
               jatos.studySessionData.progress_state = 'advance_phase'
             } else {
               jatos.studySessionData.progress_state = 'advance_session'
@@ -128,11 +123,11 @@
           // So didn't fail
 
             // Check, if exceeded the performance, then continue to phase 2
-            let n_targets_learned = 
-              jatos.studySessionData.inputData.score_box_target_paths.running_perf.filter(item => item >= 
-                jatos.studySessionData.training_criterion).length
+            let all_targets_learned = jatos.studySessionData.inputData.score_box_target_paths.running_perf.every(
+              item => item >= jatos.studySessionData.training_criterion
+            )
 
-            if (n_targets_learned == jatos.studySessionData.inputData.basic_parameters.nTargets) {
+            if (all_targets_learned) {
               jatos.studySessionData.progress_state = 'advance_phase'
             } else {
               jatos.studySessionData.progress_state = 'advance_session'
