@@ -157,16 +157,15 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
 
 const calcRunningPerf = function(data) {
 
-    // Calculate the running             
-    let curr_phase     = jatos.studySessionData.phase_counter
-    let curr_session   = jatos.studySessionData.session_counter['phase_'+curr_phase]
+    [curr_phase,phase_string,curr_session] = getPhaseAndSession()
     let curr_trials
+
     if (jatos.componentPos == jatos.studySessionData.script_comp_pos.practice_trials){
         curr_trials = deepCopy(
-            jatos.studySessionData.outputData['phase_'+curr_phase+'_practice_results'])
+            jatos.studySessionData.outputData[phase_string+'_practice_results'])
     } else {
         curr_trials = deepCopy(
-            jatos.studySessionData.outputData['phase_'+curr_phase+'_results'][curr_session-1])
+            jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1])
     }
 
     curr_trials = curr_trials.slice(0,data.trial_index+1)
@@ -189,8 +188,8 @@ const calcRunningPerf = function(data) {
     avg = avg / last_prompt_trials.length
 
     // Record this avg value
-    let idx_of_score_box_target = jatos.studySessionData.inputData.score_box_target_paths['phase_'+curr_phase].indexOf(curr_prompt_path)
-    jatos.studySessionData.inputData.score_box_target_paths.running_perf[idx_of_score_box_target] = avg * 100
+    let idx_of_score_box_target = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed[phase_string].indexOf(curr_prompt_path)
+    jatos.studySessionData.inputData.running_perf[idx_of_score_box_target] = avg * 100
 };
 
 // Define a function to do the checks
@@ -238,7 +237,7 @@ const session_qc_check = function(last_session_data,curr_session){
     if (curr_session >= 2){
 
         let n_targets_above_chance = 
-        jatos.studySessionData.inputData.score_box_target_paths.running_perf.filter(item => item > 
+        jatos.studySessionData.inputData.running_perf.filter(item => item > 
             jatos.studySessionData.qc_criteria.min_perf_check_perc).length
 
         if (n_targets_above_chance < jatos.studySessionData.inputData.basic_parameters.nTargets) {
@@ -262,8 +261,8 @@ const createScoreBox = function(){
     let [curr_phase,phase_string,curr_session] = getPhaseAndSession()
 
     // Get the score box details locally
-    let local_score_box_info = jatos.studySessionData.inputData.score_box_target_paths
-    let running_perf         = local_score_box_info.running_perf.map(item => Math.round(item))
+    let local_score_box_info = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed
+    let running_perf         = local_score_box_info.running_perf[phase_string].map(item => Math.round(item))
 
 
     let img_names = jatos.studySessionData.inputData.basic_parameters.targetNamesUsed[phase_string]

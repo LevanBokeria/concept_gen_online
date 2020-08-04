@@ -101,14 +101,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
         pretty_name: 'Audio feedback',
         default: undefined,
 				description: 'Correct and incorrect audio to be played.'
-      },        
-      score_box_target_paths: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: 'Score box targets',
-        default: undefined,
-        array: true,
-        description: 'Image paths for the score board.'
-      },             
+      },                    
       onscreen_idx: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'On screen indices',

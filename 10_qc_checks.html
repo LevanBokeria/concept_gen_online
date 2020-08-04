@@ -73,7 +73,7 @@
           // So didn't fail
 
             // Check, if exceeded the performance, then continue to phase 2
-            let all_targets_learned = jatos.studySessionData.inputData.score_box_target_paths.running_perf.every(
+            let all_targets_learned = jatos.studySessionData.inputData.running_perf[phase_string].every(
               item => item >= jatos.studySessionData.training_criterion
             )
 
@@ -123,7 +123,7 @@
           // So didn't fail
 
             // Check, if exceeded the performance, then continue to phase 2
-            let all_targets_learned = jatos.studySessionData.inputData.score_box_target_paths.running_perf.every(
+            let all_targets_learned = jatos.studySessionData.inputData.running_perf[phase_string].every(
               item => item >= jatos.studySessionData.training_criterion
             )
 
