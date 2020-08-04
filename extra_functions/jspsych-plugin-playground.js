@@ -228,6 +228,8 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
   plugin.trial = function(display_element, trial) {
 
+    [curr_phase,phase_string,curr_session] = getPhaseAndSession()    
+
     // // setup audio stimulus
     // var context = jsPsych.pluginAPI.audioContext();
     // if(context !== null){
@@ -390,18 +392,27 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
     // function to handle responses by the subject
     var after_response = function(info) {
-
+      
       // Clear the trial duration timeout
       clearTimeout(ticking_response_window)
 
-      // only record the first response
-      if (response.key == null) {
-        response = info;
+      // If auto respond, change the info
+      if (jatos.studySessionData.auto_respond){
+
+        // If correct response is 1, key code is 49. Else its 50
+        trial.correct_response == 1 ? response.key = '49' : response.key = '50'
+        response.correct = 1
+        response.rt = 100
+      } else {
+        // only record the first response
+        if (response.key == null) {
+          response = info;
+        }
+        // Was it correct or not?
+        response.correct = (response.key == '49' & trial.correct_response == 1) |
+                           (response.key == '50' & trial.correct_response == 2)
       }
 
-      // Was it correct or not?
-      response.correct = (response.key == '49' & trial.correct_response == 1) |
-                         (response.key == '50' & trial.correct_response == 2)
 
       // Show feedback
       show_feedback(response.correct)
@@ -445,13 +456,15 @@ jsPsych.plugins["plugin-playground"] = (function() {
       // Record all the information in the jatos object
       // debugger
       if (trial.session == 0){
-        jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_practice_results'][jsPsych.data.get().values().length] = 
-        Object.assign(jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_practice_results'][jsPsych.data.get().values().length],
-                      trial_data)
+        jatos.studySessionData.outputData[phase_string + '_practice_results'][jsPsych.data.get().values().length] = 
+        Object.assign(
+        jatos.studySessionData.outputData[phase_string + '_practice_results'][jsPsych.data.get().values().length],
+          trial_data)
       } else {
-        jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_results'][trial.session-1][jsPsych.data.get().values().length] = 
-        Object.assign(jatos.studySessionData.outputData['phase_'+jatos.studySessionData.phase_counter+'_results'][trial.session-1][jsPsych.data.get().values().length],
-                      trial_data)
+        jatos.studySessionData.outputData[phase_string+'_results'][trial.session-1][jsPsych.data.get().values().length] = 
+        Object.assign(
+        jatos.studySessionData.outputData[phase_string+'_results'][trial.session-1][jsPsych.data.get().values().length],
+          trial_data)
       }
       // debugger
       // clear the display
@@ -499,10 +512,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
       display_element.querySelector('.feedback_items').style.visibility = 'visible';
     }
 
-
-
     // //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     // start the response listener
     if (trial.choices != jsPsych.NO_KEYS) {
@@ -542,6 +552,22 @@ jsPsych.plugins["plugin-playground"] = (function() {
       }, trial.trial_duration);
     }
 
+    // If autoresponder is on, just respond in a while
+    if (jatos.studySessionData.auto_respond){
+
+      jsPsych.pluginAPI.setTimeout(function(){
+        // debugger
+        // // Whats the correct response?
+        // let simKey 
+        // trial.correct_response == 1 ? simKey = '1' : simKey = '2'
+
+        // // Simulate a keypress
+        // document.dispatchEvent(new KeyboardEvent('keydown',{'key':simKey}))
+
+        after_response()
+
+      },100)
+    } // if autorespond
   };
 
   return plugin;

@@ -44,8 +44,7 @@
     jatos.studySessionData.show_correct             = 0;
     jatos.studySessionData.pilot                    = 0;
     jatos.studySessionData.pilot_n_trials           = 10;
-    jatos.studySessionData.auto_respond             = false;
-    jatos.studySessionData.auto_respond_trial_dur   = 100; // milliseconds
+    jatos.studySessionData.auto_respond             = true;
     jatos.studySessionData.perf_check_over_n_trials = 15; // Over how many previous trials is the performance calculated?
 
     // Duration of trials, breaks, ITI, etc
@@ -67,8 +66,8 @@
       jatos.studySessionData.short_break_duration = 15; // seconds
       jatos.studySessionData.long_break_duration  = 30; // seconds
 
-      jatos.studySessionData.timer_after_response    = 500; // milliseconds
-      jatos.studySessionData.timer_no_resp_fb_freeze = 3000; // milliseconds
+      jatos.studySessionData.timer_after_response    = 2000; // milliseconds
+      jatos.studySessionData.timer_no_resp_fb_freeze = 2000; // milliseconds
       jatos.studySessionData.timer_response_window   = 10000; // milliseconds                  
       jatos.studySessionData.post_trial_gap          = 500; // milliseconds
       jatos.studySessionData.n_practice_trials       = 6;
@@ -110,6 +109,22 @@
     }
 
 
+
+    // If we're auto-responding, edit the rt_check criteria, and the ITI, and break durations
+    if (jatos.studySessionData.auto_respond){
+      jatos.studySessionData.qc_criteria.rt_min_speed = 1;
+      jatos.studySessionData.qc_criteria.rt_min_perc  = 5;
+
+      jatos.studySessionData.short_break_duration     = 2; // seconds
+      jatos.studySessionData.long_break_duration      = 2; // seconds
+
+      jatos.studySessionData.timer_after_response     = 10; // milliseconds
+      jatos.studySessionData.timer_no_resp_fb_freeze  = 10; // milliseconds
+      jatos.studySessionData.timer_response_window    = 7000; // milliseconds            
+      jatos.studySessionData.post_trial_gap           = 10; // milliseconds
+
+    }
+
     // ////////////////////////////////////////////////////////////////////////////////////////
     // ////////////////////////////////////////////////////////////////////////////////////////  
 
@@ -134,13 +149,23 @@
         }
     }
 
+    // How many targets
+    let nTargets = 3
+
     // Randomly choose the target indices
     // let chosenTarget_idxs = _.sampleSize(targetCoordsNames.pointNamesTarget.length, basic_parameters.nTargets)
     let chosenTarget_idxs = {
       phase_1: [0,1,2], 
       phase_2: [0,1,2],
     }
-    let chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
+
+    let totalPointsInSpace = targetCoordsNames.pointNamesEmpty.length
+    let allPointsInSpace   = [...Array(totalPointsInSpace).keys()].map(item => item + 1) // creates an array from 1 to max number
+
+    let chosenTargetLocations_phase_1 = 
+      _.sampleSize(allPointsInSpace, nTargets)
+    
+    // let chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
     let congruent = true
     
     if (congruent){
@@ -176,7 +201,7 @@
         score_box_description_font_size: 15, // "Your scores"
 
         ///////////////////////////////////////// Targets ////////////////////////////////////
-        nTargets: 3,
+        nTargets: nTargets,
 
         targetPoints: {
           phase_1: chosenTargetLocations_phase_1,

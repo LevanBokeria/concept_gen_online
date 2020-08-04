@@ -63,32 +63,8 @@
         //  //////// Checking real sessions ////////////
         // //////////////////////////////////////////////
 
-        session_qc_check(last_session_data,curr_session)
-
-        // Has the ptp failed?
-        if (jatos.studySessionData.qc_status.global_pass == false){
-          debugger
-          jatos.studySessionData.progress_state = 'qc_failed_phase_1'
-        } else {
-          // So didn't fail
-
-            // Check, if exceeded the performance, then continue to phase 2
-            let all_targets_learned = jatos.studySessionData.inputData.running_perf[phase_string].every(
-              item => item >= jatos.studySessionData.training_criterion
-            )
-
-            if (all_targets_learned) {
-              jatos.studySessionData.progress_state = 'advance_phase'
-            } else {
-              jatos.studySessionData.progress_state = 'advance_session'
-            }
-
-            // Check if too many sessions, then stop training
-            if (jatos.studySessionData.session_counter >= jatos.studySessionData.qc_criteria.max_training_sess){
-              jatos.studySessionData.qc_status.max_training_sess_pass = false
-              jatos.studySessionData.progress_state = 'qc_failed_phase_1'              
-            }
-        } // global pass fail? if/else section
+        // This function will check all the qc criteria, and determine what to do next
+        session_qc_check(last_session_data)
 
         // Start the break script
         jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC.`, 
@@ -98,9 +74,7 @@
 
     } else {
 
-      // So its phase 2 //////////////////////////////////////////////////////////////////////////////////////////
-      // So its phase 2 //////////////////////////////////////////////////////////////////////////////////////////
-      // So its phase 2 //////////////////////////////////////////////////////////////////////////////////////////      
+      // So its phase 2 //////////////////////////////////////////////////////////////////////////////////////////    
 
       if (jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
       // Are we checking practice trials?
@@ -113,33 +87,9 @@
 
         //  //////// Checking real sessions ////////////
         // //////////////////////////////////////////////
-
-        session_qc_check(last_session_data,curr_session)
-
-        // Has the ptp failed?
-        if (jatos.studySessionData.qc_status.global_pass == false){
-          jatos.studySessionData.progress_state = 'qc_failed_phase_2'
-        } else {
-
-          // So didn't fail
-
-            // Check, if exceeded the performance, then continue to phase 2
-            let all_targets_learned = jatos.studySessionData.inputData.running_perf[phase_string].every(
-              item => item >= jatos.studySessionData.training_criterion
-            )
-
-            if (all_targets_learned) {
-              jatos.studySessionData.progress_state = 'ek_test'
-            } else {
-              jatos.studySessionData.progress_state = 'advance_session'
-            }
-
-            // Check if too many sessions, then stop training
-            if (jatos.studySessionData.session_counter >= jatos.studySessionData.qc_criteria.max_training_sess){      
-              jatos.studySessionData.qc_status.max_training_sess_pass = false
-              jatos.studySessionData.progress_state = 'qc_failed_phase_2'
-            }
-        } // global pass fail? if/else section
+       
+        // This function will check all the qc criteria, and determine what to do next
+        session_qc_check(last_session_data)
 
         // Start the break script
         jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC passed. Giving a break`, 

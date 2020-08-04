@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0">
-    <title>Dissimilarity Study</title>	
+    <title>Consent</title>	
 	<script src="jspsych-6.1.0/jspsych.js" ></script>
 	<script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
 	<script src="jatos.js"></script>
@@ -133,7 +133,7 @@ jatos.onLoad(function(){
 
 			result_data.component_data = jsPsych.data.get().values();
 
-			jatos.studySessionData.allData.consent_results = result_data;
+			jatos.studySessionData.outputData.consent_results = result_data;
 
 			jatos.submitResultData("[consent_start---" + 
 			JSON.stringify(jatos.studySessionData) +

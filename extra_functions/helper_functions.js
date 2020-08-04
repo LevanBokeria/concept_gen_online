@@ -155,7 +155,7 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
 }; // function trialCreator
 
 const calcRunningPerf = function(data) {
-
+    
     [curr_phase,phase_string,curr_session] = getPhaseAndSession()
     let curr_trials
 
@@ -188,12 +188,14 @@ const calcRunningPerf = function(data) {
 
     // Record this avg value
     let idx_of_score_box_target = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed[phase_string].indexOf(curr_prompt_path)
-    jatos.studySessionData.inputData.running_perf[idx_of_score_box_target] = avg * 100
+    jatos.studySessionData.inputData.running_perf[phase_string][idx_of_score_box_target] = avg * 100
 };
 
 // Define a function to do the checks
-const session_qc_check = function(last_session_data,curr_session){
+const session_qc_check = function(last_session_data){
     
+    [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+
     // 1. Not too many missed trials
     let n_missed_trials    = last_session_data.filter(item => item.rt==null).length
     let perc_missed_trials = n_missed_trials * 100 / last_session_data.length
@@ -244,6 +246,39 @@ const session_qc_check = function(last_session_data,curr_session){
         jatos.studySessionData.qc_status.min_perf_pass = false;
         }
     }
+
+    // Has the ptp failed?
+    if (jatos.studySessionData.qc_status.global_pass == false){
+        debugger
+        jatos.studySessionData.progress_state = 'qc_failed_' + phase_string
+        
+    } else {
+    // So didn't fail
+
+        // Check, if exceeded the performance, then continue to phase 2
+        let all_targets_learned = jatos.studySessionData.inputData.running_perf[phase_string].every(
+        item => item >= jatos.studySessionData.training_criterion
+        )
+
+        if (all_targets_learned) {
+
+            if (curr_phase == 1){
+                jatos.studySessionData.progress_state = 'advance_phase'
+            } else if (curr_phase == 2){
+                jatos.studySessionData.progress_state = 'ek_test'
+            }
+
+        } else {
+            jatos.studySessionData.progress_state = 'advance_session'
+        }
+
+        // Check if too many sessions, then stop training
+        if (jatos.studySessionData.session_counter >= jatos.studySessionData.qc_criteria.max_training_sess){
+            jatos.studySessionData.qc_status.max_training_sess_pass = false
+            jatos.studySessionData.progress_state = 'qc_failed_' + phase_string             
+        }
+    } // global pass fail? if/else section
+
 }; // end of the function session_qc_check
 
 const getPhaseAndSession = function(){
@@ -258,7 +293,7 @@ const createScoreBox = function(){
 
     // What phase is this?
     let [curr_phase,phase_string,curr_session] = getPhaseAndSession()
-
+    
     // Get the score box details locally
     let local_score_box_info = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed
     let running_perf         = jatos.studySessionData.inputData.running_perf[phase_string].map(item => Math.round(item))
