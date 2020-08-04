@@ -33,7 +33,7 @@
                 // Generate a full array of trials for a full session
                 var session_trials = 
                     trialCreator(jatos.studySessionData.inputData.concepts[phase_string],
-                                jatos.studySessionData.inputData.baseTrialArray,
+                                jatos.studySessionData.inputData.baseTrialArray[phase_string],
                                 jatos.studySessionData.inputData.basic_parameters,
                                 curr_phase,0)     
 
@@ -62,7 +62,7 @@
                 // Then, check which session this is
                 var session_trials = 
                     trialCreator(jatos.studySessionData.inputData.concepts[phase_string],
-                                jatos.studySessionData.inputData.baseTrialArray,
+                                jatos.studySessionData.inputData.baseTrialArray[phase_string],
                                 jatos.studySessionData.inputData.basic_parameters,
                                 curr_phase,curr_session)
 

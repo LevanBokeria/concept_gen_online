@@ -109,12 +109,12 @@
 
     // Create an object with pass-fail info for each criteria
     jatos.studySessionData.qc_status = {
-      global_pass:       true,
-      rt_pass:           true,
+      global_pass:            true,
+      rt_pass:                true,
       uniform_resp_perc_pass: true,
-      min_perf_pass:     true,
-      practice_pass:     true,
-      perc_max_misses_pass: true
+      min_perf_pass:          true,
+      practice_pass:          true,
+      perc_max_misses_pass:   true,
     }
 
 
@@ -142,15 +142,13 @@
         }
     }
 
-    // Basic parameters, not specific to any space
-
     // Randomly choose the target indices
     // let chosenTarget_idxs = _.sampleSize(targetCoordsNames.pointNamesTarget.length, basic_parameters.nTargets)
     let chosenTarget_idxs = {
       phase_1: [0,1,2], 
       phase_2: [0,1,2],
     }
-    let chosenTargetLocations = [1,7,14] // Are these base 0 or base 1?????????
+    let chosenTargetLocations = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
 
     const basic_parameters = {
 
@@ -219,6 +217,7 @@
       phase_2: new Array(basic_parameters.nTargets).fill(0),
     }
 
+    // For each phase, specify which points are used as targets, paths to those targets, and the names of all 16 points.
     for (iPhase=1; iPhase<3; iPhase++){
       let phase_string = 'phase_'+iPhase
 
@@ -240,11 +239,16 @@
       }
     }
 
-    let baseTrialArray = genBaseTrialArray(cleanEmptyCombos(getCombos(basic_parameters.pointNamesUsed['phase_1'])))
+    // Create an array of objects to hold which point goes as 1st and 2nd stimuli on the screen
+    let baseTrialArray = {
+      phase_1: genBaseTrialArray(cleanEmptyCombos(getCombos(basic_parameters.pointNamesUsed['phase_1']))),
+      phase_2: genBaseTrialArray(cleanEmptyCombos(getCombos(basic_parameters.pointNamesUsed['phase_2']))),
+    }
 
     // If debug, then shorten these arrays
     if (jatos.studySessionData.debug == 1){
-      baseTrialArray         = deepCopy(shuffle(baseTrialArray).slice(0,jatos.studySessionData.debug_n_trials))
+      baseTrialArray.phase_1 = deepCopy(shuffle(baseTrialArray.phase_1).slice(0,jatos.studySessionData.debug_n_trials))
+      baseTrialArray.phase_2 = deepCopy(shuffle(baseTrialArray.phase_2).slice(0,jatos.studySessionData.debug_n_trials))      
     }
     
     // Define the neck_legs_space
@@ -263,12 +267,12 @@
 
     let concepts = {
         phase_1: neck_legs_space,
-        phase_2: beak_tail_space
+        phase_2: beak_tail_space,
     }
     
     let imgs_to_preload = {
-      base_images: [],
-      exemplar_images: []
+      base_images:     [],
+      exemplar_images: [],
     }
 
     imgs_to_preload.base_images = [basic_parameters.fb_correct_img, basic_parameters.fb_incorrect_img]
@@ -276,36 +280,18 @@
     // Record all these variables in JATOS
     jatos.studySessionData.inputData = {
       targetCoordsNames: targetCoordsNames,
-      basic_parameters: basic_parameters,
-      baseTrialArray: baseTrialArray,
-      concepts: concepts,
-      imgs_to_preload: imgs_to_preload,
-      choices: ['1','2'],
-      nTrials: baseTrialArray.length,
+      basic_parameters:  basic_parameters,
+      baseTrialArray:    baseTrialArray,
+      concepts:          concepts,
+      imgs_to_preload:   imgs_to_preload,
+      choices:           ['1','2'],
+      nTrials:           baseTrialArray.length,
+      running_perf:      running_perf,
     }
 
-
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Add the questions for debrief:
-
-
-    //   // If this is squircle space, add additional text to instructions explaining what these items are
-    //   var space_quantifier;
-    //   if (jatos.studySessionData.condition.subjStim == "Squircles"){
-
-    //       space_quantifier = "";
-
-    //   }
-    //   else if (jatos.studySessionData.condition.subjStim == "Stripeys") {
-
-    //     space_quantifier = "number of ";
-
-    //   } 
-    //   else {
-    //       space_quantifier = "size of ";
-    //   }
-
+ 
       jatos.studySessionData.debrief_questions = [
 
         {prompt: 'How did you try to remember which bird was associated with which toy? Did you have any strategy?', rows: 2, columns: 100}, 
@@ -321,18 +307,6 @@
         {prompt: 'Was anything unclear in the instructions for the task?', rows: 2, columns: 100},        
         {prompt: 'Is there anything that would make the experiment more fun or easier to perform?', rows: 2, columns: 100},                
       ]
-
-
-    // if (jatos.studySessionData.pilot == 1) {
-
-    //   // Slice the trials
-    // }
-
-    // if (jatos.studySessionData.debug == 1) {
-
-    //   // Slice the trials
-
-    // }  
 
     // ////////////////////////////////////////////////////////////////////////////////////////////
     // ////////////////////////////////////////////////////////////////////////////////////////////
@@ -379,7 +353,7 @@
   };
 
   let cleanEmptyCombos = function(array){
-    // Function to delete the array items that contain empty points
+    // Function to delete the array items that contain both empty points
     let cleanedArray = []
 
     for (i=0; i<array.length; i++){
@@ -392,6 +366,9 @@
   };
 
   let genBaseTrialArray = function(combos){
+
+    // Function to create the baseTrialArray object, containing item1 and item2 keys
+    // specifying which of the points are 1st and 2nd items on the screen
 
     let baseTrialArray = []
 
