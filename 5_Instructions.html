@@ -7,7 +7,7 @@
 	<script src="jspsych-6.1.0/jspsych.js" ></script>
 	<script src='./jspsych-6.1.0/plugins/jspsych-instructions.js'></script>
 	<script src="extra_functions/jspsych-instructions-timer-enhanced.js"></script>
-	<script src='./extra_functions/custom_functions.js'></script>
+	<script src='./extra_functions/helper_functions.js'></script>
 	<script src="jatos.js"></script>
 	<link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" type="text/css"></link>
 	
@@ -66,7 +66,7 @@
 							'<div class= "header">'+
 								'<h1> Task Instructions </h1>'+
 							'</div>'+	
-							'<div class="instruct"> <br>'+
+							'<div class="instruct">'+
 								'<p> Welcome to the experiment!</p>' + 
 								'<p> This experiment will test your perception and memory skills!</p>' +
 								'<p>It consists of two learning phases. In the end, you will do a short final matching task and a debriefing survey.</p>' +
@@ -116,7 +116,7 @@
 							'</div>'+	
 							'<div class="instruct"> <br>'+
 								'<p>Lets do '+ 
-									jatos.studySessionData.inputData.nPracticeTrials + 
+									jatos.studySessionData.n_practice_trials + 
 									' practice trials before beginning the actual learning.</p>' + 
 								'<p>You will have ' + (jatos.studySessionData.timer_response_window/1000) + ' seconds on each trial to make your response! </p>' +
 								'<p>Click Next to begin.</p>' +								

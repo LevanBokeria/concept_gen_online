@@ -13,12 +13,11 @@ function only_names(array) {
 
 // Define a function that could filter an array by indices
 function index_into_array(array,indices){
-    debugger
+    
     var filtered_array = [];
 
     for(i=0; i<indices.length; i++){
         filtered_array[i] = deepCopy(array[indices[i]]);
-        filtered_array[i].trial = i + 1;
     };
 
     return filtered_array;

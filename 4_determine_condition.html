@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <title>4 Determine Conditions</title>
   <script src = "./extra_functions/jquery-3.4.1.js" type="text/javascript"></script>
-  <script src="./extra_functions/custom_functions.js"> </script>
+  <script src="./extra_functions/helper_functions.js"> </script>
   <script src='./extra_functions/lodash.js'></script>
   <script src="jatos.js"></script>
   </head>
@@ -155,9 +155,9 @@
     const basic_parameters = {
 
         // Display
-        sort_area_width: 750,
-        sort_area_height: 700,
-        prompt_target_width: 70,
+        sort_area_width:      750,
+        sort_area_height:     700,
+        prompt_target_width:  70,
         prompt_target_height: 70,
         get prompt_img_x_coords() {
             return this.sort_area_width/2 - this.prompt_target_width/2;
@@ -165,18 +165,19 @@
         prompt_img_y_coords: 80,            
 
         // Feedback items
-        fb_correct_img: './img/feedback/green_tick.png',
+        fb_correct_img:   './img/feedback/green_tick.png',
         fb_incorrect_img: './img/feedback/Red_x.png',
-        audio_stimulus: './img/feedback/success.wav',
+        audio_stimulus:   './img/feedback/success.wav',
 
         // Peformance box
-        score_box_target_width: 30,
-        score_box_target_height: 30,
-        score_box_score_font_size: 13, // Size of the score text, "100%"
+        score_box_target_width:          30,
+        score_box_target_height:         30,
+        score_box_score_font_size:       13, // Size of the score text, "100%"
         score_box_description_font_size: 15, // "Your scores"
 
         ///////////////////////////////////////// Targets ////////////////////////////////////
         nTargets: 3,
+
         targetPoints: {
           phase_1: chosenTargetLocations_phase_1,
           phase_2: chosenTargetLocations_phase_2,
@@ -200,13 +201,13 @@
           phase_2: [],
         },
 
-        // For all 16 points, what are the corresponding point names?
+        // For all 16 points, what are the corresponding point names? For now, all E points
         pointNamesUsed: {
           phase_1: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
           phase_2: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16']
         },
 
-        // For all 16 points, what are the names for corresponding image?
+        // For all 16 points, what are the names for corresponding image? For now, all "Empty" items
         imgNamesUsed: {
           phase_1: Array(16).fill('Empty'),
           phase_2: Array(16).fill('Empty')
@@ -272,6 +273,7 @@
         phase_2: beak_tail_space,
     }
     
+    // Create an array that will hold paths to images to prelod. Will be filled in prior to each session
     let imgs_to_preload = {
       base_images:     [],
       exemplar_images: [],
