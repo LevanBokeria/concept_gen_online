@@ -18,18 +18,26 @@
     
     jatos.onLoad(function() {
 
+        [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+
+        let middle_sentence = {
+            phase_1: '<p>If your learning score for each toy is 80% or more, you will move to phase 2! </p>',
+            phase_2: '<p>If your learning score for each toy is 80% or more, you will move to the final task, after which the experiment is over! </p>'
+        }
+
+
         var practice_trials_end = {
             type: "instructions",
             pages: [
                     '<div class= "header">'+
                         '<h1> Instructions </h1>'+
                     '</div>'+
-                    '<div class="instruct"> <br>'+
+                    '<div class="instruct">'+
                         '<p>This is the end of the practice trials. </p>' + 
-                        '<p>You will now start the 1st session of learning, with '+ 
+                        '<p>You will now start the 1st session of phase '+ curr_phase +', with '+ 
                             + jatos.studySessionData.inputData.nTrials +
-                            ' trials. </p>' +
-                        '<p>If your learning score for each toy is 80% or more, you will move to phase 2! </p>' +
+                            ' trials! </p>' +
+                        middle_sentence[phase_string] +
                         '<p>If not, you will get more training sessions. </p>' +
                         '<p>Keep in mind, the scores reset at the start of each session! </p>' +
                     '</div>',

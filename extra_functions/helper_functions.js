@@ -261,7 +261,7 @@ const createScoreBox = function(){
 
     // Get the score box details locally
     let local_score_box_info = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed
-    let running_perf         = local_score_box_info.running_perf[phase_string].map(item => Math.round(item))
+    let running_perf         = jatos.studySessionData.inputData.running_perf[phase_string].map(item => Math.round(item))
 
 
     let img_names = jatos.studySessionData.inputData.basic_parameters.targetNamesUsed[phase_string]

@@ -28,7 +28,7 @@
 
     // What phase is this?
     let [curr_phase,phase_string,curr_session] = getPhaseAndSession() 
-    debugger
+    
     // ////////////////////////////////////////////// START CHECKS //////////////////////////////////////////////////////////////
 
     // Get the latest data
@@ -41,7 +41,7 @@
         // Are we checking practice trials?
 
         // Check instructions weren't breezed through too fast
-        debugger
+        
         // Check RTs not too low. Also checks that not all trials were missed
         let rt_speed_pass_practice = last_session_data.some(item => item.rt > jatos.studySessionData.qc_criteria.rt_min_speed)
 
@@ -129,7 +129,7 @@
             )
 
             if (all_targets_learned) {
-              jatos.studySessionData.progress_state = 'advance_phase'
+              jatos.studySessionData.progress_state = 'ek_test'
             } else {
               jatos.studySessionData.progress_state = 'advance_session'
             }
