@@ -38,15 +38,14 @@
 
     // A conditional that determines whether we are debugging or not. If debugging, fewer trials will be done.
     // The pilot flag is for when asking labmates to test the paradigm, it just reduces the number of trials they'll have to do per sesiosn.
-    // show_correct flag: if on, will show images of pairs with the "correct" answer displayed.
     // Auto respond: script will make random responses by itself.
-    jatos.studySessionData.debug          = 1;
-    jatos.studySessionData.debug_n_trials = 5;
-    jatos.studySessionData.show_correct   = 0;
-    jatos.studySessionData.pilot          = 0;
-    jatos.studySessionData.pilot_n_trials = 10;
-    jatos.studySessionData.auto_respond   = false;
-    jatos.studySessionData.auto_respond_trial_dur = 100; // milliseconds
+    jatos.studySessionData.debug                    = 1;
+    jatos.studySessionData.debug_n_trials           = 5;
+    jatos.studySessionData.show_correct             = 0;
+    jatos.studySessionData.pilot                    = 0;
+    jatos.studySessionData.pilot_n_trials           = 10;
+    jatos.studySessionData.auto_respond             = false;
+    jatos.studySessionData.auto_respond_trial_dur   = 100; // milliseconds
     jatos.studySessionData.perf_check_over_n_trials = 15; // Over how many previous trials is the performance calculated?
 
     // Duration of trials, breaks, ITI, etc
@@ -58,11 +57,7 @@
       jatos.studySessionData.timer_no_resp_fb_freeze = 500; // milliseconds
       jatos.studySessionData.timer_response_window   = 7000; // milliseconds            
       jatos.studySessionData.post_trial_gap          = 100; // milliseconds
-
       jatos.studySessionData.n_practice_trials       = 2;
-
-      // Initial exposure time (seconds)
-      jatos.studySessionData.all_pics_time = 1;
 
       // Minimum % correct on each item
       jatos.studySessionData.training_criterion = 0;
@@ -76,12 +71,8 @@
       jatos.studySessionData.timer_no_resp_fb_freeze = 3000; // milliseconds
       jatos.studySessionData.timer_response_window   = 10000; // milliseconds                  
       jatos.studySessionData.post_trial_gap          = 500; // milliseconds
-
       jatos.studySessionData.n_practice_trials       = 6;
       
-      // Initial exposure time (seconds)
-      jatos.studySessionData.all_pics_time = 10;
-
       jatos.studySessionData.training_criterion = 80;
 
     };
@@ -115,6 +106,7 @@
       min_perf_pass:          true,
       practice_pass:          true,
       perc_max_misses_pass:   true,
+      max_training_sess_pass: true,
     }
 
 
@@ -148,7 +140,17 @@
       phase_1: [0,1,2], 
       phase_2: [0,1,2],
     }
-    let chosenTargetLocations = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
+    let chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
+    let congruent = true
+    
+    if (congruent){
+      chosenTargetLocations_phase_2 = chosenTargetLocations_phase_1
+    } else {
+
+      // Choose it randomly
+
+
+    }
 
     const basic_parameters = {
 
@@ -176,8 +178,8 @@
         ///////////////////////////////////////// Targets ////////////////////////////////////
         nTargets: 3,
         targetPoints: {
-          phase_1: chosenTargetLocations,
-          phase_2: chosenTargetLocations,
+          phase_1: chosenTargetLocations_phase_1,
+          phase_2: chosenTargetLocations_phase_2,
         },                
         
         // Point names, i.e. T1 T2 T6 etc
@@ -285,7 +287,7 @@
       concepts:          concepts,
       imgs_to_preload:   imgs_to_preload,
       choices:           ['1','2'],
-      nTrials:           baseTrialArray.length,
+      nTrials:           baseTrialArray.phase_1.length,
       running_perf:      running_perf,
     }
 

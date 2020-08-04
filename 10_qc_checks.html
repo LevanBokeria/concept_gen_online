@@ -85,6 +85,7 @@
 
             // Check if too many sessions, then stop training
             if (jatos.studySessionData.session_counter >= jatos.studySessionData.qc_criteria.max_training_sess){
+              jatos.studySessionData.qc_status.max_training_sess_pass = false
               jatos.studySessionData.progress_state = 'qc_failed_phase_1'              
             }
         } // global pass fail? if/else section
@@ -135,6 +136,7 @@
 
             // Check if too many sessions, then stop training
             if (jatos.studySessionData.session_counter >= jatos.studySessionData.qc_criteria.max_training_sess){      
+              jatos.studySessionData.qc_status.max_training_sess_pass = false
               jatos.studySessionData.progress_state = 'qc_failed_phase_2'
             }
         } // global pass fail? if/else section
