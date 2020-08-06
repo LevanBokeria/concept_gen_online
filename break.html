@@ -108,19 +108,6 @@
 
 		};
 
-		var ek_test_break_trial = {
-			type: 'instructions-timer',
-			pages: [
-				'<p> THIS IS EK TEST Congratulations! You have finished learning the associations for phase 2! </p>' + 
-				'<p> Please take a break, and then click the Next button to start the final matching task!</p>' +
-				'<p> Once again, thank you very much for staying attentive! </p>'
-			],
-			show_clickable_nav: true,
-			button_label_next: "<span style='color: blue';> <strong> Next </stong></span>",
-			n_seconds: jatos.studySessionData.long_break_duration
-
-		};
-
 		if (jatos.studySessionData.progress_state == 'advance_phase') {
 			timeline.push(long_break_trial)
 
@@ -143,10 +130,13 @@
 			timeline.push(qc_failed_phase_2)	
 
 			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
-		} else if (jatos.studySessionData.progress_state == 'ek_test'){
-			timeline.push(ek_test_break_trial)
 
-			component_to_start = jatos.studySessionData.script_comp_pos.ek_test
+		} else if (jatos.studySessionData.progress_state == 'qc_failed_phase_3'){		
+			timeline.push(qc_failed_phase_3)	
+
+			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
+
+
 		} else if (jatos.studySessionData.progress_state == 'finished_training'){
 			timeline.push(finished_training) // not yet defined
 

@@ -22,8 +22,13 @@
         [curr_phase,phase_string,curr_session] = getPhaseAndSession()
 
         let middle_sentence = {
-            phase_1: '<p>If your learning score for each toy is 80% or more, you will move to phase 2! </p>',
-            phase_2: '<p>If your learning score for each toy is 80% or more, you will move to the final task, after which the experiment is over! </p>'
+            phase_1: '<p>If your learning score for each toy is '+ 
+                jatos.studySessionData.training_criterion +'% or more, you will move to phase 2! </p>',
+            phase_2: '<p>If your learning score for each toy is '+ 
+                jatos.studySessionData.training_criterion +'% or more, you will move to phase 3! </p>',
+            phase_3: '<p>If your learning score for each toy is ' +
+                jatos.studySessionData.training_criterion +'% or more, you will move to the debriefing survey, ' +
+                'after which the experiment is over! </p>',
         }
 
 
@@ -48,8 +53,10 @@
                     '</div>'+
                     '<div class="instruct"> <br>'+
                         '<p>Please note that your responses are monitored automatically.</p>' +
-                        '<p>You might be disqualified during the study if you take too many sessions to learn or ' + 
-                        ' if your responses have signs of inattention. </p>' +
+                        '<p><strong>You might be disqualified during the study if you take too many sessions to learn or ' + 
+                        ' if your responses have signs of inattention. </strong></p>' +
+                        '<p>Your data is really important for our students and for understanding how the human brain learns.</p>' + 
+                        '<p>Please be attentive and complete this game truthfully. Thank you so much!</p>' + 
                         '<p> Click next to start the 1st session! Good luck! </p>' +
                     '</div>',
             ],

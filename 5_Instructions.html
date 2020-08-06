@@ -26,6 +26,9 @@
 
 			// What phase and session is this?
 			let [curr_phase,phase_string,curr_session] = getPhaseAndSession() 
+			let curr_concept = jatos.studySessionData.inputData.concepts[phase_string]
+			let nTargets = jatos.studySessionData.inputData.basic_parameters.nTargets
+
 
 			// Create HTML elements 
 			let targets_on_page = document.createElement('div')
@@ -68,62 +71,73 @@
 					type: 'instructions',
 					pages : [				
 							'<div class= "header">'+
-								'<h1> Task Instructions </h1>'+
+								'<h1> Game Instructions </h1>'+
 							'</div>'+	
 							'<div class="instruct">'+
-								'<p> Welcome to the experiment!</p>' + 
-								'<p> This experiment will test your perception and memory skills!</p>' +
-								'<p>It consists of two learning phases. In the end, you will do a short final matching task and a debriefing survey.</p>' +
-								'<p> Lets start with phase 1 of learning. Click "Next" to read instructions. </p>' +
+								'<p>Welcome to the experiment!</p>' + 
+								'<p>You will play a game that will test your perception and memory skills!</p>' +
+								'<p>The game consists of 3 learning phases, and a debriefing survey at the end.</p>' +
+								'<p>Lets start with phase 1 of learning. Click "Next" for instructions. </p>' +
 							'</div>',
+							'<div class= "header">'+
+								'<h1> Please go into fullscreen mode by pressing F11</h1>'+
+							'</div>',								
 							'<div class= "header">'+
 								'<h1> Phase 1 Instructions </h1>'+
 							'</div>'+	
 							'<div class="instruct">'+
 								'<p>Below, you can see some examples of ' + 
-									jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
+									curr_concept.concept_object + 
 									' that differ from each other by the length of their ' + 
-									jatos.studySessionData.inputData.concepts[phase_string].dim1_name + ' and ' + 
-									jatos.studySessionData.inputData.concepts[phase_string].dim2_name + '.</p>' + 
+									curr_concept.dim1_name + ' and ' + 
+									curr_concept.dim2_name + '.</p>' + 
 								'<div id="all_pictures">' +
 									'<img src="./img/initial_all_pictures/'+ 
-									jatos.studySessionData.inputData.concepts[phase_string].concept_space 
+									curr_concept.concept_space 
 									+'.png" alt="all_pictures" '+
 									'style="height:40%;width:40%; object-fit:contain;"></img>' + 
 								"</div>" +
-								'<p> '+ jatos.studySessionData.inputData.basic_parameters.nTargets +
-									' of these ' + jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
-									' are associated with the '+ 
-									jatos.studySessionData.inputData.basic_parameters.nTargets +
+								'<p> '+ nTargets +
+									' of these ' + curr_concept.concept_object + 
+									' are hiding the ' + 
+									nTargets +
 									' toys you see below.</p>' +
 									names_on_page.outerHTML + targets_on_page.outerHTML +
-									'<p>Your job is to find out which '+ 
-									jatos.studySessionData.inputData.basic_parameters.nTargets +' ' + 
-									jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
-									' are associated with which toys as fast as you can! ' + 
+									'<p>Your job is to find out which of the '+ 
+									nTargets +' ' + 
+									curr_concept.concept_object + 
+									' are hiding which of these toys as fast as you can! ' + 
 								'</p>' +
 							'</div>',
 							'<div class= "header">'+
 								'<h1> Phase 1 Instructions </h1>'+
 							'</div>'+	
 							'<div class="instruct"> <br>'+
-								'<p>On each trial of learning, you will see one of the toys and two candidate ' + 
-								jatos.studySessionData.inputData.concepts[phase_string].concept_object + ' on the screen.</p>' + 
-								'<p>You will have to guess which of the two ' + 
-								jatos.studySessionData.inputData.concepts[phase_string].concept_object + ' is correctly associated with the toy you see.</p>' +
-								'<p>You can make a response using the keyboard keys "1" and "2" corresponding to the two ' + 
-								jatos.studySessionData.inputData.concepts[phase_string].concept_object + '.</p>' +
-								'<p>You will then get feedback on whether you were correct or incorrect.</p>' +								
+								'<p>On each trial of learning, you will see one of the toys and two suspect ' + 
+								curr_concept.concept_object + ' on the screen.</p>' + 
+								'<p>You will have to learn which of the two ' + 
+								curr_concept.concept_object + ' is hiding the toy you see.</p>' +
+								'<p>Use the "1" and "2" keys of your keyboard to make your choice.</p>' +
+								'<p>You will then see if your were right or wrong, and your score will be recorded.</p>' +								
 							'</div>',
+							'<div class= "header">'+
+								'<h1> Phase 1 Instructions </h1>'+
+							'</div>'+	
+							'<div class="instruct"> <br>'+
+								'<p>In the beginning, you will have to just guess the right answers.</p>' +
+								'<p>Hopefully, after some trials you will learn to quickly recognize the '+ curr_concept.concept_object 
+								+ ' that hide each toy.</p>' +								
+							'</div>',							
 							'<div class= "header">'+
 								'<h1> Phase 1 Instructions </h1>'+
 							'</div>'+	
 							'<div class="instruct"> <br>'+
 								'<p>Lets do '+ 
 									jatos.studySessionData.n_practice_trials + 
-									' practice trials before beginning the actual learning.</p>' + 
-								'<p>You will have ' + (jatos.studySessionData.timer_response_window/1000) + ' seconds on each trial to make your response! </p>' +
-								'<p>Click Next to begin.</p>' +								
+									' practice trials for the game, before beginning the actual learning.</p>' + 
+								'<p><b>You will have ' + (jatos.studySessionData.timer_response_window/1000) + 
+								' seconds on each trial to make your response!</b> </p>' +
+								'<p>Please be as fast and as accurate as you can be!</p>' +							
 							'</div>',																												
 						],
 						
@@ -146,25 +160,25 @@
 							'</div>'+	
 							'<div class="instruct">'+
 								'<p>Below, you can see some examples of ' + 
-									jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
+									curr_concept.concept_object + 
 									' that differ from each other by the length of their ' + 
-									jatos.studySessionData.inputData.concepts[phase_string].dim1_name + ' and ' + 
-									jatos.studySessionData.inputData.concepts[phase_string].dim2_name + '.</p>' + 
+									curr_concept.dim1_name + ' and ' + 
+									curr_concept.dim2_name + '.</p>' + 
 								'<div id="all_pictures">' +
 									'<img src="./img/initial_all_pictures/'+ 
-									jatos.studySessionData.inputData.concepts[phase_string].concept_space 
+									curr_concept.concept_space 
 									+'.png" alt="all_pictures" '+
 									'style="height:40%;width:40%; object-fit:contain;"></img>' + 
 								"</div>" +
-								'<p> '+ jatos.studySessionData.inputData.basic_parameters.nTargets +
-									' of these ' + jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
+								'<p> '+ nTargets +
+									' of these ' + curr_concept.concept_object + 
 									' are associated with the '+ 
-									jatos.studySessionData.inputData.basic_parameters.nTargets +
+									nTargets +
 									' toys you see below.</p>' +
 									names_on_page.outerHTML + targets_on_page.outerHTML +
 									'<p>Your job is to find out which '+ 
-									jatos.studySessionData.inputData.basic_parameters.nTargets +' ' + 
-									jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
+									nTargets +' ' + 
+									curr_concept.concept_object + 
 									' are associated with which toys as fast as you can! ' + 
 								'</p>' +
 							'</div>',
@@ -173,11 +187,11 @@
 							'</div>'+	
 							'<div class="instruct"> <br>'+
 								'<p>On each trial of learning, you will see one of the toys and two candidate ' + 
-								jatos.studySessionData.inputData.concepts[phase_string].concept_object + ' on the screen.</p>' + 
+								curr_concept.concept_object + ' on the screen.</p>' + 
 								'<p>You will have to guess which of the two ' + 
-								jatos.studySessionData.inputData.concepts[phase_string].concept_object + ' is correctly associated with the toy you see.</p>' +
+								curr_concept.concept_object + ' is correctly associated with the toy you see.</p>' +
 								'<p>You can make a response using the keyboard keys "1" and "2" corresponding to the two ' + 
-								jatos.studySessionData.inputData.concepts[phase_string].concept_object + '.</p>' +
+								curr_concept.concept_object + '.</p>' +
 								'<p>You will then get feedback on whether you were correct or incorrect.</p>' +								
 							'</div>',
 							'<div class= "header">'+
@@ -209,25 +223,25 @@
 							'</div>'+	
 							'<div class="instruct">'+
 								'<p>Below, you can see some examples of ' + 
-									jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
+									curr_concept.concept_object + 
 									' that differ from each other by the length of their ' + 
-									jatos.studySessionData.inputData.concepts[phase_string].dim1_name + ' and ' + 
-									jatos.studySessionData.inputData.concepts[phase_string].dim2_name + '.</p>' + 
+									curr_concept.dim1_name + ' and ' + 
+									curr_concept.dim2_name + '.</p>' + 
 								'<div id="all_pictures">' +
 									'<img src="./img/initial_all_pictures/'+ 
-									jatos.studySessionData.inputData.concepts[phase_string].concept_space 
+									curr_concept.concept_space 
 									+'.png" alt="all_pictures" '+
 									'style="height:40%;width:40%; object-fit:contain;"></img>' + 
 								"</div>" +
-								'<p> '+ jatos.studySessionData.inputData.basic_parameters.nTargets +
-									' of these ' + jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
+								'<p> '+ nTargets +
+									' of these ' + curr_concept.concept_object + 
 									' are associated with the '+ 
-									jatos.studySessionData.inputData.basic_parameters.nTargets +
+									nTargets +
 									' toys you see below.</p>' +
 									names_on_page.outerHTML + targets_on_page.outerHTML +
 									'<p>Your job is to find out which '+ 
-									jatos.studySessionData.inputData.basic_parameters.nTargets +' ' + 
-									jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
+									nTargets +' ' + 
+									curr_concept.concept_object + 
 									' are associated with which toys as fast as you can! ' + 
 								'</p>' +
 							'</div>',
@@ -236,11 +250,11 @@
 							'</div>'+	
 							'<div class="instruct"> <br>'+
 								'<p>On each trial of learning, you will see one of the toys and two candidate ' + 
-								jatos.studySessionData.inputData.concepts[phase_string].concept_object + ' on the screen.</p>' + 
+								curr_concept.concept_object + ' on the screen.</p>' + 
 								'<p>You will have to guess which of the two ' + 
-								jatos.studySessionData.inputData.concepts[phase_string].concept_object + ' is correctly associated with the toy you see.</p>' +
+								curr_concept.concept_object + ' is correctly associated with the toy you see.</p>' +
 								'<p>You can make a response using the keyboard keys "1" and "2" corresponding to the two ' + 
-								jatos.studySessionData.inputData.concepts[phase_string].concept_object + '.</p>' +
+								curr_concept.concept_object + '.</p>' +
 								'<p>You will then get feedback on whether you were correct or incorrect.</p>' +								
 							'</div>',
 							'<div class= "header">'+
