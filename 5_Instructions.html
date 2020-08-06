@@ -58,7 +58,7 @@
 
 			//make a timeline
 			let timeline =[]; 
-// debugger
+
 			let instructions = {
 				phase_1: {
 					type: 'instructions',
@@ -190,7 +190,72 @@
 						show_clickable_nav: true,
 						button_label_next: '<span style="color: black"d;> <strong> Next </stong></span>',
 						timer_on: false
-				}
+				},
+				phase_3: {
+					type: 'instructions',
+					pages : [				
+							'<div class= "header">'+
+								'<h1> Phase 3 Instructions </h1>'+
+							'</div>'+	
+							'<div class="instruct">'+
+								'<p> Welcome to the final 3rd phase of the experiment!</p>' + 
+								'<p> This phase is exactly the same as phase 1, so it will test how well you can remember the associations from phase 1.</p>' +
+								'<p> Click "Next" to read instructions. </p>' +
+							'</div>',
+							'<div class= "header">'+
+								'<h1> Phase 3 Instructions </h1>'+
+							'</div>'+	
+							'<div class="instruct">'+
+								'<p>Below, you can see some examples of ' + 
+									jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
+									' that differ from each other by the length of their ' + 
+									jatos.studySessionData.inputData.concepts[phase_string].dim1_name + ' and ' + 
+									jatos.studySessionData.inputData.concepts[phase_string].dim2_name + '.</p>' + 
+								'<div id="all_pictures">' +
+									'<img src="./img/initial_all_pictures/'+ 
+									jatos.studySessionData.inputData.concepts[phase_string].concept_space 
+									+'.png" alt="all_pictures" '+
+									'style="height:40%;width:40%; object-fit:contain;"></img>' + 
+								"</div>" +
+								'<p> '+ jatos.studySessionData.inputData.basic_parameters.nTargets +
+									' of these ' + jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
+									' are associated with the '+ 
+									jatos.studySessionData.inputData.basic_parameters.nTargets +
+									' toys you see below.</p>' +
+									names_on_page.outerHTML + targets_on_page.outerHTML +
+									'<p>Your job is to find out which '+ 
+									jatos.studySessionData.inputData.basic_parameters.nTargets +' ' + 
+									jatos.studySessionData.inputData.concepts[phase_string].concept_object + 
+									' are associated with which toys as fast as you can! ' + 
+								'</p>' +
+							'</div>',
+							'<div class= "header">'+
+								'<h1> Phase 3 Instructions </h1>'+
+							'</div>'+	
+							'<div class="instruct"> <br>'+
+								'<p>On each trial of learning, you will see one of the toys and two candidate ' + 
+								jatos.studySessionData.inputData.concepts[phase_string].concept_object + ' on the screen.</p>' + 
+								'<p>You will have to guess which of the two ' + 
+								jatos.studySessionData.inputData.concepts[phase_string].concept_object + ' is correctly associated with the toy you see.</p>' +
+								'<p>You can make a response using the keyboard keys "1" and "2" corresponding to the two ' + 
+								jatos.studySessionData.inputData.concepts[phase_string].concept_object + '.</p>' +
+								'<p>You will then get feedback on whether you were correct or incorrect.</p>' +								
+							'</div>',
+							'<div class= "header">'+
+								'<h1> Phase 3 Instructions </h1>'+
+							'</div>'+	
+							'<div class="instruct"> <br>'+
+								'<p>Lets do '+ 
+									jatos.studySessionData.n_practice_trials + 
+									' practice trials before beginning the actual learning.</p>' + 
+								'<p>You will have ' + (jatos.studySessionData.timer_response_window/1000) + ' seconds on each trial to make your response! </p>' +
+								'<p>Click Next to begin.</p>' +								
+							'</div>',																												
+						],
+						
+						show_clickable_nav: true,
+						button_label_next: '<span style="color: black"d;> <strong> Next </stong></span>',
+				},
 			}
 
 			timeline.push(instructions[phase_string]);

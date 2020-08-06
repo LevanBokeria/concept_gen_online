@@ -44,7 +44,7 @@
     jatos.studySessionData.show_correct             = 0;
     jatos.studySessionData.pilot                    = 0;
     jatos.studySessionData.pilot_n_trials           = 10;
-    jatos.studySessionData.auto_respond             = true;
+    jatos.studySessionData.auto_respond             = false;
     jatos.studySessionData.perf_check_over_n_trials = 15; // Over how many previous trials is the performance calculated?
 
     // Duration of trials, breaks, ITI, etc
@@ -52,10 +52,10 @@
       jatos.studySessionData.short_break_duration = 2; // seconds
       jatos.studySessionData.long_break_duration  = 2; // seconds
 
-      jatos.studySessionData.timer_after_response    = 100; // milliseconds
-      jatos.studySessionData.timer_no_resp_fb_freeze = 500; // milliseconds
-      jatos.studySessionData.timer_response_window   = 7000; // milliseconds            
-      jatos.studySessionData.post_trial_gap          = 100; // milliseconds
+      jatos.studySessionData.timer_after_response    = 2000; // milliseconds
+      jatos.studySessionData.timer_no_resp_fb_freeze = 2000; // milliseconds
+      jatos.studySessionData.timer_response_window   = 10000; // milliseconds            
+      jatos.studySessionData.post_trial_gap          = 500; // milliseconds
       jatos.studySessionData.n_practice_trials       = 2;
 
       // Minimum % correct on each item
@@ -72,7 +72,7 @@
       jatos.studySessionData.post_trial_gap          = 500; // milliseconds
       jatos.studySessionData.n_practice_trials       = 6;
       
-      jatos.studySessionData.training_criterion = 80;
+      jatos.studySessionData.training_criterion = 90;
 
     };
 
@@ -93,7 +93,7 @@
         uniform_resp_perc:   100,
         min_perf_check_perc: 50,
         perc_max_missed:     40,
-        max_training_sess:   10,               
+        max_training_sess:   6,               
       }
     }
 
@@ -107,8 +107,6 @@
       perc_max_misses_pass:   true,
       max_training_sess_pass: true,
     }
-
-
 
     // If we're auto-responding, edit the rt_check criteria, and the ITI, and break durations
     if (jatos.studySessionData.auto_respond){
@@ -137,6 +135,7 @@
         imgNamesTarget: {
           phase_1: ['Tree','Santa','Bell','Sledge','Gingerman','Bear'], 
           phase_2: ['Tree','Santa','Bell','Sledge','Gingerman','Bear'],
+          phase_3: ['Tree','Santa','Bell','Sledge','Gingerman','Bear'],
         },
         pointXCoord: [],
         pointYCoord: [],
@@ -157,6 +156,7 @@
     let chosenTarget_idxs = {
       phase_1: [0,1,2], 
       phase_2: [0,1,2],
+      phase_3: [0,1,2],      
     }
 
     let totalPointsInSpace = targetCoordsNames.pointNamesEmpty.length
@@ -164,6 +164,7 @@
 
     let chosenTargetLocations_phase_1 = 
       _.sampleSize(allPointsInSpace, nTargets)
+    let chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruent or not
     
     // let chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
     let congruent = true
@@ -173,7 +174,6 @@
     } else {
 
       // Choose it randomly
-
 
     }
 
@@ -206,36 +206,42 @@
         targetPoints: {
           phase_1: chosenTargetLocations_phase_1,
           phase_2: chosenTargetLocations_phase_2,
+          phase_3: chosenTargetLocations_phase_3,          
         },                
         
         // Point names, i.e. T1 T2 T6 etc
         targetPointNames: {
           phase_1: index_into_array(targetCoordsNames.pointNamesTarget,chosenTarget_idxs.phase_1),
           phase_2: index_into_array(targetCoordsNames.pointNamesTarget,chosenTarget_idxs.phase_2),
+          phase_3: index_into_array(targetCoordsNames.pointNamesTarget,chosenTarget_idxs.phase_3),          
         },
 
         // Which target images are used for each phase?
         targetNamesUsed: {
           phase_1: index_into_array(targetCoordsNames.imgNamesTarget.phase_1,chosenTarget_idxs.phase_1),
           phase_2: index_into_array(targetCoordsNames.imgNamesTarget.phase_2,chosenTarget_idxs.phase_2),
+          phase_3: index_into_array(targetCoordsNames.imgNamesTarget.phase_2,chosenTarget_idxs.phase_3),          
         },        
 
         // Paths to the target images
         targetPathsUsed: {
           phase_1: [],
           phase_2: [],
+          phase_3: [],
         },
 
         // For all 16 points, what are the corresponding point names? For now, all E points
         pointNamesUsed: {
           phase_1: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
-          phase_2: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16']
+          phase_2: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
+          phase_3: ['E1','E2','E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13','E14','E15','E16'],
         },
 
         // For all 16 points, what are the names for corresponding image? For now, all "Empty" items
         imgNamesUsed: {
           phase_1: Array(16).fill('Empty'),
-          phase_2: Array(16).fill('Empty')
+          phase_2: Array(16).fill('Empty'),
+          phase_3: Array(16).fill('Empty'),          
         },
     }
 
@@ -243,10 +249,11 @@
     let running_perf = {
       phase_1: new Array(basic_parameters.nTargets).fill(0),
       phase_2: new Array(basic_parameters.nTargets).fill(0),
+      phase_3: new Array(basic_parameters.nTargets).fill(0),      
     }
 
     // For each phase, specify which points are used as targets, paths to those targets, and the names of all 16 points.
-    for (iPhase=1; iPhase<3; iPhase++){
+    for (iPhase=1; iPhase<Object.keys(running_perf).length; iPhase++){
       let phase_string = 'phase_'+iPhase
 
       for (iT=0; iT<basic_parameters.nTargets; iT++){
@@ -271,12 +278,14 @@
     let baseTrialArray = {
       phase_1: genBaseTrialArray(cleanEmptyCombos(getCombos(basic_parameters.pointNamesUsed['phase_1']))),
       phase_2: genBaseTrialArray(cleanEmptyCombos(getCombos(basic_parameters.pointNamesUsed['phase_2']))),
+      phase_3: genBaseTrialArray(cleanEmptyCombos(getCombos(basic_parameters.pointNamesUsed['phase_3']))),      
     }
 
     // If debug, then shorten these arrays
     if (jatos.studySessionData.debug == 1){
       baseTrialArray.phase_1 = deepCopy(shuffle(baseTrialArray.phase_1).slice(0,jatos.studySessionData.debug_n_trials))
-      baseTrialArray.phase_2 = deepCopy(shuffle(baseTrialArray.phase_2).slice(0,jatos.studySessionData.debug_n_trials))      
+      baseTrialArray.phase_2 = deepCopy(shuffle(baseTrialArray.phase_2).slice(0,jatos.studySessionData.debug_n_trials))
+      baseTrialArray.phase_3 = deepCopy(shuffle(baseTrialArray.phase_3).slice(0,jatos.studySessionData.debug_n_trials))            
     }
     
     // Define the neck_legs_space
@@ -296,6 +305,7 @@
     let concepts = {
         phase_1: neck_legs_space,
         phase_2: beak_tail_space,
+        phase_3: neck_legs_space,        
     }
     
     // Create an array that will hold paths to images to prelod. Will be filled in prior to each session
