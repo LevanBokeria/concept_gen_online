@@ -47,31 +47,79 @@
         };                  
 
         // Create the survey for spatial layout
-
+        debugger
         // Create the image element
         let curr_space = 'neck_legs_space'
         let spatial_depiction_img = document.createElement('img')
         spatial_depiction_img.src = './img/' + curr_space + '/2d_space.png'
+        spatial_depiction_img.id = '2d_layout'
         spatial_depiction_img.style.height = '300px'
         spatial_depiction_img.style.width = '300px'
-        spatial_depiction_img.style.position = '0 auto'
+        // spatial_depiction_img.style.position = '0 auto'
+        spatial_depiction_img.style.padding = '20px'
 
 
         let spatial_questions = [
                 {prompt: 'At any point during the experiment, did you realize that the all the birds you saw with different ' + 
-                'sizes of necks and legs, can be represented in a 2-dimensional space as depicted above? ' +
+                'sizes of necks and legs, <br>can be represented in a 2-dimensional space as depicted above? ' +
                 ' <br>Each bird is a point in this space, and the value on each dimension specifies the sizes of necks and legs? ' + 
                 '<br> If you did realize this, did this help you in learning the bird-toy associations?', rows: 3, columns: 100, placeholder: ''},            
             ]
-        let preamble = '<p style="font-size: 30px;"><b>SPATIAL Phase 1 debriefing about the birds:</b></p>'
+        let spatial_preamble = '<p style="font-size: 30px;"><b>SPATIAL Phase 1 debriefing about the birds:</b></p>'
 
-        debugger
-        let spatialLayoutTrial = createImageSurveyTrial(preamble,[spatial_depiction_img],spatial_questions)
+        
+        let spatialLayoutTrial = createImageSurveyTrial(spatial_preamble,[spatial_depiction_img],spatial_questions)
+
+
+        // Create a trial asking if they realized the mappings matched?
+        let wrapperEl = document.createElement('div')
+        wrapperEl.style.position = '0 auto'
+        wrapperEl.style.height = '200px'
+        wrapperEl.style.width  = '200px'
+
+        let paEl = document.createElement('div')
+        paEl.style.display = 'flex'
+        paEl.style['justify-content'] = 'center'
+        paEl.style['align-items'] = 'center'
+        paEl.id = 'example_pa'
+        paEl.style.border = '1px solid'
+        paEl.style.height = '200px'
+        paEl.style.width  = '200px'
+        paEl.style.position = '0 auto'
+        paEl.style['background-color'] = 'white'
+        
+        wrapperEl.appendChild(paEl)
+
+        let exemplarEl = document.createElement('img')
+        exemplarEl.id = 'exemplarEl'
+        exemplarEl.src = './img/' + curr_space + '/individual_imgs/stim_16.png'
+        exemplarEl.style.height = '160px'   
+
+        // paEl.appendChild(exemplarEl)
+
+        let toyElement = document.createElement('img')
+        toyElement.id = 'toy'
+        toyElement.src = './img/targets/Bell.png'
+        toyElement.style.height = '50px'
+
+        // paEl.appendChild(toyElement)
+
+
+        let realize_mapping_questions = [
+                {prompt: 'During phase 2, did you realize that there is a relationship between the birds ' + 
+                'that hide the toys in phase 1 and birds that hide toys in phase 2? <br> ' + 
+                'For example, if a phase-1 bird with a certain neck:legs ratio was hiding the bell (as shown above), ' + 
+                'the phase-2 bird that was hiding the bell also had a similar ratio of beak:tail.' + 
+                '<br> If you did realize this, did this help you in performing during phase 2?', rows: 3, columns: 100, placeholder: ''},            
+            ]
+        let realize_mapping_preamble = '<p style="font-size: 30px;"><b>Phase 1 / Phase 2 debriefing:</b></p>'
+
+        let realize_mapping_trial = createImageSurveyTrial(realize_mapping_preamble,[wrapperEl],realize_mapping_questions)
 
 
         // session_procedure.push(general_questions)
         // session_procedure.push(phase_1_questions)
-        session_procedure.push(spatialLayoutTrial)
+        session_procedure.push(realize_mapping_trial)
 
         jsPsych.init({
             timeline: session_procedure,

@@ -383,7 +383,7 @@ const deepCopy = function(object){
 };
 
 const createImageSurveyTrial = function(preamble,imageElementArray, questions){
-
+    
     let html = ''
 
     // Add image elements
