@@ -110,7 +110,7 @@ jsPsych.plugins['survey-text'] = (function() {
     if(trial.randomize_question_order){
       question_order = jsPsych.randomization.shuffle(question_order);
     }
-
+    
     // add questions
     for (var i = 0; i < trial.questions.length; i++) {
       var question = trial.questions[question_order[i]];

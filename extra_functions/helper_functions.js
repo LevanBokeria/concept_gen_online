@@ -265,7 +265,9 @@ const session_qc_check = function(last_session_data){
             if (curr_phase == 1){
                 jatos.studySessionData.progress_state = 'advance_phase'
             } else if (curr_phase == 2){
-                jatos.studySessionData.progress_state = 'ek_test'
+                jatos.studySessionData.progress_state = 'advance_phase'
+            } else if (curr_phase == 3){
+                jatos.studySessionData.progress_state = 'finished_training'
             }
 
         } else {
@@ -378,4 +380,37 @@ const createScoreBox = function(){
 
 const deepCopy = function(object){
     return JSON.parse(JSON.stringify(object))
-}
+};
+
+const createImageSurveyTrial = function(preamble,imageElementArray, questions){
+
+    let html = ''
+
+    // Add image elements
+    for (iImg=0; iImg < imageElementArray.length; iImg++){
+        html += imageElementArray[iImg].outerHTML
+    }
+
+    // add questions
+    for (i = 0; i < questions.length; i++) {
+        let question = questions[i];
+
+        html += '<div id="jspsych-survey-text-'+i+'" class="jspsych-survey-text-question" style="margin: 2em 0em;">';
+        html += '<p class="jspsych-survey-text">' + question.prompt + '</p>';
+        let autofocus = i == 0 ? "autofocus" : "";
+        let req = question.required ? "required" : "";
+        if(question.rows == 1){
+            html += '<input type="text" id="input-'+i+'"  name="#jspsych-survey-text-response-' + i + '" data-name="'+question.name+'" size="'+question.columns+'" '+autofocus+' '+req+' placeholder="'+question.placeholder+'"></input>';
+        } else {
+            html += '<textarea id="input-'+i+'" name="#jspsych-survey-text-response-' + i + '" data-name="'+question.name+'" cols="' + question.columns + '" rows="' + question.rows + '" '+autofocus+' '+req+' placeholder="'+question.placeholder+'"></textarea>';
+        }
+        html += '</div>';
+    }
+
+    var spatialLayoutTrial = {
+        type: 'survey-html-form',
+        preamble: preamble,
+        html: html
+    };        
+    return spatialLayoutTrial
+};

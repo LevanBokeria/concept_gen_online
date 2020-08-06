@@ -80,12 +80,11 @@
 			type: 'instructions-timer',
 			pages: [
 				'<p> Thank you so much for completing this session! <br> ' + 
-				'You are doing great! <br> ' +
 				'We really appreciate you staying attentive and continuing to honestly perform the task. </p>' +
 				'<p> Below you can see your scores from the last session: </p>' +
 				score_box_element.outerHTML + 
 				'<p> <br>Remember, you goal is to reach ' + 
-					jatos.studySessionData.training_criterion + '% on each of these toys!' +
+					jatos.studySessionData.training_criterion + '% on finding each of these toys!' +
 				'<p><br> Please take a ' + jatos.studySessionData.short_break_duration + 
 				' second break and click the Next button or press the right-arrow button on the keyboard to start the next session. </p>'
 			],
@@ -98,8 +97,11 @@
 		var long_break_trial = {
 			type: 'instructions-timer',
 			pages: [
-				'<p> Congratulations! You have finished learning the associations for phase 1! </p>' + 
-				'<p> Please take a break, and then click the Next button to read instructions for phase 2!</p>' +
+				'<p> Congratulations! You have finished phase ' + curr_phase + ' of the game! </p>' + 
+				'<p> Below you can see your finishing scores for phase ' + curr_phase + ': </p>' +
+				score_box_element.outerHTML + 
+				'<p> Please take a break, and then click the Next button to read instructions for phase ' + 
+				(curr_phase+1) + '!</p>' +
 				'<p> Thank you very much for staying attentive! </p>'
 			],
 			show_clickable_nav: true,
