@@ -60,8 +60,8 @@
 
       } else {
 
-        //  //////// Checking real sessions ////////////
-        // //////////////////////////////////////////////
+        //  //////// Checking real sessions of phase 1 ////////////
+        // ////////////////////////////////////////////////////////
 
         // This function will check all the qc criteria, and determine what to do next
         session_qc_check(last_session_data)
@@ -74,28 +74,15 @@
 
     } else {
 
-      // So its phase 2 //////////////////////////////////////////////////////////////////////////////////////////    
+      // So its phase 2+ //////////////////////////////////////////////////////////////////////////////////////////    
+    
+      // This function will check all the qc criteria, and determine what to do next
+      session_qc_check(last_session_data)
 
-      if (jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
-      // Are we checking practice trials?
+      // Start the break script
+      jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC passed. Giving a break`, 
+        jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.break))
 
-        // If this is phase 2, then don't check practice trials. Ptps are probably very fast on everything.
-        jatos.submitResultData('Phase 2, practice done. Not checking QC.', 
-        jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.post_practice_instructions))
-
-      } else {
-
-        //  //////// Checking real sessions ////////////
-        // //////////////////////////////////////////////
-       
-        // This function will check all the qc criteria, and determine what to do next
-        session_qc_check(last_session_data)
-
-        // Start the break script
-        jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC passed. Giving a break`, 
-          jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.break))
-
-      } // checking practice or real session?
     } // phase bracket
 
   }); // jatos IFFY

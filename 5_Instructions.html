@@ -56,6 +56,10 @@
 				names_on_page.appendChild(iN)
 			}
 
+			// What component to start next
+			var comp_to_start;
+			curr_phase == 1 ? comp_to_start = jatos.studySessionData.script_comp_pos.practice_trials : comp_to_start = jatos.studySessionData.script_comp_pos.phase_pa
+
 			//make a timeline
 			let timeline =[]; 
 
@@ -135,6 +139,7 @@
 							'<div class="instruct"> <br>'+
 								'<p> Welcome to phase 2 of the experiment!</p>' + 
 								'<p> Phase 2 is similar to phase 1, but with important differences. </p>' +
+								'<p> You will learn different associations, and will <strong>NO LONGER have any practice sessions</strong>. </p>' +								
 							'</div>',
 							'<div class= "header">'+
 								'<h1> Phase 2 Instructions </h1>'+
@@ -179,9 +184,6 @@
 								'<h1> Phase 2 Instructions </h1>'+
 							'</div>'+	
 							'<div class="instruct"> <br>'+
-								'<p>Lets do '+ 
-									jatos.studySessionData.inputData.nPracticeTrials + 
-									' practice trials before beginning the actual learning.</p>' + 
 								'<p>You will have ' + (jatos.studySessionData.timer_response_window/1000) + ' seconds on each trial to make your response! </p>' +
 								'<p>Click Next to begin.</p>' +								
 							'</div>',																												
@@ -199,8 +201,8 @@
 							'</div>'+	
 							'<div class="instruct">'+
 								'<p> Welcome to the final 3rd phase of the experiment!</p>' + 
-								'<p> This phase is exactly the same as phase 1, so it will test how well you can remember the associations from phase 1.</p>' +
-								'<p> Click "Next" to read instructions. </p>' +
+								'<p> This phase is the same as phase 1, so it will test how well you can remember the associations from phase 1.</p>' +
+								'<p> <strong>Note that you will NOT have any practice sessions.</strong> </p>' +
 							'</div>',
 							'<div class= "header">'+
 								'<h1> Phase 3 Instructions </h1>'+
@@ -245,9 +247,6 @@
 								'<h1> Phase 3 Instructions </h1>'+
 							'</div>'+	
 							'<div class="instruct"> <br>'+
-								'<p>Lets do '+ 
-									jatos.studySessionData.n_practice_trials + 
-									' practice trials before beginning the actual learning.</p>' + 
 								'<p>You will have ' + (jatos.studySessionData.timer_response_window/1000) + ' seconds on each trial to make your response! </p>' +
 								'<p>Click Next to begin.</p>' +								
 							'</div>',																												
@@ -274,7 +273,8 @@
 
 					jatos.submitResultData("[instructions_start---" + 
 					JSON.stringify(jatos.studySessionData) +
-					"---instructions_end]", jatos.startNextComponent);
+					"---instructions_end]", 
+					jatos.startComponentByPos(comp_to_start));
 
 					// jsPsych.data.displayData();
 				}

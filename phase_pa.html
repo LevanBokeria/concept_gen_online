@@ -18,10 +18,8 @@
             // debugger
 
             // What phase is this?
-            let curr_phase             = jatos.studySessionData.phase_counter
-            let phase_string           = 'phase_'+curr_phase
-            let curr_session           = jatos.studySessionData.session_counter[phase_string]
-            let curr_space_object      = jatos.studySessionData.inputData.concepts[phase_string]
+            [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+            let curr_space_object = jatos.studySessionData.inputData.concepts[phase_string]
 
             // Reset the running performance
             jatos.studySessionData.inputData.running_perf[phase_string] = 
@@ -36,8 +34,6 @@
                                 jatos.studySessionData.inputData.baseTrialArray[phase_string],
                                 jatos.studySessionData.inputData.basic_parameters,
                                 curr_phase,0)     
-
-                
 
                 // Now, choose trials such that each item is used at least twice
                 var practice_session_trials = []
@@ -59,7 +55,7 @@
                 // Record the current trial array in the outputData variable
                 jatos.studySessionData.outputData[phase_string+'_practice_results'] = session_trials
             } else {
-                // Then, check which session this is
+                // Then, generate trials for this session
                 var session_trials = 
                     trialCreator(jatos.studySessionData.inputData.concepts[phase_string],
                                 jatos.studySessionData.inputData.baseTrialArray[phase_string],
@@ -70,8 +66,6 @@
                 jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1] = session_trials                 
             } 
             let n_trials = session_trials.length           
-
-            // debugger
 
             let imgs_to_preload = deepCopy(jatos.studySessionData.inputData.imgs_to_preload)
 
@@ -147,9 +141,7 @@
                 on_finish: function(data) {
                     
                     // What phase is this?
-                    let curr_phase             = jatos.studySessionData.phase_counter
-                    let phase_string           = 'phase_'+curr_phase
-                    let curr_session           = jatos.studySessionData.session_counter[phase_string]
+                    [curr_phase,phase_string,curr_session] = getPhaseAndSession()
 
                     // Make JATOS remember that this session was run
                     jatos.studySessionData.latestFinishedComponentId    = jatos.componentId;
@@ -171,8 +163,8 @@
                         jatos.studySessionData.last_session_data = 
                         deepCopy(jatos.studySessionData.outputData[phase_string+'_practice_results']);
 
-                        var results_delimiter_start = "[phase_" + curr_phase + "_practice_start---"
-                        var results_delimiter_end   = "---phase_" + curr_phase + "_practice_end]"                        
+                        var results_delimiter_start = "[" + phase_string + "_practice_start---"
+                        var results_delimiter_end   = "---" + phase_string + "_practice_end]"                        
 
                     } else {
                         for (iT=0; iT<output_trial_data.length; iT++){
@@ -185,11 +177,9 @@
                         jatos.studySessionData.last_session_data = 
                         deepCopy(jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1]);                        
 
-                        var results_delimiter_start = "[phase_" + curr_phase + "_ses_" + curr_session + "_start---"
-                        var results_delimiter_end   = "---phase_" + curr_phase + "_ses_" + curr_session + "_end]" 
+                        var results_delimiter_start = "[" + phase_string + "_ses_" + curr_session + "_start---"
+                        var results_delimiter_end   = "---" + phase_string + "_ses_" + curr_session + "_end]" 
                     }
-
-                    // debugger
 
                     jatos.submitResultData(
                         results_delimiter_start + 
