@@ -167,6 +167,23 @@
 			button_label_next: '<span style="color: black"d;> <strong> Debrief </stong></span>',
 		};
 
+		// Generic message saying thank you for training please answer debrief
+		var training_finished_generic_page = {
+
+			type: 'instructions',
+			pages : [				
+					'<div class="instruct">'+
+						'<p> Thank you very much! You have completed the training! </p> ' +  
+						'<p> Below you can see your finishing scores for phase ' + curr_phase + ': </p>' +
+						score_box_element.outerHTML + 
+						'<p> Please complete the debriefing survey by clicking the "Defrief" button.</p>' +
+						'<p> After that, the experiment is over. Thank you! </p>'+
+					'</div>'
+					],
+			show_clickable_nav: true,
+			button_label_next: '<span style="color: black"d;> <strong> Debrief </stong></span>',
+		};		
+
 		// Generic questions to ask regardless of where the ptp failed, or if the ptp succeeded
         var general_questions_page = {
             type: 'survey-text',
@@ -294,9 +311,27 @@
 
 			show_progress_bar = true
 
-		} else if (jatos.studySessionData.progress_state == 'qc_failed_phase_3' || 
-				   jatos.studySessionData.progress_state == 'finished_training'){		
+		} else if (jatos.studySessionData.progress_state == 'qc_failed_phase_3'){
 			timeline.push(qc_failed_generic_page)
+			timeline.push(general_questions_page)
+			timeline.push(phase_1_questions_page)
+			timeline.push(phase_2_questions_page)
+
+			// Realize mapping?
+			if (jatos.studySessionData.inputData.congruency){
+				timeline.push(realize_mapping_page)
+			}
+
+			timeline.push(phase_1_spatial_page)
+			timeline.push(phase_2_spatial_page)	
+			timeline.push(phase_3_was_1_page)
+
+			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
+
+			show_progress_bar = true
+
+		} else if (jatos.studySessionData.progress_state == 'finished_training'){		
+			timeline.push(training_finished_generic_page)
 			timeline.push(general_questions_page)
 			timeline.push(phase_1_questions_page)
 			timeline.push(phase_2_questions_page)
