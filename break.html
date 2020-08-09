@@ -28,7 +28,7 @@
         let phase_questions = {
             type: 'survey-text',
 			questions: [
-                {prompt: 'How did you learn which ' + curr_concept.concept_object + ' was hiding which toy? Did you have any strategy?', rows: 3, columns: 100},
+                {prompt: 'How did you learn which ' + curr_concept.concept_object + 's was hiding which toy? Did you have any strategy?', rows: 3, columns: 100},
                 {prompt: 'Did you make any drawings or take any screenshots or pictures ' + 
                 'to help remember which of the '+curr_concept.concept_object+' were hiding which toys? <br>(you will not be penalised if you did, we just need to know so we can correctly analyze the data)', rows: 3, columns: 100},
                 ],
@@ -49,12 +49,12 @@
         spatialLayoutImgEl.style.padding = '20px'
 
         let spatial_questions = [
-                {prompt: 'At any point during the experiment, did you realize that the all the '+ iConcept.concept_object + ' you saw with different ' + 
+                {prompt: 'At any point during the experiment, did you realize that the all the '+ iConcept.concept_object + 's you saw with different ' + 
                 'sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + ', <br>can be represented in a 2-dimensional space as depicted above? ' +
                 ' <br>Each '+ iConcept.concept_object + ' is a point in this space, and the value on each dimension specifies the sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + '? ' + 
                 '<br> If you did realize this, did this help you in learning the '+ iConcept.concept_object + '-toy associations?', rows: 3, columns: 100, placeholder: ''},            
             ]
-        let spatial_preamble = '<p style="font-size: 30px;"><b> Phase '+ iPhase + ' debriefing about the '+ iConcept.concept_object + ':</b></p>'
+        let spatial_preamble = '<p style="font-size: 30px;"><b> Phase '+ iPhase + ' debriefing about the '+ iConcept.concept_object + 's:</b></p>'
 
         let spatialLayoutTrial = createImageSurveyTrial(spatial_preamble,[spatialLayoutImgEl],spatial_questions)
 	};

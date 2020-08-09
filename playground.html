@@ -50,12 +50,12 @@
 
         // Create the image element
         let curr_space = 'neck_legs_space'
-        let spatial_depiction_img = document.createElement('img')
-        spatial_depiction_img.src = './img/' + curr_space + '/2d_space.png'
-        spatial_depiction_img.id = '2d_layout'
-        spatial_depiction_img.style.height = '300px'
-        spatial_depiction_img.style.width = '300px'
-        spatial_depiction_img.style.padding = '20px'
+        let spatialLayoutImgEl = document.createElement('img')
+        spatialLayoutImgEl.src = './img/' + curr_space + '/2d_space.png'
+        spatialLayoutImgEl.id = '2d_layout'
+        spatialLayoutImgEl.style.height = '300px'
+        spatialLayoutImgEl.style.width = '300px'
+        spatialLayoutImgEl.style.padding = '20px'
 
         let spatial_questions = [
                 {prompt: 'At any point during the experiment, did you realize that the all the birds you saw with different ' + 
@@ -65,7 +65,7 @@
             ]
         let spatial_preamble = '<p style="font-size: 30px;"><b>SPATIAL Phase 1 debriefing about the birds:</b></p>'
 
-        let spatialLayoutTrial = createImageSurveyTrial(spatial_preamble,[spatial_depiction_img],spatial_questions)
+        let spatialLayoutTrial = createImageSurveyTrial(spatial_preamble,[spatialLayoutImgEl],spatial_questions)
 
 
         ///////////////////////////////////////////////////////////////
