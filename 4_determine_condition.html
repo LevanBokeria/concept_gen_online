@@ -296,14 +296,16 @@
         'neck','legs',
         undefined,350,10,10,
         [170,525],[350,400], // onscreen idx coords
-        [90,560],[350,400]) // fb_imgs coords
+        [90,560],[350,400], // fb_imgs coords
+        'row') 
 
     // Define the beak_tail_space            
     let beak_tail_space = new ConceptCreator('beak_tail_space','bird',
         'beak','tail',
         undefined,650,10,10,
-        [220,310],[220,400], // onscreen idx coords
-        [90,180],[250,450]) // fb_imgs coords                  
+        [220,310],[220,400], // onscreen idx coords6
+        [90,180],[250,450], // fb_imgs coords
+        'column')        
 
     let concepts = {
         phase_1: neck_legs_space,
@@ -349,7 +351,7 @@
   let ConceptCreator = function(concept_space,concept_object,dim1_name,dim2_name,
       ex_pairs_img_height,ex_pairs_img_width,ex_pairs_x_coord,ex_pairs_y_coord,
       onscreen_idx_x_coords,onscreen_idx_y_coords,
-      fb_imgs_x_coords,fb_imgs_y_coords){
+      fb_imgs_x_coords,fb_imgs_y_coords,debrief_flex_dir){
 
           this.concept_space          = concept_space,
           this.concept_object         = concept_object,
@@ -362,7 +364,8 @@
           this.onscreen_idx_x_coords  = onscreen_idx_x_coords,
           this.onscreen_idx_y_coords  = onscreen_idx_y_coords,   
           this.fb_imgs_x_coords       = fb_imgs_x_coords,
-          this.fb_imgs_y_coords       = fb_imgs_y_coords
+          this.fb_imgs_y_coords       = fb_imgs_y_coords,
+          this.debrief_flex_dir       = debrief_flex_dir
   }
 
   let getCombos = function(array){

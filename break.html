@@ -81,19 +81,6 @@
 		let exemplar_1_width = 200 * 150 / jatos.studySessionData.inputData.basic_parameters.sort_area_width * 1.6
 		let exemplar_2_width = 600 * 150 / jatos.studySessionData.inputData.basic_parameters.sort_area_width * 1.6
 
-		let flex_direction_1, flex_direction_2
-
-		if (concept_1.concept_space == 'neck_legs_space'){
-
-			flex_direction_1 = 'row'
-			flex_direction_2 = 'column'
-
-		} else if (concept_1.concept_space == 'beak_tail_space'){
-
-			flex_direction_1 = 'column'
-			flex_direction_2 = 'row'
-
-		}
 		// Wrapper flex element
 		let wrapperFlexEl  					   = document.createElement('div')
         wrapperFlexEl.style.display            = 'flex'
@@ -103,7 +90,7 @@
 		// Image showing an example PA from phase 1
         let paEl_1                       = document.createElement('div')
 		paEl_1.style.display             = 'flex'
-		paEl_1.style['flex-direction']   = flex_direction_1
+		paEl_1.style['flex-direction']   = concept_1.debrief_flex_dir
         paEl_1.style['justify-content']  = 'center'
         paEl_1.style['align-items']      = 'center'
         paEl_1.id                        = 'example_pa1'
@@ -116,7 +103,7 @@
 		// Image showing an example PA from phase 2
 		paEl_2 = paEl_1.cloneNode(true)
 		paEl_2.id = 'example_pa2'
-		paEl_2.style['flex-direction']   = flex_direction_2
+		paEl_2.style['flex-direction']   = concept_2.debrief_flex_dir
 
 		// Make the concept exemplar elements
         let exemplarEl_1          = document.createElement('img')
@@ -249,18 +236,13 @@
 			// Phase 1
 			var phase_1_questions_page = createPhaseDebriefer(1,jatos.studySessionData.inputData.concepts.phase_1)
 			// Phase 2
-			var phase_2_questions_page = createPhaseDebriefer(1,jatos.studySessionData.inputData.concepts.phase_2)
-			// Phase 3
-			var phase_3_questions_page = createPhaseDebriefer(1,jatos.studySessionData.inputData.concepts.phase_3)
+			var phase_2_questions_page = createPhaseDebriefer(2,jatos.studySessionData.inputData.concepts.phase_2)
 
 		// Element asking about the spatial layout.
 			// Phase 1
 			var phase_1_spatial_page = createSpatialLayoutDebriefer(1,jatos.studySessionData.inputData.concepts.phase_1)
 			// Phase 2
 			var phase_2_spatial_page = createSpatialLayoutDebriefer(2,jatos.studySessionData.inputData.concepts.phase_2)
-			// Phase 3
-			var phase_3_spatial_page = createSpatialLayoutDebriefer(3,jatos.studySessionData.inputData.concepts.phase_3)   
-
 
 		// Realize phase 3 was a repeat of 1? Relearn or remember?
 		var phase_3_was_1_page = {
@@ -335,6 +317,7 @@
 			timeline.push(general_questions_page)
 			timeline.push(phase_1_questions_page)
 			timeline.push(phase_1_spatial_page)
+			timeline.push(debriefing_finished_generic_page)
 
 			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
 
@@ -353,6 +336,8 @@
 
 			timeline.push(phase_1_spatial_page)
 			timeline.push(phase_2_spatial_page)			
+			timeline.push(debriefing_finished_generic_page)
+
 
 			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
 
@@ -372,16 +357,17 @@
 			timeline.push(phase_1_spatial_page)
 			timeline.push(phase_2_spatial_page)	
 			timeline.push(phase_3_was_1_page)
+			timeline.push(debriefing_finished_generic_page)
 
 			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
 
 			show_progress_bar = true
 
 		} else if (jatos.studySessionData.progress_state == 'finished_training'){		
-			// timeline.push(training_finished_generic_page)
-			// timeline.push(general_questions_page)
-			// timeline.push(phase_1_questions_page)
-			// timeline.push(phase_2_questions_page)
+			timeline.push(training_finished_generic_page)
+			timeline.push(general_questions_page)
+			timeline.push(phase_1_questions_page)
+			timeline.push(phase_2_questions_page)
 
 			// Realize mapping?
 			if (jatos.studySessionData.inputData.congruency){
@@ -391,14 +377,13 @@
 			timeline.push(phase_1_spatial_page)
 			timeline.push(phase_2_spatial_page)	
 			timeline.push(phase_3_was_1_page)
+			timeline.push(debriefing_finished_generic_page)
 
 			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
 
 			show_progress_bar = true
 		} // checking progress state		
 
-		// Last page saying they'll be redirected
-		timeline.push(debriefing_finished_generic_page)
 
 
 		jsPsych.init({
