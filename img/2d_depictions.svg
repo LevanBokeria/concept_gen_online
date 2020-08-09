@@ -8,164 +8,164 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="2d_depictions.svg"
-   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
-   id="svg431"
-   version="1.1"
-   viewBox="0 0 210 297"
+   width="210mm"
    height="297mm"
-   width="210mm">
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg431"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="2d_depictions.svg">
   <defs
      id="defs425">
     <marker
-       inkscape:isstock="true"
-       style="overflow:visible"
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
        id="marker4619-6-2"
-       refX="0"
-       refY="0"
-       orient="auto"
-       inkscape:stockid="Arrow1Lend">
+       style="overflow:visible"
+       inkscape:isstock="true">
       <path
-         inkscape:connector-curvature="0"
-         transform="matrix(-0.8,0,0,-0.8,-10,0)"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         id="path4617-0-4"
          d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         id="path4617-0-4" />
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
     </marker>
     <marker
-       inkscape:isstock="true"
-       style="overflow:visible"
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
        id="marker4731-8-6"
-       refX="0"
-       refY="0"
-       orient="auto"
-       inkscape:stockid="Arrow1Lend">
+       style="overflow:visible"
+       inkscape:isstock="true">
       <path
-         inkscape:connector-curvature="0"
-         transform="matrix(-0.8,0,0,-0.8,-10,0)"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         id="path4729-4-4"
          d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         id="path4729-4-4" />
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
     </marker>
     <marker
-       inkscape:isstock="true"
-       style="overflow:visible"
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
        id="marker4143-4"
-       refX="0"
-       refY="0"
-       orient="auto"
-       inkscape:stockid="Arrow1Lend">
+       style="overflow:visible"
+       inkscape:isstock="true">
       <path
-         inkscape:connector-curvature="0"
-         transform="matrix(-0.8,0,0,-0.8,-10,0)"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         id="path4141-0"
          d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         id="path4141-0" />
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
     </marker>
     <marker
-       inkscape:isstock="true"
-       style="overflow:visible"
-       id="marker4183-8"
-       refX="0"
-       refY="0"
+       inkscape:stockid="Arrow1Lend"
        orient="auto"
-       inkscape:stockid="Arrow1Lend">
+       refY="0"
+       refX="0"
+       id="marker4183-8"
+       style="overflow:visible"
+       inkscape:isstock="true">
       <path
-         inkscape:connector-curvature="0"
-         transform="matrix(-0.8,0,0,-0.8,-10,0)"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         id="path4181-0"
          d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         id="path4181-0" />
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
     </marker>
     <clipPath
-       id="clipPath953"
-       clipPathUnits="userSpaceOnUse">
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath953">
       <rect
-         y="85.722267"
-         x="151.48717"
-         height="11.701088"
-         width="39.296314"
+         style="fill:#000000;stroke-width:0.264583"
          id="rect955"
-         style="fill:#000000;stroke-width:0.264583" />
+         width="39.296314"
+         height="11.701088"
+         x="151.48717"
+         y="85.722267" />
     </clipPath>
     <clipPath
-       id="clipPath959"
-       clipPathUnits="userSpaceOnUse">
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath959">
       <rect
-         y="30.521576"
-         x="118.02306"
-         height="11.571301"
-         width="39.323158"
+         style="fill:#000000;stroke-width:0.264583"
          id="rect961"
-         style="fill:#000000;stroke-width:0.264583" />
+         width="39.323158"
+         height="11.571301"
+         x="118.02306"
+         y="30.521576" />
     </clipPath>
     <clipPath
-       id="clipPath965"
-       clipPathUnits="userSpaceOnUse">
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath965">
       <rect
-         y="85.7061"
-         x="117.83408"
-         height="11.636793"
-         width="39.512142"
+         style="fill:#000000;stroke-width:0.264583"
          id="rect967"
-         style="fill:#000000;stroke-width:0.264583" />
+         width="39.512142"
+         height="11.636793"
+         x="117.83408"
+         y="85.7061" />
     </clipPath>
     <clipPath
-       id="clipPath971"
-       clipPathUnits="userSpaceOnUse">
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath971">
       <rect
-         y="168.52812"
-         x="134.50793"
-         height="24.494242"
-         width="11.807623"
+         style="fill:#000000;stroke-width:0.264583"
          id="rect973"
-         style="fill:#000000;stroke-width:0.264583" />
+         width="11.807623"
+         height="24.494242"
+         x="134.50793"
+         y="168.52812" />
     </clipPath>
     <clipPath
-       id="clipPath977"
-       clipPathUnits="userSpaceOnUse">
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath977">
       <rect
-         y="168.53799"
-         x="79.295692"
-         height="24.484367"
-         width="11.761889"
+         style="fill:#000000;stroke-width:0.264583"
          id="rect979"
-         style="fill:#000000;stroke-width:0.264583" />
+         width="11.761889"
+         height="24.484367"
+         x="79.295692"
+         y="168.53799" />
     </clipPath>
     <clipPath
-       id="clipPath983"
-       clipPathUnits="userSpaceOnUse">
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath983">
       <rect
-         y="119.51507"
-         x="78.401558"
-         height="28.042933"
-         width="12.655371"
+         style="fill:#000000;stroke-width:0.264583"
          id="rect985"
-         style="fill:#000000;stroke-width:0.264583" />
+         width="12.655371"
+         height="28.042933"
+         x="78.401558"
+         y="119.51507" />
     </clipPath>
   </defs>
   <sodipodi:namedview
-     inkscape:window-maximized="1"
-     inkscape:window-y="-8"
-     inkscape:window-x="78"
-     inkscape:window-height="962"
-     inkscape:window-width="1280"
-     showgrid="false"
-     inkscape:document-rotation="0"
-     inkscape:current-layer="layer1"
-     inkscape:document-units="mm"
-     inkscape:cy="177.72817"
-     inkscape:cx="632.88264"
-     inkscape:zoom="0.7"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     borderopacity="1.0"
-     bordercolor="#666666"
+     id="base"
      pagecolor="#ffffff"
-     id="base">
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="-888.91232"
+     inkscape:cy="732.58579"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="746"
+     inkscape:window-x="-8"
+     inkscape:window-y="1016"
+     inkscape:window-maximized="1">
     <inkscape:grid
-       id="grid915"
-       type="xygrid" />
+       type="xygrid"
+       id="grid915" />
   </sodipodi:namedview>
   <metadata
      id="metadata428">
@@ -175,14 +175,14 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
+     inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     inkscape:label="Layer 1">
+     id="layer1">
     <image
        sodipodi:absref="C:\Users\levan\GitHub\con_learn\unified_space\inputs\pre_exposure_imgs\neck_legs_space\stim_2.png"
        xlink:href="../../../../../levan/GitHub/con_learn/unified_space/inputs/pre_exposure_imgs/neck_legs_space/stim_2.png"
@@ -292,75 +292,89 @@
        x="-65.568832"
        y="-83.516808" />
     <g
-       inkscape:export-filename="C:\Users\Levan\jatos-3.3.6_win_java\study_assets_root\concept_gen\img\neck_legs_space\2d_space.png"
+       transform="matrix(1.8768287,0,0,1.8768287,-433.63213,31.601591)"
        inkscape:export-ydpi="96"
        inkscape:export-xdpi="96"
-       transform="translate(-62.52656,-92.996743)"
-       id="g734">
-      <image
-         sodipodi:absref="C:\Users\levan\GitHub\con_learn\unified_space\inputs\pre_exposure_imgs\neck_legs_space\stim_1.png"
-         xlink:href="../../../../../levan/GitHub/con_learn/unified_space/inputs/pre_exposure_imgs/neck_legs_space/stim_1.png"
-         y="168.53799"
-         x="79.295692"
-         id="image1288"
-         preserveAspectRatio="none"
-         height="30.523191"
-         width="11.761238"
-         clip-path="url(#clipPath977)" />
-      <image
-         sodipodi:absref="C:\Users\levan\GitHub\con_learn\unified_space\inputs\pre_exposure_imgs\neck_legs_space\stim_4.png"
-         xlink:href="../../../../../levan/GitHub/con_learn/unified_space/inputs/pre_exposure_imgs/neck_legs_space/stim_4.png"
-         y="117.03481"
-         x="79.295692"
-         id="image1277"
-         preserveAspectRatio="none"
-         height="30.52319"
-         width="11.761238"
-         clip-path="url(#clipPath983)" />
-      <image
-         sodipodi:absref="C:\Users\levan\GitHub\con_learn\unified_space\inputs\pre_exposure_imgs\neck_legs_space\stim_13.png"
-         xlink:href="../../../../../levan/GitHub/con_learn/unified_space/inputs/pre_exposure_imgs/neck_legs_space/stim_13.png"
-         width="11.761238"
-         height="30.523191"
-         preserveAspectRatio="none"
-         id="image1420"
-         x="134.50793"
-         y="168.52812"
-         clip-path="url(#clipPath971)" />
-      <path
-         style="fill:none;stroke:#000000;stroke-width:0.238588;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4619-6-2)"
-         d="M 78.40156,193.64729 V 119.51507"
-         id="path4599-0"
-         inkscape:connector-curvature="0" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path4601-8"
-         d="m 78.40156,193.53841 h 74.18108"
-         style="fill:none;stroke:#000000;stroke-width:0.243959;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4731-8-6)" />
-      <text
-         xml:space="preserve"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.24032"
-         x="94.358376"
-         y="194.61331"
-         id="text4605-2"
-         transform="scale(0.97830906,1.0221719)"><tspan
-           sodipodi:role="line"
-           id="tspan4603-4"
-           x="94.358376"
+       inkscape:export-filename="C:\Users\Levan\jatos-3.3.6_win_java\study_assets_root\concept_gen\img\neck_legs_space\2d_space.png"
+       id="g100">
+      <rect
+         style="fill:#ffffff;stroke-width:0.264583"
+         y="26.471458"
+         x="15.972696"
+         height="74.083336"
+         width="74.083336"
+         id="rect928-3" />
+      <g
+         inkscape:export-filename="C:\Users\Levan\jatos-3.3.6_win_java\study_assets_root\concept_gen\img\neck_legs_space\2d_space.png"
+         inkscape:export-ydpi="96"
+         inkscape:export-xdpi="96"
+         transform="translate(-62.52656,-92.996743)"
+         id="g734">
+        <image
+           sodipodi:absref="C:\Users\levan\GitHub\con_learn\unified_space\inputs\pre_exposure_imgs\neck_legs_space\stim_1.png"
+           xlink:href="../../../../../levan/GitHub/con_learn/unified_space/inputs/pre_exposure_imgs/neck_legs_space/stim_1.png"
+           clip-path="url(#clipPath977)"
+           width="11.761238"
+           height="30.523191"
+           preserveAspectRatio="none"
+           id="image1288"
+           x="79.295692"
+           y="168.53799" />
+        <image
+           sodipodi:absref="C:\Users\levan\GitHub\con_learn\unified_space\inputs\pre_exposure_imgs\neck_legs_space\stim_4.png"
+           xlink:href="../../../../../levan/GitHub/con_learn/unified_space/inputs/pre_exposure_imgs/neck_legs_space/stim_4.png"
+           clip-path="url(#clipPath983)"
+           width="11.761238"
+           height="30.52319"
+           preserveAspectRatio="none"
+           id="image1277"
+           x="79.295692"
+           y="117.03481" />
+        <image
+           sodipodi:absref="C:\Users\levan\GitHub\con_learn\unified_space\inputs\pre_exposure_imgs\neck_legs_space\stim_13.png"
+           xlink:href="../../../../../levan/GitHub/con_learn/unified_space/inputs/pre_exposure_imgs/neck_legs_space/stim_13.png"
+           clip-path="url(#clipPath971)"
+           y="168.52812"
+           x="134.50793"
+           id="image1420"
+           preserveAspectRatio="none"
+           height="30.523191"
+           width="11.761238" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.238588;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4619-6-2)"
+           d="M 78.40156,193.64729 V 119.51507"
+           id="path4599-0"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4601-8"
+           d="m 78.40156,193.53841 h 74.18108"
+           style="fill:none;stroke:#000000;stroke-width:0.243959;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4731-8-6)" />
+        <text
+           xml:space="preserve"
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.24032"
+           x="105.17637"
            y="194.61331"
-           style="font-style:normal;font-size:4.93888px;stroke-width:0.24032">Neck length</tspan></text>
-      <text
-         id="text4609-3"
-         y="76.810394"
-         x="-173.6143"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.24032"
-         xml:space="preserve"
-         transform="matrix(0,-1.0221719,0.97830905,0,0,0)"><tspan
-           style="font-style:normal;font-size:4.93888px;stroke-width:0.24032"
+           id="text4605-2"
+           transform="scale(0.97830904,1.0221719)"><tspan
+             sodipodi:role="line"
+             id="tspan4603-4"
+             x="105.17637"
+             y="194.61331"
+             style="font-style:normal;font-size:4.93888px;stroke-width:0.24032">Neck length</tspan></text>
+        <text
+           id="text4609-3"
            y="76.810394"
-           x="-173.6143"
-           id="tspan4607-6"
-           sodipodi:role="line">Leg length</tspan></text>
+           x="-168.43742"
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.24032"
+           xml:space="preserve"
+           transform="matrix(0,-1.0221719,0.97830904,0,0,0)"><tspan
+             style="font-style:normal;font-size:4.93888px;stroke-width:0.24032"
+             y="76.810394"
+             x="-168.43742"
+             id="tspan4607-6"
+             sodipodi:role="line">Leg length</tspan></text>
+      </g>
     </g>
     <image
        sodipodi:absref="C:\Users\levan\GitHub\con_learn\unified_space\inputs\pre_exposure_imgs\beak_tail_space\stim_5.png"
@@ -480,16 +494,18 @@
        height="11.620621"
        width="46.089302" />
     <g
-       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Levan\jatos-3.3.6_win_java\study_assets_root\concept_gen\img\beak_tail_space\2d_space.png"
+       transform="matrix(1.8768287,0,0,1.8768287,-405.63583,34.523617)"
+       id="g949"
        inkscape:export-xdpi="96"
-       id="g949">
+       inkscape:export-ydpi="96">
       <rect
-         id="rect928"
-         width="74.083336"
-         height="74.083336"
-         x="116.41666"
+         style="fill:#ffffff;stroke-width:0.264583"
          y="26.458332"
-         style="stroke-width:0.264583;fill:#ffffff" />
+         x="116.41666"
+         height="74.083336"
+         width="74.083336"
+         id="rect928" />
       <image
          sodipodi:absref="C:\Users\levan\GitHub\con_learn\unified_space\inputs\pre_exposure_imgs\beak_tail_space\stim_1.png"
          xlink:href="../../../../../levan/GitHub/con_learn/unified_space/inputs/pre_exposure_imgs/beak_tail_space/stim_1.png"
@@ -522,38 +538,38 @@
          y="30.472258"
          clip-path="url(#clipPath959)" />
       <path
-         inkscape:connector-curvature="0"
-         id="path4112-1"
+         style="fill:none;stroke:#000000;stroke-width:0.2263;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4143-4)"
          d="M 116.41667,100.63263 V 26.472901"
-         style="fill:none;stroke:#000000;stroke-width:0.2263;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4143-4)" />
-      <path
-         style="fill:none;stroke:#000000;stroke-width:0.226386;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4183-8)"
-         d="m 116.41667,100.54167 h 74.21525"
-         id="path4114-7"
+         id="path4112-1"
          inkscape:connector-curvature="0" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4114-7"
+         d="m 116.41667,100.54167 h 74.21525"
+         style="fill:none;stroke:#000000;stroke-width:0.226386;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4183-8)" />
       <text
-         id="text4118-5"
-         y="107.17215"
-         x="142.43735"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.02125px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.211435"
-         xml:space="preserve"><tspan
-           style="font-style:normal;font-size:5.63828px;stroke-width:0.211435"
-           y="107.17215"
-           x="142.43735"
-           id="tspan4116-8"
-           sodipodi:role="line">Beak Size</tspan></text>
-      <text
-         transform="rotate(-90)"
          xml:space="preserve"
          style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.02125px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.211435"
-         x="-82.245575"
-         y="114.17408"
-         id="text4122-7"><tspan
+         x="142.43735"
+         y="107.17215"
+         id="text4118-5"><tspan
            sodipodi:role="line"
-           id="tspan4120-4"
-           x="-82.245575"
+           id="tspan4116-8"
+           x="142.43735"
+           y="107.17215"
+           style="font-style:normal;font-size:5.63828px;stroke-width:0.211435">Beak Size</tspan></text>
+      <text
+         id="text4122-7"
+         y="114.17408"
+         x="-82.245575"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.02125px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.211435"
+         xml:space="preserve"
+         transform="rotate(-90)"><tspan
+           style="font-style:normal;font-size:5.63828px;stroke-width:0.211435"
            y="114.17408"
-           style="font-style:normal;font-size:5.63828px;stroke-width:0.211435">Tail size</tspan></text>
+           x="-82.245575"
+           id="tspan4120-4"
+           sodipodi:role="line">Tail size</tspan></text>
     </g>
   </g>
 </svg>

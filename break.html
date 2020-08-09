@@ -22,11 +22,56 @@
   <body>
   <script>
 
+	// /////////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////
+	const createPhaseDebriefer = function(){
+        let phase_questions = {
+            type: 'survey-text',
+			questions: [
+                {prompt: 'How did you learn which ' + curr_concept.concept_object + ' was hiding which toy? Did you have any strategy?', rows: 3, columns: 100},
+                {prompt: 'Did you make any drawings or take any screenshots or pictures ' + 
+                'to help remember which of the '+curr_concept.concept_object+' were hiding which toys? <br>(you will not be penalised if you did, we just need to know so we can correctly analyze the data)', rows: 3, columns: 100},
+                ],
+			button_label: 'Continue',
+			preamble: '<p style="font-size: 30px;"><b>Phase '+curr_phase+' debriefing about the birds:</b></p>',
+		};    
+		
+		return phase_questions
+	};
+
+	const createSpatialLayoutDebriefer = function(iPhase,iConcept){
+
+        let spatialLayoutImgEl           = document.createElement('img')
+        spatialLayoutImgEl.src           = './img/' + iConcept.concept_space + '/2d_space.png'
+        spatialLayoutImgEl.id            = '2d_layout'
+        spatialLayoutImgEl.style.height  = '300px'
+        spatialLayoutImgEl.style.width   = '300px'
+        spatialLayoutImgEl.style.padding = '20px'
+
+        let spatial_questions = [
+                {prompt: 'At any point during the experiment, did you realize that the all the '+ iConcept.concept_object + ' you saw with different ' + 
+                'sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + ', <br>can be represented in a 2-dimensional space as depicted above? ' +
+                ' <br>Each '+ iConcept.concept_object + ' is a point in this space, and the value on each dimension specifies the sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + '? ' + 
+                '<br> If you did realize this, did this help you in learning the '+ iConcept.concept_object + '-toy associations?', rows: 3, columns: 100, placeholder: ''},            
+            ]
+        let spatial_preamble = '<p style="font-size: 30px;"><b> Phase '+ iPhase + ' debriefing about the '+ iConcept.concept_object + ':</b></p>'
+
+        let spatialLayoutTrial = createImageSurveyTrial(spatial_preamble,[spatialLayoutImgEl],spatial_questions)
+	};
+
+
+
+
+	////////////////////////////////////////////////////////////////////////////////////////
+
 	//start timeline
 	jatos.onLoad(function() {
 
 		// What phase is this?
 		let [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+
+		let trial_dur_sec = jatos.studySessionData.timer_response_window / 1000
+		let curr_concept  = jatos.studySessionData.inputData.concepts[phase_string].concept_object
 
 		// Create the score box
 		let score_box_element = createScoreBox()
@@ -39,28 +84,60 @@
 		//make a timeline
 		var timeline = []; 
 
-		// In case the ptp failed qc after phase 1 practice
-		var qc_failed_practice = {
+		// Generic message saying "sorry you failed QC". Will then be followed by appropriate debriefing pages, and data submission
+		var qc_failed_generic = {
 
 			type: 'survey-text',
 			questions: jatos.studySessionData.debrief_questions,
-			button_label: "Finish",
-			preamble: "<p> <br> Unfortunately, your performance did not pass our quality checks. </p> " + 
-				"<p> As we stated in the instructions, in such a case we have to discontinue the study. </p>" +
-				"<p> You will still be paid 1.2 pounds for completing the instructions and the practice session. </p> " + 
-				"<p> But first, please answer the following questions and then click the 'Finish' button below.</p>"
+			button_label: 'Finish',
+			preamble: '<p> <br> Unfortunately, your performance did not pass our quality checks. </p> ' + 
+				'<p> As we stated in the instructions, in such a case we have to discontinue the study. </p>' +
+				'<p> You will still be paid for the sections of the experiment you performed. </p> ' + 
+				'<p> But first, please complete the debriefing survey by clicking the "Continue" button.</p>'
 		};
+
+		// Generic questions to ask regardless of where the ptp failed, or if the ptp succeeded
+        var general_questions = {
+            type: 'survey-text',
+			questions: [
+                {prompt: 'Were the game instructions clear? If not, please help us improve them.', rows: 3, columns: 100},
+                {prompt: 'Was the number of toys you had to "find" too high? Should we make it less or more?', rows: 3, columns: 100},
+                {prompt: 'Were '+ trial_dur_sec +' seconds enough on each trial to make your choice and learn from feedback?', rows: 3, columns: 100},
+                {prompt: 'Did you complete the experiment in fullscreen mode? (You will not be penalised if you did not. We just need to know).', rows: 3, columns: 100},
+                {prompt: 'Is there anything that would make the game easier or more fun?', rows: 3, columns: 100},                
+                ],
+			button_label: 'Continue',
+			preamble: '<p style="font-size: 30px;"><b>Please answer the following questions:</b></p>',
+		};		
+		
+		// Questions to ask for any specific phase
+			// Phase 1
+			var phase_1_questions = createPhaseDebriefer()
+			// Phase 2
+			var phase_2_questions = createPhaseDebriefer()
+			// Phase 3
+			var phase_3_questions = createPhaseDebriefer()
+
+
+		// Element asking about the spatial layout.
+			// Phase 1
+			var phase_1_spatial = createSpatialLayoutDebriefer(1,jatos.studySessionData.inputData.concepts.phase_1)
+			// Phase 2
+			var phase_2_spatial = createSpatialLayoutDebriefer(2,jatos.studySessionData.inputData.concepts.phase_2)
+			// Phase 3
+			var phase_3_spatial = createSpatialLayoutDebriefer(3,jatos.studySessionData.inputData.concepts.phase_3)
+
 
 		// In case they failed qc
 		var qc_failed_phase_1 = {
 
 			type: 'survey-text',
 			questions: jatos.studySessionData.debrief_questions,
-			button_label: "Finish",
-			preamble: "<p> Unfortunately, your performance did not pass our quality checks. </p> " + 
-					"<p> As we stated in the instructions, in such a case we have to discontinue the study. </p>" +
-					"<p> You will still be paid for the practice session and any completed experimental session.</p> " + 
-					"<p> But first, please answer the following questions and then click the 'Finish' button below.</p>"
+			button_label: 'Finish',
+			preamble: '<p> Unfortunately, your performance did not pass our quality checks. </p> ' + 
+					'<p> As we stated in the instructions, in such a case we have to discontinue the study. </p>' +
+					'<p> You will still be paid for the practice session and any completed experimental session.</p> ' + 
+					'<p> But first, please answer the following questions and then click the "Finish" button below.</p>'
 
 		};  
 
