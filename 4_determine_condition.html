@@ -165,12 +165,12 @@
 
     let chosenTargetLocations_phase_1 = 
       _.sampleSize(allPointsInSpace, nTargets)
-    let chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruent or not
+    let chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruency or not
     
     // let chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
-    let congruent = true
+    let congruency = true
     
-    if (congruent){
+    if (congruency){
       chosenTargetLocations_phase_2 = chosenTargetLocations_phase_1
     } else {
 
@@ -327,26 +327,8 @@
       choices:           ['1','2'],
       nTrials:           baseTrialArray.phase_1.length,
       running_perf:      running_perf,
+      congruency:        congruency
     }
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
- 
-      jatos.studySessionData.debrief_questions = [
-
-        {prompt: 'How did you try to remember which bird was associated with which toy? Did you have any strategy?', rows: 2, columns: 100}, 
-        {prompt: 'Apart from trying to remember the associations in your memory,' +
-                 'did you use any other tool to help you respond correctly? ' + 
-                 'For example, taking a photo of the correct associations, or drawing the correct associations on a piece of paper? ' + 
-                 'Note, you will not be penalised if you did do so. You will still receive your payment, ' + 
-                 'but we will need to exclude your data from our analysis, so it is really important that we know this. ' +
-                 'Thank you!', rows: 2, columns: 100},         
-        {prompt: 'Did you notice the birds differed by their length of neck?', rows: 2, columns: 100},
-        {prompt: 'Did you notice the birds differed by their length of legs?', rows: 2, columns: 100},
-        {prompt: 'Did you notice any other way in which the birds differed from each other?', rows: 2, columns: 100},
-        {prompt: 'Was anything unclear in the instructions for the task?', rows: 2, columns: 100},        
-        {prompt: 'Is there anything that would make the experiment more fun or easier to perform?', rows: 2, columns: 100},                
-      ]
 
     // ////////////////////////////////////////////////////////////////////////////////////////////
     // ////////////////////////////////////////////////////////////////////////////////////////////
