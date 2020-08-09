@@ -66,6 +66,9 @@
 	const createRealizeMappingDebriefer = function(){
 		debugger
 
+		let concept_1 = jatos.studySessionData.inputData.concepts.phase_1
+		let concept_2 = jatos.studySessionData.inputData.concepts.phase_2	
+
 		// Which PA to use?
 		let targetPath_1 = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed.phase_1[0]
 		let targetPath_2 = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed.phase_2[0]
@@ -75,9 +78,22 @@
 		let idxOfTarget_1 = jatos.studySessionData.inputData.basic_parameters.targetPoints.phase_1[0]
 		let idxOfTarget_2 = jatos.studySessionData.inputData.basic_parameters.targetPoints.phase_2[0]			
 		
-		let exemplar_1_width = jatos.studySessionData.inputData.concepts.phase_1.ex_pairs_img_width * 150 / jatos.studySessionData.inputData.basic_parameters.sort_area_width
-		let exemplar_2_width = jatos.studySessionData.inputData.concepts.phase_2.ex_pairs_img_width * 150 / jatos.studySessionData.inputData.basic_parameters.sort_area_width		
+		let exemplar_1_width = 200 * 150 / jatos.studySessionData.inputData.basic_parameters.sort_area_width * 1.6
+		let exemplar_2_width = 600 * 150 / jatos.studySessionData.inputData.basic_parameters.sort_area_width * 1.6
 
+		let flex_direction_1, flex_direction_2
+
+		if (concept_1.concept_space == 'neck_legs_space'){
+
+			flex_direction_1 = 'row'
+			flex_direction_2 = 'column'
+
+		} else if (concept_1.concept_space == 'beak_tail_space'){
+
+			flex_direction_1 = 'column'
+			flex_direction_2 = 'row'
+
+		}
 		// Wrapper flex element
 		let wrapperFlexEl  					   = document.createElement('div')
         wrapperFlexEl.style.display            = 'flex'
@@ -86,7 +102,8 @@
 
 		// Image showing an example PA from phase 1
         let paEl_1                       = document.createElement('div')
-        paEl_1.style.display             = 'flex'
+		paEl_1.style.display             = 'flex'
+		paEl_1.style['flex-direction']   = flex_direction_1
         paEl_1.style['justify-content']  = 'center'
         paEl_1.style['align-items']      = 'center'
         paEl_1.id                        = 'example_pa1'
@@ -99,6 +116,7 @@
 		// Image showing an example PA from phase 2
 		paEl_2 = paEl_1.cloneNode(true)
 		paEl_2.id = 'example_pa2'
+		paEl_2.style['flex-direction']   = flex_direction_2
 
 		// Make the concept exemplar elements
         let exemplarEl_1          = document.createElement('img')
@@ -128,11 +146,7 @@
 		paEl_2.appendChild(toyElement_2)	
 
 		wrapperFlexEl.appendChild(paEl_1)
-		wrapperFlexEl.appendChild(paEl_2)					
-
-
-		let concept_1 = jatos.studySessionData.inputData.concepts.phase_1
-		let concept_2 = jatos.studySessionData.inputData.concepts.phase_2		
+		wrapperFlexEl.appendChild(paEl_2)						
 
         let realize_mapping_questions = [
                 {prompt: 'During phase 2, did you realize that there is a relationship between the '+ concept_1.concept_object+'s ' + 
