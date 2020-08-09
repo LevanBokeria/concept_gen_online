@@ -60,6 +60,63 @@
 	};
 
 
+	const createRealizeMappingDebriefer = function(){
+
+		// Wrapper flex element
+		let wrapperEl = document.createElement('div')
+        wrapperEl.style.display = 'flex'
+        wrapperEl.style['justify-content'] = 'center'
+        wrapperEl.style['align-items'] = 'center'        
+
+		// Image showing an example PA from phase 1
+        let paEl_1 = document.createElement('div')
+        paEl_1.style.display             = 'flex'
+        paEl_1.style['justify-content']  = 'center'
+        paEl_1.style['align-items']      = 'center'
+        paEl_1.id                        = 'example_pa1'
+        paEl_1.style.border              = '1px solid'
+        paEl_1.style.height              = '200px'
+        paEl_1.style.width               = '200px'
+        paEl_1.style['background-color'] = 'white'
+        paEl_1.style.margin              = '20px'
+
+		// Image showing an example PA from phase 2
+		paEl_2 = deepCopy(paEl_1)
+		paEl_2.id = 'example_pa2'
+
+        let exemplarEl_1          = document.createElement('img')
+        exemplarEl_1.id           = 'exemplarEl_1'
+        exemplarEl_1.src          = './img/' + jatos.studySessionData.inputData.concepts.phase_1.concept_space + '/individual_imgs/stim_16.png'
+        exemplarEl_1.style.height = '160px'   
+
+		exemplarEl_2     = deepCopy(exemplarEl_1)
+		exemplarEl_2.id  = 'exemplarEl_2'
+		exemplarEl_1.src = './img/' + jatos.studySessionData.inputData.concepts.phase_2.concept_space + '/individual_imgs/stim_16.png'
+
+        let toyElement_1          = document.createElement('img')
+        toyElement_1.id           = 'toy_1'
+        toyElement_1.src          = './img/targets/Bell.png'
+        toyElement_1.style.height = '50px'
+
+		toyElement_2     = deepCopy(toyElement_1)
+		toyElement_1.id  = 'toy_2'
+		toyElement_1.src = '/img/target/Bell.png'
+
+
+        let realize_mapping_questions = [
+                {prompt: 'During phase 2, did you realize that there is a relationship between the birds ' + 
+                'that hide the toys in phase 1 and birds that hide toys in phase 2? <br> ' + 
+                'For example, if a phase-1 bird with a certain neck:legs ratio was hiding the bell (as shown above), ' + 
+                'the phase-2 bird that was hiding the bell also had a similar ratio of beak:tail.' + 
+                '<br> If you did realize this, did this help you in performing during phase 2?', rows: 3, columns: 100, placeholder: ''},            
+            ]
+        let realize_mapping_preamble = '<p style="font-size: 30px;"><b>Phase 1 / Phase 2 debriefing:</b></p>'
+
+        let realize_mapping_trial = createImageSurveyTrial(realize_mapping_preamble,[wrapperEl],realize_mapping_questions)
+
+
+	}
+
 
 
 	////////////////////////////////////////////////////////////////////////////////////////
