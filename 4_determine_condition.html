@@ -42,7 +42,7 @@
     // Auto respond: script will make random responses by itself.
     jatos.studySessionData.debug                    = 1;
     jatos.studySessionData.debug_n_trials           = 5;
-    jatos.studySessionData.show_correct             = 0;
+    jatos.studySessionData.show_correct             = 1;
     jatos.studySessionData.pilot                    = 0;
     jatos.studySessionData.pilot_n_trials           = 10;
     jatos.studySessionData.auto_respond             = false;
@@ -163,11 +163,12 @@
     let totalPointsInSpace = targetCoordsNames.pointNamesEmpty.length
     let allPointsInSpace   = [...Array(totalPointsInSpace).keys()].map(item => item + 1) // creates an array from 1 to max number
 
-    let chosenTargetLocations_phase_1 = 
-      _.sampleSize(allPointsInSpace, nTargets)
-    let chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruency or not
+    // let chosenTargetLocations_phase_1 = 
+    //   _.sampleSize(allPointsInSpace, nTargets)
     
-    // let chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
+    let chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
+    let chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruency or not
+
     let congruency = true
     
     if (congruency){

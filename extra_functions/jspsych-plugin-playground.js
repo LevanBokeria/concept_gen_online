@@ -388,6 +388,11 @@ jsPsych.plugins["plugin-playground"] = (function() {
       correct: null
     };
 
+    // If the show correct flag is on, show the feedback from the beginning
+    if (jatos.studySessionData.show_correct){
+      display_element.querySelector('.feedback_items').style.visibility = 'visible';
+    }
+
     // ////////////////////////////////////////////// FUNCTIONS /////////////////////////////////////////////////////
 
     // function to handle responses by the subject

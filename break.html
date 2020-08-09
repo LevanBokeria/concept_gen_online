@@ -28,9 +28,9 @@
         let phase_debriefer = {
             type: 'survey-text',
 			questions: [
-                {prompt: 'How did you learn which ' + curr_concept.concept_object + ' was hiding which toy? Did you have any strategy for memorizing?', rows: 3, columns: 100},
+                {prompt: 'How did you learn which ' + iConcept.concept_object + ' was hiding which toy? Did you have any strategy for memorizing?', rows: 3, columns: 100},
                 {prompt: 'Did you make any drawings or take any screenshots or pictures ' + 
-                'to help remember which '+curr_concept.concept_object+' was hiding which toy? <br>(you will not be penalised if you did, we just need to know so we can correctly analyze the data)', rows: 3, columns: 100},
+                'to help remember which '+iConcept.concept_object+' was hiding which toy? <br>(you will not be penalised if you did, we just need to know so we can correctly analyze the data)', rows: 3, columns: 100},
                 ],
 			button_label: 'Continue',
 			preamble: '<p style="font-size: 30px;"><b>Phase '+iPhase+' debriefing about the '+ iConcept.concept_object +'s:</b></p>',
