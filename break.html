@@ -65,6 +65,19 @@
 
 	const createRealizeMappingDebriefer = function(){
 		debugger
+
+		// Which PA to use?
+		let targetPath_1 = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed.phase_1[0]
+		let targetPath_2 = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed.phase_2[0]
+		
+		let targetName_1 = jatos.studySessionData.inputData.basic_parameters.targetNamesUsed.phase_1[0]		
+
+		let idxOfTarget_1 = jatos.studySessionData.inputData.basic_parameters.targetPoints.phase_1[0]
+		let idxOfTarget_2 = jatos.studySessionData.inputData.basic_parameters.targetPoints.phase_2[0]			
+		
+		let exemplar_1_width = jatos.studySessionData.inputData.concepts.phase_1.ex_pairs_img_width * 150 / jatos.studySessionData.inputData.basic_parameters.sort_area_width
+		let exemplar_2_width = jatos.studySessionData.inputData.concepts.phase_2.ex_pairs_img_width * 150 / jatos.studySessionData.inputData.basic_parameters.sort_area_width		
+
 		// Wrapper flex element
 		let wrapperFlexEl  					   = document.createElement('div')
         wrapperFlexEl.style.display            = 'flex'
@@ -90,22 +103,23 @@
 		// Make the concept exemplar elements
         let exemplarEl_1          = document.createElement('img')
         exemplarEl_1.id           = 'exemplarEl_1'
-        exemplarEl_1.src          = './img/' + jatos.studySessionData.inputData.concepts.phase_1.concept_space + '/individual_imgs/stim_16.png'
-        exemplarEl_1.style.height = '160px'   
+        exemplarEl_1.src          = './img/' + jatos.studySessionData.inputData.concepts.phase_1.concept_space + '/individual_imgs/stim_'+idxOfTarget_1+'.png'
+        exemplarEl_1.style.width = exemplar_1_width+'px'   
 
 		exemplarEl_2              = exemplarEl_1.cloneNode(true)
 		exemplarEl_2.id           = 'exemplarEl_2'
-		exemplarEl_1.src          = './img/' + jatos.studySessionData.inputData.concepts.phase_2.concept_space + '/individual_imgs/stim_16.png'
+		exemplarEl_2.src          = './img/' + jatos.studySessionData.inputData.concepts.phase_2.concept_space + '/individual_imgs/stim_'+idxOfTarget_1+'.png'
+		exemplarEl_2.style.width = exemplar_2_width+'px'   
 
 		// Make the toys
         let toyElement_1          = document.createElement('img')
         toyElement_1.id           = 'toy_1'
-        toyElement_1.src          = './img/targets/Bell.png'
+        toyElement_1.src          = targetPath_1
         toyElement_1.style.height = '50px'
 
 		toyElement_2     = toyElement_1.cloneNode(true)
-		toyElement_1.id  = 'toy_2'
-		toyElement_1.src = './img/targets/Bell.png'
+		toyElement_2.id  = 'toy_2'
+		toyElement_2.src = targetPath_2
 
 		// Append all the elements to the flex box
 		paEl_1.appendChild(exemplarEl_1)
@@ -117,12 +131,15 @@
 		wrapperFlexEl.appendChild(paEl_2)					
 
 
+		let concept_1 = jatos.studySessionData.inputData.concepts.phase_1
+		let concept_2 = jatos.studySessionData.inputData.concepts.phase_2		
+
         let realize_mapping_questions = [
-                {prompt: 'During phase 2, did you realize that there is a relationship between the birds ' + 
-                'that hide the toys in phase 1 and birds that hide toys in phase 2? <br> ' + 
-                'For example, if a phase-1 bird with a certain neck:legs ratio was hiding the bell (as shown above), ' + 
-                'the phase-2 bird that was hiding the bell also had a similar ratio of beak:tail.' + 
-                '<br> If you did realize this, did this help you in performing during phase 2?', rows: 3, columns: 100, placeholder: ''},            
+                {prompt: 'During phase 2, did you realize that there is a relationship between the '+ concept_1.concept_object+'s ' + 
+                'that hide the toys in phase 1 and '+ concept_2.concept_object+'s that hide toys in phase 2? <br> ' + 
+                'For example, if a phase-1 '+ concept_1.concept_object+' with a certain '+ concept_1.dim1_name+':'+ concept_1.dim2_name+' ratio was hiding the '+targetName_1+' (as shown above), ' + 
+                'the phase-2 '+ concept_1.concept_object+' that was hiding the '+targetName_1+' also had a similar ratio of '+ concept_2.dim1_name+':'+ concept_2.dim2_name+'.' + 
+                '<br> If you did realize this, did this help you in performing during phase 2? If so, how did it help you? Please describe.', rows: 3, columns: 100, placeholder: ''},            
             ]
         let realize_mapping_preamble = '<p style="font-size: 30px;"><b>Phase 1 / Phase 2 debriefing:</b></p>'
 
@@ -160,11 +177,12 @@
 						'<p> Unfortunately, your performance did not pass our quality checks. </p> ' + 
 						'<p> As we stated in the instructions, in such case we have to discontinue the study. </p>' +
 						'<p> You will still be paid for the sections of the experiment you performed. </p> ' + 
-						'<p> But first, please complete the debriefing survey by clicking the "Defrief" button.</p>' +
+						'<p> But first, please complete the debriefing survey by clicking the "Debrief" button.</p>' +
 					'</div>'
 					],
 			show_clickable_nav: true,
 			button_label_next: '<span style="color: black"d;> <strong> Debrief </stong></span>',
+			allow_backward: false,
 		};
 
 		// Generic message saying thank you for training please answer debrief
@@ -176,13 +194,28 @@
 						'<p> Thank you very much! You have completed the training! </p> ' +  
 						'<p> Below you can see your finishing scores for phase ' + curr_phase + ': </p>' +
 						score_box_element.outerHTML + 
-						'<p> Please complete the debriefing survey by clicking the "Defrief" button.</p>' +
+						'<p> Please complete the debriefing survey by clicking the "Debrief" button.</p>' +
 						'<p> After that, the experiment is over. Thank you! </p>'+
 					'</div>'
 					],
 			show_clickable_nav: true,
 			button_label_next: '<span style="color: black"d;> <strong> Debrief </stong></span>',
+			allow_backward: false,
 		};		
+
+		// Generic message saying thank you for training please answer debrief
+		var debriefing_finished_generic_page = {
+
+			type: 'instructions',
+			pages : [				
+					'<div class="instruct">'+
+						'<p> Click "Finish Experiment" below to submit your data and be redirected to prolific! </p> ' +  
+						'<p> Thank you! </p>'+
+					'</div>'
+					],
+			show_clickable_nav: true,
+			button_label_next: '<span style="color: black"d;> <strong> Finish Experiment </stong></span>',
+		};				
 
 		// Generic questions to ask regardless of where the ptp failed, or if the ptp succeeded
         var general_questions_page = {
@@ -223,7 +256,7 @@
 				{prompt: 'For phase 3, did you realize that the same '+jatos.studySessionData.inputData.concepts.phase_3.concept_object+'s were hiding the same toys as in phase 1?', rows: 3, columns: 100},
 				{prompt: 'Did your phase 1 knowledge of which '+jatos.studySessionData.inputData.concepts[phase_string].concept_object+' was hiding which toy help you in phase 3? <br> Or did you have to re-learn the associations for phase 3 from scratch?', rows: 3, columns: 100},				
 			],
-			button_label: 'Finish',
+			button_label: 'Continue',
 			preamble: '<p style="font-size: 30px;"><b>Phase 3 and phase 1 relationship:</b></p>',
 
 		};
@@ -331,10 +364,10 @@
 			show_progress_bar = true
 
 		} else if (jatos.studySessionData.progress_state == 'finished_training'){		
-			timeline.push(training_finished_generic_page)
-			timeline.push(general_questions_page)
-			timeline.push(phase_1_questions_page)
-			timeline.push(phase_2_questions_page)
+			// timeline.push(training_finished_generic_page)
+			// timeline.push(general_questions_page)
+			// timeline.push(phase_1_questions_page)
+			// timeline.push(phase_2_questions_page)
 
 			// Realize mapping?
 			if (jatos.studySessionData.inputData.congruency){
@@ -349,6 +382,10 @@
 
 			show_progress_bar = true
 		} // checking progress state		
+
+		// Last page saying they'll be redirected
+		timeline.push(debriefing_finished_generic_page)
+
 
 		jsPsych.init({
 
