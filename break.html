@@ -7,13 +7,14 @@
 	<script src="jspsych-6.1.0/jspsych.js" ></script>
 	<script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
 	<script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
+	<script src='./jspsych-6.1.0/plugins/jspsych-survey-html-form.js'></script>
 	<script src="jatos.js"></script>
 	<script src="./extra_functions/jspsych-instructions-timer.js"></script>
 	<script src='./extra_functions/helper_functions.js'></script>
 	<link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" type="text/css"></link>
 	
 	<style>	body {background-color: #b9c6c7; font-family: sans-serif; color: black;} </style>
-	<style> p {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px;} </style>
+	<style> p {font-size: 125%; margin-top:5px; margin-right:100px; margin-bottom:20px; margin-left: 100px;} </style>
 	<style> ul {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px; cursor:default;} </style>
 	<style> .instruct{width:100%; color: black; text-align:center; cursor:default;} </style>
 	<style> .header {position: fixed; left:0; top:0; width:100%; background-color:#8f8d8d; color: white; text-align: center;cursor:default;} </style>
@@ -33,7 +34,7 @@
                 'to help remember which '+iConcept.concept_object+' was hiding which toy? <br>(you will not be penalised if you did, we just need to know so we can correctly analyze the data)', rows: 3, columns: 100},
                 ],
 			button_label: 'Continue',
-			preamble: '<p style="font-size: 30px;"><b>Phase '+iPhase+' debriefing about the '+ iConcept.concept_object +'s:</b></p>',
+			preamble: '<p style="font-size: 30px;"><b>Phase '+iPhase+' debriefing about the '+ iConcept.concept_object +'s with '+iConcept.dim1_name+' and '+iConcept.dim2_name +' :</b></p>',
 		};    
 		
 		return phase_debriefer
@@ -51,17 +52,19 @@
         let spatial_questions = [
                 {prompt: 'At any point during the experiment, did you realize that the all the '+ iConcept.concept_object + 's you saw with different ' + 
                 'sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + ', <br>can be represented in a 2-dimensional space as depicted above? ' +
-                ' <br>Each '+ iConcept.concept_object + ' is a point in this space, and the value on each dimension specifies the sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + '? ' + 
+                ' <br>Each '+ iConcept.concept_object + ' is a point in this space, and the value on each dimension specifies the sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + '.' + 
                 '<br> If you did realize this, did this help you in learning the '+ iConcept.concept_object + '-toy associations?', rows: 3, columns: 100, placeholder: ''},            
             ]
         let spatial_preamble = '<p style="font-size: 30px;"><b>Phase '+ iPhase + ' debriefing about the '+ iConcept.concept_object + 's:</b></p>'
 
-        let spatialLayoutTrial = createImageSurveyTrial(spatial_preamble,[spatialLayoutImgEl],spatial_questions)
+		let spatialLayoutPage = createImageSurveyTrial(spatial_preamble,[spatialLayoutImgEl],spatial_questions)
+		
+		return spatialLayoutPage
 	};
 
 
 	const createRealizeMappingDebriefer = function(){
-
+		debugger
 		// Wrapper flex element
 		let wrapperFlexEl  					   = document.createElement('div')
         wrapperFlexEl.style.display            = 'flex'
@@ -81,7 +84,7 @@
         paEl_1.style.margin              = '20px'
 
 		// Image showing an example PA from phase 2
-		paEl_2 = deepCopy(paEl_1)
+		paEl_2 = paEl_1.cloneNode(true)
 		paEl_2.id = 'example_pa2'
 
 		// Make the concept exemplar elements
@@ -90,7 +93,7 @@
         exemplarEl_1.src          = './img/' + jatos.studySessionData.inputData.concepts.phase_1.concept_space + '/individual_imgs/stim_16.png'
         exemplarEl_1.style.height = '160px'   
 
-		exemplarEl_2              = deepCopy(exemplarEl_1)
+		exemplarEl_2              = exemplarEl_1.cloneNode(true)
 		exemplarEl_2.id           = 'exemplarEl_2'
 		exemplarEl_1.src          = './img/' + jatos.studySessionData.inputData.concepts.phase_2.concept_space + '/individual_imgs/stim_16.png'
 
@@ -100,9 +103,9 @@
         toyElement_1.src          = './img/targets/Bell.png'
         toyElement_1.style.height = '50px'
 
-		toyElement_2     = deepCopy(toyElement_1)
+		toyElement_2     = toyElement_1.cloneNode(true)
 		toyElement_1.id  = 'toy_2'
-		toyElement_1.src = '/img/target/Bell.png'
+		toyElement_1.src = './img/targets/Bell.png'
 
 		// Append all the elements to the flex box
 		paEl_1.appendChild(exemplarEl_1)
@@ -124,7 +127,7 @@
         let realize_mapping_preamble = '<p style="font-size: 30px;"><b>Phase 1 / Phase 2 debriefing:</b></p>'
 
         let realize_mapping_page = createImageSurveyTrial(realize_mapping_preamble,[wrapperFlexEl],realize_mapping_questions)
-
+		debugger
 		return realize_mapping_page
 	};
 
@@ -186,7 +189,6 @@
 			// Phase 3
 			var phase_3_questions_page = createPhaseDebriefer(1,jatos.studySessionData.inputData.concepts.phase_3)
 
-
 		// Element asking about the spatial layout.
 			// Phase 1
 			var phase_1_spatial_page = createSpatialLayoutDebriefer(1,jatos.studySessionData.inputData.concepts.phase_1)
@@ -202,13 +204,18 @@
 			type: 'survey-text',
 			questions: [
 				{prompt: 'For phase 3, did you realize that the same '+jatos.studySessionData.inputData.concepts.phase_3.concept_object+'s were hiding the same toys as in phase 1?', rows: 3, columns: 100},
-				{prompt: 'Did your phase 1 knowledge of which '+jatos.studySessionData.inputData.concepts[phase_string].concept_object+' was hiding which toy help you in phase 3? Or did you have to re-learn the associations for phase 3 from scratch?', rows: 3, columns: 100},				
+				{prompt: 'Did your phase 1 knowledge of which '+jatos.studySessionData.inputData.concepts[phase_string].concept_object+' was hiding which toy help you in phase 3? <br> Or did you have to re-learn the associations for phase 3 from scratch?', rows: 3, columns: 100},				
 			],
 			button_label: 'Finish',
 			preamble: '<p style="font-size: 30px;"><b>Phase 3 and phase 1 relationship:</b></p>',
 
 		};
 
+
+		// Realize mapping?
+		var realize_mapping_page = createRealizeMappingDebriefer()
+
+		// For short break
 		var short_break_page = {
 			type: 'instructions-timer',
 			pages: [
@@ -227,6 +234,7 @@
 
 		};
 
+		// For long break
 		var long_break_page = {
 			type: 'instructions-timer',
 			pages: [
@@ -242,6 +250,8 @@
 			n_seconds: jatos.studySessionData.long_break_duration
 
 		};
+
+		let show_progress_bar = false
 
 		if (jatos.studySessionData.progress_state == 'advance_phase') {
 			timeline.push(long_break_page)
@@ -264,6 +274,8 @@
 
 			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
 
+			show_progress_bar = true
+
 		} else if (jatos.studySessionData.progress_state == 'qc_failed_phase_2'){		
 			timeline.push(qc_failed_generic_page)
 			timeline.push(general_questions_page)
@@ -279,6 +291,8 @@
 			timeline.push(phase_2_spatial_page)			
 
 			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
+
+			show_progress_bar = true
 
 		} else if (jatos.studySessionData.progress_state == 'qc_failed_phase_3' || 
 				   jatos.studySessionData.progress_state == 'finished_training'){		
@@ -298,12 +312,13 @@
 
 			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
 
-
-		}		
+			show_progress_bar = true
+		} // checking progress state		
 
 		jsPsych.init({
 
 			timeline: timeline,
+			show_progress_bar: show_progress_bar,
 
 			on_finish: function() {
 

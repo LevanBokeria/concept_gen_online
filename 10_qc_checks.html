@@ -23,6 +23,97 @@
 
 <script>
 
+  // Define a function to do the checks
+  const session_qc_check = function(last_session_data){
+      
+      [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+
+      // 1. Not too many missed trials
+      let n_missed_trials    = last_session_data.filter(item => item.rt==null).length
+      let perc_missed_trials = n_missed_trials * 100 / last_session_data.length
+
+      if (perc_missed_trials >= jatos.studySessionData.qc_criteria.perc_max_missed){
+          jatos.studySessionData.qc_status.perc_max_missed_pass = false
+          jatos.studySessionData.qc_status.global_pass          = false            
+      }
+
+      // 2. Not too many fast trials
+      let n_fast_trials    = last_session_data.filter(item => item.rt < jatos.studySessionData.qc_criteria.rt_min_speed).length
+      let perc_fast_trials = n_fast_trials * 100 / last_session_data.length
+
+      if (perc_fast_trials >= jatos.studySessionData.qc_criteria.rt_min_perc){
+          jatos.studySessionData.qc_status.rt_pass     = false
+          jatos.studySessionData.qc_status.global_pass = false            
+      }
+
+      // 3. Not too many similar responses
+
+      // Get the bin counts
+      let bin_counts = [];
+      let responded_trials = last_session_data.filter(item => item.rt !== null);
+
+      // debugger
+      for (iElement = 0; iElement < jatos.studySessionData.inputData.choices.length; iElement++){
+          bin_counts[iElement] = responded_trials.filter(item => item.key_press == ['49','50'][iElement]).length;
+      }
+      let max_count = Math.max(...bin_counts);
+      let max_perc = max_count * 100 / responded_trials.length
+
+      if (max_perc >= jatos.studySessionData.qc_criteria.uniform_resp_perc){
+
+          jatos.studySessionData.qc_status.global_pass            = false;
+          jatos.studySessionData.qc_status.uniform_resp_perc_pass = false;
+
+      }
+
+      // 4. If session >= 2, check better than chance
+      if (curr_session >= 2){
+
+          let n_targets_above_chance = 
+          jatos.studySessionData.inputData.running_perf.filter(item => item > 
+              jatos.studySessionData.qc_criteria.min_perf_check_perc).length
+
+          if (n_targets_above_chance < jatos.studySessionData.inputData.basic_parameters.nTargets) {
+          jatos.studySessionData.qc_status.global_pass   = false;
+          jatos.studySessionData.qc_status.min_perf_pass = false;
+          }
+      }
+
+      // Has the ptp failed?
+      if (jatos.studySessionData.qc_status.global_pass == false){
+          debugger
+          jatos.studySessionData.progress_state = 'qc_failed_' + phase_string
+          
+      } else {
+      // So didn't fail
+
+          // Check, if exceeded the performance, then continue to next step
+          let all_targets_learned = jatos.studySessionData.inputData.running_perf[phase_string].every(
+          item => item >= jatos.studySessionData.training_criterion
+          )
+        debugger
+          if (all_targets_learned) {
+
+              if (curr_phase == 1){
+                  jatos.studySessionData.progress_state = 'advance_phase'
+              } else if (curr_phase == 2){
+                  jatos.studySessionData.progress_state = 'advance_phase'
+              } else if (curr_phase == 3){
+                  jatos.studySessionData.progress_state = 'finished_training'
+              }
+
+          } else {
+              jatos.studySessionData.progress_state = 'advance_session'
+          }
+
+          // Check if too many sessions, then stop training
+          if (jatos.studySessionData.session_counter >= jatos.studySessionData.qc_criteria.max_training_sess){
+              jatos.studySessionData.qc_status.max_training_sess_pass = false
+              jatos.studySessionData.progress_state = 'qc_failed_' + phase_string             
+          }
+      } // global pass fail? if/else section
+
+  }; // end of the function session_qc_check
 
   jatos.onLoad(function() {
 

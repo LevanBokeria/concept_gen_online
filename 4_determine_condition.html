@@ -18,7 +18,8 @@
     // Counter for advancing through sessions
     jatos.studySessionData.session_counter = {
       phase_1: 1,
-      phase_2: 1
+      phase_2: 1,
+      phase_3: 1,
     }
     jatos.studySessionData.phase_counter = 1;    
     
@@ -53,10 +54,10 @@
       jatos.studySessionData.short_break_duration = 2; // seconds
       jatos.studySessionData.long_break_duration  = 2; // seconds
 
-      jatos.studySessionData.timer_after_response    = 2000; // milliseconds
-      jatos.studySessionData.timer_no_resp_fb_freeze = 2000; // milliseconds
+      jatos.studySessionData.timer_after_response    = 100; // milliseconds
+      jatos.studySessionData.timer_no_resp_fb_freeze = 100; // milliseconds
       jatos.studySessionData.timer_response_window   = 10000; // milliseconds            
-      jatos.studySessionData.post_trial_gap          = 500; // milliseconds
+      jatos.studySessionData.post_trial_gap          = 10; // milliseconds
       jatos.studySessionData.n_practice_trials       = 2;
 
       // Minimum % correct on each item
@@ -253,10 +254,10 @@
       phase_2: new Array(basic_parameters.nTargets).fill(0),
       phase_3: new Array(basic_parameters.nTargets).fill(0),      
     }
-
+    
     // For each phase, specify which points are used as targets, paths to those targets, and the names of all 16 points.
-    for (iPhase=1; iPhase<Object.keys(running_perf).length; iPhase++){
-      let phase_string = 'phase_'+iPhase
+    for (iPhase=0; iPhase<Object.keys(running_perf).length; iPhase++){
+      let phase_string = 'phase_'+(iPhase+1)
 
       for (iT=0; iT<basic_parameters.nTargets; iT++){
 
@@ -282,7 +283,7 @@
       phase_2: genBaseTrialArray(cleanEmptyCombos(getCombos(basic_parameters.pointNamesUsed['phase_2']))),
       phase_3: genBaseTrialArray(cleanEmptyCombos(getCombos(basic_parameters.pointNamesUsed['phase_3']))),      
     }
-
+    
     // If debug, then shorten these arrays
     if (jatos.studySessionData.debug == 1){
       baseTrialArray.phase_1 = deepCopy(shuffle(baseTrialArray.phase_1).slice(0,jatos.studySessionData.debug_n_trials))

@@ -66,213 +66,158 @@
 			//make a timeline
 			let timeline =[]; 
 
+			// Define pages for phase 1
+			let phase_1_pages = [			
+				// 1.	
+				'<div class= "header">'+
+					'<h1> Game Instructions </h1>'+
+				'</div>'+	
+				'<div class="instruct">'+
+					'<p>Welcome to the experiment!</p>' + 
+					'<p>You will play a game that will test your perception and memory skills!</p>' +
+					'<p>The game consists of 3 learning phases, and a debriefing survey at the end.</p>' +
+					'<p>Lets start with phase 1 of learning. Click "Next" for instructions. </p>' +
+				'</div>',
+				// 2.
+				'<div class= "header">'+
+					'<h1> Please go into fullscreen mode by pressing F11</h1>'+
+				'</div>',
+				// 3.								
+				'<div class= "header">'+
+					'<h1> Phase '+ curr_phase +' Instructions </h1>'+
+				'</div>'+	
+				'<div class="instruct">'+
+					'<p>Below, you can see some examples of ' + 
+						curr_concept.concept_object + 
+						's that differ from each other by the length of their ' + 
+						curr_concept.dim1_name + ' and ' + 
+						curr_concept.dim2_name + '.</p>' + 
+					'<div id="all_pictures">' +
+						'<img src="./img/initial_all_pictures/'+ 
+						curr_concept.concept_space 
+						+'.png" alt="all_pictures" '+
+						'style="height:40%;width:40%; object-fit:contain;"></img>' + 
+					"</div>" +
+					'<p> '+ nTargets +
+						' of these ' + curr_concept.concept_object + 
+						's are hiding the ' + 
+						nTargets +
+						' toys you see below.</p>' +
+						names_on_page.outerHTML + targets_on_page.outerHTML +
+						'<p>Your job is to find out which of the '+ 
+						nTargets +' ' + 
+						curr_concept.concept_object + 
+						' are hiding which of these toys as fast as you can! ' + 
+					'</p>' +
+				'</div>',
+				// 4.
+				'<div class= "header">'+
+					'<h1> Phase '+ curr_phase +' Instructions </h1>'+
+				'</div>'+	
+				'<div class="instruct"> <br>'+
+					'<p>On each trial of learning, you will see one of the toys and two suspect ' + 
+					curr_concept.concept_object + 's on the screen.</p>' + 
+					'<p>You will have to learn which of the two ' + 
+					curr_concept.concept_object + 's is hiding the toy you see.</p>' +
+					'<p>Use the "1" and "2" keys of your keyboard to make your choice.</p>' +
+					'<p>You will then see if your were right or wrong, and your score will be recorded.</p>' +								
+				'</div>',
+				// 5. 
+				'<div class= "header">'+
+					'<h1> Phase '+ curr_phase +' Instructions </h1>'+
+				'</div>'+	
+				'<div class="instruct"> <br>'+
+					'<p>In the beginning, you will have to just guess the right answers.</p>' +
+					'<p>Hopefully, after some trials you will learn to quickly recognize the '+ curr_concept.concept_object 
+					+ ' that hide each toy.</p>' +								
+				'</div>',		
+				// 6.					
+				'<div class= "header">'+
+					'<h1> Phase '+ curr_phase +' Instructions </h1>'+
+				'</div>'+	
+				'<div class="instruct"> <br>'+
+					'<p>Lets do '+ 
+						jatos.studySessionData.n_practice_trials + 
+						' practice trials for the game, before beginning the actual learning.</p>' + 
+					'<p><b>You will have ' + (jatos.studySessionData.timer_response_window/1000) + 
+					' seconds on each trial to make your response!</b> </p>' +
+					'<p>Please be as fast and as accurate as you can be!</p>' +							
+				'</div>',																												
+			];
+
+			let phase_2_pages = [
+				// 1.
+				'<div class= "header">'+
+					'<h1> Phase '+curr_phase+' Instructions </h1>'+
+				'</div>'+	
+				'<div class="instruct"> <br>'+
+					'<p> Welcome to phase 2 of the experiment!</p>' + 
+					'<p> Phase 2 is similar to phase 1, but with important differences. </p>' +
+					'<p> <strong> You will learn different associations, and will no longer have any practice sessions</strong>. </p>' +								
+				'</div>',
+				// 2.
+				phase_1_pages[2],
+				// 3.
+				phase_1_pages[3],
+				// 4.
+				phase_1_pages[4],
+
+				// 5.
+				'<div class= "header">'+
+					'<h1> Phase '+curr_phase+' Instructions </h1>'+
+				'</div>'+	
+				'<div class="instruct"> <br>'+
+					'<p><b>Remember, there is NO practice trial for this phase.</b> You are now starting the real learning trials!</p>' +
+					'<p>You will have ' + (jatos.studySessionData.timer_response_window/1000) + ' seconds on each trial to make your response! </p>' +
+					'<p>Click Next to begin.</p>' +								
+				'</div>',
+			];
+
+			let phase_3_pages = [
+				// 1. 				
+				'<div class= "header">'+
+					'<h1> Phase 3 Instructions </h1>'+
+				'</div>'+	
+				'<div class="instruct">'+
+					'<p> Welcome to the final 3rd phase of the experiment!</p>' + 
+					'<p> <b>This phase is the same as phase 1</b>, so it will test how well you can remember the associations from phase 1.</p>' +
+					'<p> <strong>Note that you will NOT have any practice sessions.</strong> </p>' +
+				'</div>',
+				// 2.
+				phase_1_pages[2],
+				// 3.
+				phase_1_pages[3],
+				// 4.
+				phase_1_pages[4],
+				
+				// 5.
+				phase_2_pages[4]																											
+			];
+
 			let instructions = {
 				phase_1: {
 					type: 'instructions',
-					pages : [				
-							'<div class= "header">'+
-								'<h1> Game Instructions </h1>'+
-							'</div>'+	
-							'<div class="instruct">'+
-								'<p>Welcome to the experiment!</p>' + 
-								'<p>You will play a game that will test your perception and memory skills!</p>' +
-								'<p>The game consists of 3 learning phases, and a debriefing survey at the end.</p>' +
-								'<p>Lets start with phase 1 of learning. Click "Next" for instructions. </p>' +
-							'</div>',
-							'<div class= "header">'+
-								'<h1> Please go into fullscreen mode by pressing F11</h1>'+
-							'</div>',								
-							'<div class= "header">'+
-								'<h1> Phase 1 Instructions </h1>'+
-							'</div>'+	
-							'<div class="instruct">'+
-								'<p>Below, you can see some examples of ' + 
-									curr_concept.concept_object + 
-									's that differ from each other by the length of their ' + 
-									curr_concept.dim1_name + ' and ' + 
-									curr_concept.dim2_name + '.</p>' + 
-								'<div id="all_pictures">' +
-									'<img src="./img/initial_all_pictures/'+ 
-									curr_concept.concept_space 
-									+'.png" alt="all_pictures" '+
-									'style="height:40%;width:40%; object-fit:contain;"></img>' + 
-								"</div>" +
-								'<p> '+ nTargets +
-									' of these ' + curr_concept.concept_object + 
-									's are hiding the ' + 
-									nTargets +
-									' toys you see below.</p>' +
-									names_on_page.outerHTML + targets_on_page.outerHTML +
-									'<p>Your job is to find out which of the '+ 
-									nTargets +' ' + 
-									curr_concept.concept_object + 
-									' are hiding which of these toys as fast as you can! ' + 
-								'</p>' +
-							'</div>',
-							'<div class= "header">'+
-								'<h1> Phase 1 Instructions </h1>'+
-							'</div>'+	
-							'<div class="instruct"> <br>'+
-								'<p>On each trial of learning, you will see one of the toys and two suspect ' + 
-								curr_concept.concept_object + 's on the screen.</p>' + 
-								'<p>You will have to learn which of the two ' + 
-								curr_concept.concept_object + 's is hiding the toy you see.</p>' +
-								'<p>Use the "1" and "2" keys of your keyboard to make your choice.</p>' +
-								'<p>You will then see if your were right or wrong, and your score will be recorded.</p>' +								
-							'</div>',
-							'<div class= "header">'+
-								'<h1> Phase 1 Instructions </h1>'+
-							'</div>'+	
-							'<div class="instruct"> <br>'+
-								'<p>In the beginning, you will have to just guess the right answers.</p>' +
-								'<p>Hopefully, after some trials you will learn to quickly recognize the '+ curr_concept.concept_object 
-								+ ' that hide each toy.</p>' +								
-							'</div>',							
-							'<div class= "header">'+
-								'<h1> Phase 1 Instructions </h1>'+
-							'</div>'+	
-							'<div class="instruct"> <br>'+
-								'<p>Lets do '+ 
-									jatos.studySessionData.n_practice_trials + 
-									' practice trials for the game, before beginning the actual learning.</p>' + 
-								'<p><b>You will have ' + (jatos.studySessionData.timer_response_window/1000) + 
-								' seconds on each trial to make your response!</b> </p>' +
-								'<p>Please be as fast and as accurate as you can be!</p>' +							
-							'</div>',																												
-						],
-						
-						show_clickable_nav: true,
-						button_label_next: '<span style="color: black"d;> <strong> Next </stong></span>',
+					pages : phase_1_pages,						
+					show_clickable_nav: true,
+					button_label_next: '<span style="color: black"d;> <strong> Next </stong></span>',
 				},
 				phase_2: {
 					type: 'instructions-timer-enhanced',
-					pages : [				
-							'<div class= "header">'+
-								'<h1> Phase 2 Instructions </h1>'+
-							'</div>'+	
-							'<div class="instruct"> <br>'+
-								'<p> Welcome to phase 2 of the experiment!</p>' + 
-								'<p> Phase 2 is similar to phase 1, but with important differences. </p>' +
-								'<p> <strong> You will learn different associations, and will no longer have any practice sessions</strong>. </p>' +								
-							'</div>',
-							'<div class= "header">'+
-								'<h1> Phase 2 Instructions </h1>'+
-							'</div>'+	
-							'<div class="instruct">'+
-								'<p>Below, you can see some examples of ' + 
-									curr_concept.concept_object + 
-									' that differ from each other by the length of their ' + 
-									curr_concept.dim1_name + ' and ' + 
-									curr_concept.dim2_name + '.</p>' + 
-								'<div id="all_pictures">' +
-									'<img src="./img/initial_all_pictures/'+ 
-									curr_concept.concept_space 
-									+'.png" alt="all_pictures" '+
-									'style="height:40%;width:40%; object-fit:contain;"></img>' + 
-								"</div>" +
-								'<p> '+ nTargets +
-									' of these ' + curr_concept.concept_object + 
-									' are associated with the '+ 
-									nTargets +
-									' toys you see below.</p>' +
-									names_on_page.outerHTML + targets_on_page.outerHTML +
-									'<p>Your job is to find out which '+ 
-									nTargets +' ' + 
-									curr_concept.concept_object + 
-									' are associated with which toys as fast as you can! ' + 
-								'</p>' +
-							'</div>',
-							'<div class= "header">'+
-								'<h1> Phase 2 Instructions </h1>'+
-							'</div>'+	
-							'<div class="instruct"> <br>'+
-								'<p>On each trial of learning, you will see one of the toys and two candidate ' + 
-								curr_concept.concept_object + 's on the screen.</p>' + 
-								'<p>You will have to guess which of the two ' + 
-								curr_concept.concept_object + 's is correctly associated with the toy you see.</p>' +
-								'<p>You can make a response using the keyboard keys "1" and "2" corresponding to the two ' + 
-								curr_concept.concept_object + 's.</p>' +
-								'<p>You will then get feedback on whether you were correct or incorrect.</p>' +								
-							'</div>',
-							'<div class= "header">'+
-								'<h1> Phase 2 Instructions </h1>'+
-							'</div>'+	
-							'<div class="instruct"> <br>'+
-								'<p>You will have ' + (jatos.studySessionData.timer_response_window/1000) + ' seconds on each trial to make your response! </p>' +
-								'<p>Click Next to begin.</p>' +								
-							'</div>',																												
-						],
-						
-						show_clickable_nav: true,
-						button_label_next: '<span style="color: black"d;> <strong> Next </stong></span>',
-						timer_on: false
+					pages : phase_2_pages,
+					show_clickable_nav: true,
+					button_label_next: '<span style="color: black"d;> <strong> Next </stong></span>',
+					timer_on: false
 				},
 				phase_3: {
 					type: 'instructions',
-					pages : [				
-							'<div class= "header">'+
-								'<h1> Phase 3 Instructions </h1>'+
-							'</div>'+	
-							'<div class="instruct">'+
-								'<p> Welcome to the final 3rd phase of the experiment!</p>' + 
-								'<p> <b>This phase is the same as phase 1</b>, so it will test how well you can remember the associations from phase 1.</p>' +
-								'<p> <strong>Note that you will NOT have any practice sessions.</strong> </p>' +
-							'</div>',
-							'<div class= "header">'+
-								'<h1> Phase 3 Instructions </h1>'+
-							'</div>'+	
-							'<div class="instruct">'+
-								'<p>Below, you can see some examples of ' + 
-									curr_concept.concept_object + 
-									' that differ from each other by the length of their ' + 
-									curr_concept.dim1_name + ' and ' + 
-									curr_concept.dim2_name + '.</p>' + 
-								'<div id="all_pictures">' +
-									'<img src="./img/initial_all_pictures/'+ 
-									curr_concept.concept_space 
-									+'.png" alt="all_pictures" '+
-									'style="height:40%;width:40%; object-fit:contain;"></img>' + 
-								"</div>" +
-								'<p> '+ nTargets +
-									' of these ' + curr_concept.concept_object + 
-									' are associated with the '+ 
-									nTargets +
-									' toys you see below.</p>' +
-									names_on_page.outerHTML + targets_on_page.outerHTML +
-									'<p>Your job is to find out which '+ 
-									nTargets +' ' + 
-									curr_concept.concept_object + 
-									' are associated with which toys as fast as you can! ' + 
-								'</p>' +
-							'</div>',
-							'<div class= "header">'+
-								'<h1> Phase 3 Instructions </h1>'+
-							'</div>'+	
-							'<div class="instruct"> <br>'+
-								'<p>On each trial of learning, you will see one of the toys and two candidate ' + 
-								curr_concept.concept_object + 's on the screen.</p>' + 
-								'<p>You will have to guess which of the two ' + 
-								curr_concept.concept_object + 's is correctly associated with the toy you see.</p>' +
-								'<p>You can make a response using the keyboard keys "1" and "2" corresponding to the two ' + 
-								curr_concept.concept_object + 's.</p>' +
-								'<p>You will then get feedback on whether you were correct or incorrect.</p>' +								
-							'</div>',
-							'<div class= "header">'+
-								'<h1> Phase 3 Instructions </h1>'+
-							'</div>'+	
-							'<div class="instruct"> <br>'+
-								'<p>You will have ' + (jatos.studySessionData.timer_response_window/1000) + ' seconds on each trial to make your response! </p>' +
-								'<p>Click Next to begin.</p>' +								
-							'</div>',																												
-						],
+					pages : phase_3_pages,
 						
 						show_clickable_nav: true,
 						button_label_next: '<span style="color: black"d;> <strong> Next </stong></span>',
 				},
-			}
+			};
 
 			timeline.push(instructions[phase_string]);
-			// timeline.push(instructions['phase_1']);			
 
 			jsPsych.init({
 				

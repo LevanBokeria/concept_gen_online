@@ -22,46 +22,50 @@
         //start timeline
         jatos.onLoad(function() {
 
-            // Create the trials
-            var intermediate_feedback = {
-                type: 'survey-text',
-                questions: [
-                    {prompt: "Did you encounter any technical difficulties or display issues (such as cut off text or images) in the previous session? <br> If yes, please briefly describe.", rows: 10, columns: 40},
-                ],
-                button_label: "Continue"
+            if (jatos.studySessionData.debug == 1){
 
-            };
+                jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.qc_checks)
+                
+            } else {
 
-            jsPsych.init({
+                // Create the trials
+                var intermediate_feedback = {
+                    type: 'survey-text',
+                    questions: [
+                        {prompt: "Did you encounter any technical difficulties or display issues (such as cut off text or images) in the previous session? <br> If yes, please briefly describe.", rows: 10, columns: 40},
+                    ],
+                    button_label: "Continue"
 
-                timeline: [intermediate_feedback],
+                };
 
-                on_finish: function() {
+                jsPsych.init({
 
-                    // What phase is this?
-                    let curr_phase   = jatos.studySessionData.phase_counter
-                    let phase_string = 'phase_'+curr_phase
-                    let curr_session = jatos.studySessionData.session_counter[phase_string]
+                    timeline: [intermediate_feedback],
 
-                    let result_data = {};
+                    on_finish: function() {
 
-                    result_data.component_data = jsPsych.data.get().values();
+                        // What phase is this?
+                        [curr_phase,phase_string,curr_session] = getPhaseAndSession()
 
-                    jatos.studySessionData.outputData[phase_string+'_debrief_results'][jatos.studySessionData.outputData[phase_string+'_debrief_results'].length] = result_data;
+                        let result_data = {};
 
-                    jatos.submitResultData(
-                        "[int_fb_start---" + 
-                        JSON.stringify(jatos.studySessionData) + 
-                        "---int_fb_end]", function(){
-                            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.qc_checks);
-                        }
-                    );
-                    
-                    // jsPsych.data.displayData();
-                    
-                }
-            });
+                        result_data.component_data = jsPsych.data.get().values();
 
+                        jatos.studySessionData.outputData[phase_string+'_debrief_results'][jatos.studySessionData.outputData[phase_string+'_debrief_results'].length] = result_data;
+
+                        jatos.submitResultData(
+                            "[int_fb_start---" + 
+                            JSON.stringify(jatos.studySessionData) + 
+                            "---int_fb_end]", function(){
+                                jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.qc_checks);
+                            }
+                        );
+                        
+                        // jsPsych.data.displayData();
+                        
+                    } // on_finish
+                }); // jsPsych init
+            }
         });
 
 

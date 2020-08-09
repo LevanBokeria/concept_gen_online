@@ -55,6 +55,7 @@
                 // Record the current trial array in the outputData variable
                 jatos.studySessionData.outputData[phase_string+'_practice_results'] = session_trials
             } else {
+                debugger
                 // Then, generate trials for this session
                 var session_trials = 
                     trialCreator(jatos.studySessionData.inputData.concepts[phase_string],
