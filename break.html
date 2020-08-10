@@ -18,6 +18,7 @@
 	<style> ul {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px; cursor:default;} </style>
 	<style> .instruct{width:100%; color: black; text-align:center; cursor:default;} </style>
 	<style> .header {position: fixed; left:0; top:0; width:100%; background-color:#8f8d8d; color: white; text-align: center;cursor:default;} </style>
+	<style> .score_box p {font-size: 14px }</style>
   </head>
 
   <body>
@@ -52,7 +53,8 @@
         let spatial_questions = [
                 {prompt: 'At any point during the experiment, did you realize that all the '+ iConcept.concept_object + 's you saw with different ' + 
                 'sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + ', <br>can be represented in a 2-dimensional space as depicted above? ' +
-                ' <br>Each '+ iConcept.concept_object + ' is a point in this space, and the value on each dimension specifies the sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + '.' + 
+				' <br>Each '+ iConcept.concept_object + ' is a point in this space, and the value on each dimension specifies the sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + '.' + 
+				'<br> So, each toy hidden by a particular ' + iConcept.concept_object + ' is "located" in this 2-dimensional space at the point corresponding to that ' + iConcept.concept_object + '.' +
 				'<br> If you did realize this, did this help you in learning the '+ iConcept.concept_object + '-toy associations?' + 
 				'<br> If this question is unclear and does not explain well what is meant by this 2-dimensional representation, please indicate below.', rows: 3, columns: 100, placeholder: ''},            
             ]

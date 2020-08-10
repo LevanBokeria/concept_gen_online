@@ -232,8 +232,9 @@ const createScoreBox = function(){
 
     // Create the main grid element
     let score_box = document.createElement('div')
-    score_box.className = 'wrapper'
-    score_box.style = 
+    score_box.className = 'score_box'
+    score_box.id        = 'score_box_wrapper'
+    score_box.style     = 
         'display: grid;' + 
         'grid-gap: 0px '+ gaps_col + 'px;' +
         'grid-template-columns: repeat(' + img_paths.length +', '+ target_width + 'px);' +
@@ -262,7 +263,6 @@ const createScoreBox = function(){
         iName.className = 'score_box_target_name'
         iName.innerText = iN
         iName.style.margin = '0'
-
 
         score_box.appendChild(iName)
     }
