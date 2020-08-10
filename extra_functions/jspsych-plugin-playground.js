@@ -252,7 +252,6 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
     display_element.innerHTML = html;
 
-    // debugger
 		// Create the score box
 		let score_box_element = createScoreBox()
     score_box_element.style.position = 'absolute'
@@ -459,7 +458,6 @@ jsPsych.plugins["plugin-playground"] = (function() {
       };
 
       // Record all the information in the jatos object
-      // debugger
       if (trial.session == 0){
         jatos.studySessionData.outputData[phase_string + '_practice_results'][jsPsych.data.get().values().length] = 
         Object.assign(
@@ -471,7 +469,6 @@ jsPsych.plugins["plugin-playground"] = (function() {
         jatos.studySessionData.outputData[phase_string+'_results'][trial.session-1][jsPsych.data.get().values().length],
           trial_data)
       }
-      // debugger
       // clear the display
       // display_element.innerHTML = '';
       document.querySelector("#prompt_img").style.visibility            = 'hidden';
@@ -561,7 +558,6 @@ jsPsych.plugins["plugin-playground"] = (function() {
     if (jatos.studySessionData.auto_respond){
 
       jsPsych.pluginAPI.setTimeout(function(){
-        // debugger
         // // Whats the correct response?
         // let simKey 
         // trial.correct_response == 1 ? simKey = '1' : simKey = '2'

@@ -15,8 +15,6 @@
 
         jatos.onLoad(function() {
             
-            // debugger
-
             // What phase is this?
             [curr_phase,phase_string,curr_session] = getPhaseAndSession()
             let curr_space_object = jatos.studySessionData.inputData.concepts[phase_string]
@@ -55,7 +53,6 @@
                 // Record the current trial array in the outputData variable
                 jatos.studySessionData.outputData[phase_string+'_practice_results'] = session_trials
             } else {
-                // debugger
                 // Then, generate trials for this session
                 var session_trials = 
                     trialCreator(jatos.studySessionData.inputData.concepts[phase_string],
@@ -151,7 +148,6 @@
 
                     // submit results to JATOS
                     output_trial_data = jsPsych.data.get().values();
-                    // debugger
                     // Combine it with pre-existing trial information
                     if (jatos.componentProperties.title.includes('practice_trials')){
                         for (iT=0; iT<output_trial_data.length; iT++){

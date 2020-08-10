@@ -17,7 +17,6 @@
         //start timeline
         jatos.onLoad(function() {
 
-            debugger
             // What phase is this?
             [curr_phase,phase_string,curr_session] = getPhaseAndSession()
 
@@ -29,8 +28,6 @@
                 // If failed at the practice trials
                 if (jatos.studySessionData.qc_status.practice_pass == false){
 
-                    debugger;
-
                     // Redirection URL with the code saying how many sessions they completed
                     jatos.studySessionData.outputData.redirect_url = 'https://app.prolific.co/submissions/complete?cc=PRACTICE_FAILED_' + phase_string;
 
@@ -39,8 +36,6 @@
                 // If failed the instructions
                 } else if (jatos.studySessionData.qc_status.min_time_instruct_pass == false){
 
-                    debugger;
-
                     // Redirection URL with the code saying how many sessions they completed
                     jatos.studySessionData.outputData.redirect_url = 'https://app.prolific.co/submissions/complete?cc=INSTR_FAILED_' + phase_string;
 
@@ -48,8 +43,6 @@
 
                 // If failed main sessions qc
                 } else if (jatos.studySessionData.qc_status.global_pass == false){
-
-                    debugger;
 
                     // Redirection URL with the code saying which phase and how many sessions they completed
                     jatos.studySessionData.outputData.redirect_url = 'https://app.prolific.co/submissions/complete?cc=QC_fail_p'+curr_phase+'_s'+curr_session;
@@ -63,7 +56,6 @@
                 } else {
 
                     // So everything's good. Finished properly
-                    debugger;
 
                     // Redirection URL with correct completion code
                     jatos.studySessionData.outputData.redirect_url = jatos.componentJsonInput.url;

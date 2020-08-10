@@ -75,7 +75,6 @@ function add_image_info_and_trial_session_idxs_practice_trials(array,session_idx
 };    
 
 const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,iPhase,iSession){
-    // debugger
 
     // What phase is this?
     let phase_string = 'phase_' + iPhase
@@ -179,7 +178,6 @@ const calcRunningPerf = function(data) {
         // So we have more than 10 entries. Get only the last 10 trials
         last_prompt_trials = last_prompt_trials.slice(last_prompt_trials.length - jatos.studySessionData.perf_check_over_n_trials, last_prompt_trials.length)
     }
-    // debugger
     // Calculate the average
     let avg = last_prompt_trials.reduce(function(total, item){
         return total + item.correct
@@ -281,7 +279,6 @@ const createScoreBox = function(){
 
         score_box.appendChild(iPerf)
     } 
-    // debugger
     // document.body.appendChild(score_box)
     return score_box
 };
