@@ -39,7 +39,7 @@
     // A conditional that determines whether we are debugging or not. If debugging, fewer trials will be done.
     // The pilot flag is for when asking labmates to test the paradigm, it just reduces the number of trials they'll have to do per sesiosn.
     // Auto respond: script will make random responses by itself.
-    jatos.studySessionData.debug                    = 1;
+    jatos.studySessionData.debug                    = 0;
     jatos.studySessionData.debug_n_trials           = 10;
     jatos.studySessionData.show_correct             = false;
     jatos.studySessionData.pilot                    = 0;
@@ -48,8 +48,8 @@
     jatos.studySessionData.simulate_data            = false; // Simulate data to intentionally fail the QC?
     jatos.studySessionData.simulate_condition       = 'perc_max_missed' // what QC condition should we intentionally fail 
     jatos.studySessionData.perf_check_over_n_trials = 15; // Over how many previous trials is the performance calculated?
-    jatos.studySessionData.random_target_loc        = true
-    jatos.studySessionData.use_batch_data           = false
+    jatos.studySessionData.random_target_loc        = false
+    jatos.studySessionData.use_batch_data           = true
 
     // Duration of trials, breaks, ITI, etc
     if (jatos.studySessionData.debug == 1 || jatos.studySessionData.pilot == 1) {
@@ -224,7 +224,7 @@
         chosenTargetLocations_phase_2 = _.sampleSize(allPointsInSpace, nTargets)
       } else {
         // Choose manually
-        chosenTargetLocations_phase_2 = [2,8,5]
+        chosenTargetLocations_phase_2 = [10,16,3]
       }
 
     };
