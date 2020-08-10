@@ -130,7 +130,6 @@
       // Are we checking practice trials?
       if (jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
         
-        debugger
         // 1. Check instructions weren't breezed through too fast
         let viewing_history = JSON.parse(jatos.studySessionData.outputData.instructions_results.phase_1.view_history)
 
@@ -147,6 +146,7 @@
           if (iPage.viewing_time < jatos.studySessionData.qc_criteria.min_time_instruct){
             jatos.studySessionData.qc_status.global_pass = false
             jatos.studySessionData.qc_status.min_time_instruct_pass = false
+            jatos.studySessionData.progress_state = 'qc_failed_instructions'
           }
         };
 
@@ -194,7 +194,6 @@
     } // phase bracket
 
   }); // jatos IFFY
-
 
 </script>
 
