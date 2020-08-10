@@ -66,11 +66,13 @@
 
       }
 
-      // 4. If session >= 2, check better than chance
+      // 4. If session >= preset_amount, check better than chance
       if (curr_session >= jatos.studySessionData.qc_criteria.min_perf_check_ses){
 
+          debugger
+
           let n_targets_above_chance = 
-          jatos.studySessionData.inputData.running_perf.filter(item => item > 
+          jatos.studySessionData.inputData.running_perf[phase_string][curr_session-1].filter(item => item > 
               jatos.studySessionData.qc_criteria.min_perf_check_perc).length
 
           if (n_targets_above_chance < jatos.studySessionData.inputData.basic_parameters.nTargets) {
@@ -88,7 +90,7 @@
       // So didn't fail
 
           // Check, if exceeded the performance, then continue to next step
-          let all_targets_learned = jatos.studySessionData.inputData.running_perf[phase_string].every(
+          let all_targets_learned = jatos.studySessionData.inputData.running_perf[phase_string][curr_session-1].every(
           item => item >= jatos.studySessionData.training_criterion
           )
         debugger

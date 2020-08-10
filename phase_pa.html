@@ -22,7 +22,7 @@
             let curr_space_object = jatos.studySessionData.inputData.concepts[phase_string]
 
             // Reset the running performance
-            jatos.studySessionData.inputData.running_perf[phase_string] = 
+            jatos.studySessionData.inputData.running_perf[phase_string][curr_session-1] = 
                 new Array(jatos.studySessionData.inputData.basic_parameters.nTargets).fill(0)
 
             // If this for practice run?

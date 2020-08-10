@@ -13,8 +13,6 @@
 
   jatos.onLoad(function() {
 
-    // debugger
-
     // Counter for advancing through sessions
     jatos.studySessionData.session_counter = {
       phase_1: 1,
@@ -92,12 +90,12 @@
       }
     } else {
       jatos.studySessionData.qc_criteria = {
-        rt_min_speed:        1000, // If more than "rt_min_perc" trials have RT < "rt_min_speed", then disqualify.
+        rt_min_speed:        500, // If more than "rt_min_perc" trials have RT < "rt_min_speed", then disqualify.
         rt_min_perc:         80,   // If more than this percentage of trials have an RT less than "rt_min_speed", disqualify.
         uniform_resp_perc:   95, // Percentage of trials that are allowed to have the same response
         min_perf_check_perc: 50, // Minimum accuracy to reach by a certain session, else gets discontinued
         min_perf_check_ses:  3,  // After this many sessions, will check for minimum accuracy. Else discontinued.
-        perc_max_missed:     40, // max percentage of trials allowed to be missed
+        perc_max_missed:     30, // max percentage of trials allowed to be missed
         max_training_sess:   6,  
         min_time_instruct:   500, // minimum time spent on each instruction page for the first time its visited.               
       }
@@ -158,7 +156,7 @@
     // How many targets
     let nTargets = 3
 
-    // Randomly choose the target indices
+    // Randomly choose the target indices. i.e. which pictures to use as targets
     // let chosenTarget_idxs = _.sampleSize(targetCoordsNames.pointNamesTarget.length, basic_parameters.nTargets)
     let chosenTarget_idxs = {
       phase_1: [0,1,2], 
@@ -166,25 +164,36 @@
       phase_3: [0,1,2],      
     }
 
+    // The two variables below are needed for randomly generating target locations in the concept space
     let totalPointsInSpace = targetCoordsNames.pointNamesEmpty.length
     let allPointsInSpace   = [...Array(totalPointsInSpace).keys()].map(item => item + 1) // creates an array from 1 to max number
 
-    // let chosenTargetLocations_phase_1 = 
-    //   _.sampleSize(allPointsInSpace, nTargets)
-    
-    let chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
-    let chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruency or not
+    let chooseConditionsFromBachData = false
 
-    let congruency = true
-    
-    if (congruency){
-      chosenTargetLocations_phase_2 = chosenTargetLocations_phase_1
+    if (chooseConditionsFromBachData){
+
     } else {
 
-      // Choose it randomly
+      // let chosenTargetLocations_phase_1 = 
+      //   _.sampleSize(allPointsInSpace, nTargets)
+      
+      let chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
+      let chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruency or not
 
+      let chosenTargetLocations_phase_2
+
+      let congruency = true
+      
+      if (congruency){
+        chosenTargetLocations_phase_2 = chosenTargetLocations_phase_1
+      } else {
+
+        // Choose manually
+        chosenTargetLocations_phase_2
+        // Choose it randomly
+
+      }
     }
-
     const basic_parameters = {
 
         // Display
@@ -257,13 +266,14 @@
 
     // Variable to hold the running performance for each phase
     let running_perf = {
-      phase_1: new Array(basic_parameters.nTargets).fill(0),
-      phase_2: new Array(basic_parameters.nTargets).fill(0),
-      phase_3: new Array(basic_parameters.nTargets).fill(0),      
+      phase_1_practice:  new Array(basic_parameters.nTargets).fill(0),
+      phase_1:          [new Array(basic_parameters.nTargets).fill(0)],
+      phase_2:          [new Array(basic_parameters.nTargets).fill(0)],
+      phase_3:          [new Array(basic_parameters.nTargets).fill(0)],
     }
     
     // For each phase, specify which points are used as targets, paths to those targets, and the names of all 16 points.
-    for (iPhase=0; iPhase<Object.keys(running_perf).length; iPhase++){
+    for (iPhase=0; iPhase<Object.keys(basic_parameters.targetPathsUsed).length; iPhase++){
       let phase_string = 'phase_'+(iPhase+1)
 
       for (iT=0; iT<basic_parameters.nTargets; iT++){
