@@ -44,10 +44,12 @@
     jatos.studySessionData.show_correct             = 1;
     jatos.studySessionData.pilot                    = 0;
     jatos.studySessionData.pilot_n_trials           = 10;
-    jatos.studySessionData.auto_respond             = true;
-    jatos.studySessionData.simulate_data            = true; // Simulate data to intentionally fail the QC?
+    jatos.studySessionData.auto_respond             = false;
+    jatos.studySessionData.simulate_data            = false; // Simulate data to intentionally fail the QC?
     jatos.studySessionData.simulate_condition       = 'perc_max_missed' // what QC condition should we intentionally fail 
     jatos.studySessionData.perf_check_over_n_trials = 15; // Over how many previous trials is the performance calculated?
+    jatos.studySessionData.random_target_loc        = true
+    jatos.studySessionData.use_batch_data           = false
 
     // Duration of trials, breaks, ITI, etc
     if (jatos.studySessionData.debug == 1 || jatos.studySessionData.pilot == 1) {
@@ -171,19 +173,18 @@
     let totalPointsInSpace = targetCoordsNames.pointNamesEmpty.length
     let allPointsInSpace   = [...Array(totalPointsInSpace).keys()].map(item => item + 1) // creates an array from 1 to max number
 
-    // let chosenTargetLocations_phase_1 = 
-    //   _.sampleSize(allPointsInSpace, nTargets)
-    
-    let chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
-    let chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruency or not
+    let chosenTargetLocations_phase_1, chosenTargetLocations_phase_2, chosenTargetLocations_phase_3
 
-    let chosenTargetLocations_phase_2
-
-
-    // Get BATCH DATA or not? ////////////////////////////////
-    let chooseConditionsFromBachData = true
-    
-    if (chooseConditionsFromBachData){
+    if (jatos.studySessionData.random_target_loc){
+      // Randomly sample
+      chosenTargetLocations_phase_1 =_.sampleSize(allPointsInSpace, nTargets)
+    } else {
+      chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
+    }
+    chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruency or not
+  
+    // Get BATCH DATA or not? ////////////////////////////////    
+    if (jatos.studySessionData.use_batch_data){
 
       // Get batchData
       let batchData = jatos.batchSession.getAll();
@@ -204,20 +205,29 @@
       var congruency = batchData[minCond].congruency
       var phase_1_concept = batchData[minCond].phase_1_concept
       var phase_2_concept = batchData[minCond].phase_2_concept      
+    
     } else {
-      var congruency = true
+
+      // So not reading the batch. Set manually
+      var congruency = false
       var phase_1_concept = 'neck_legs_space'
       var phase_2_concept = 'beak_tail_space'      
     }
 
     if (congruency){
-        chosenTargetLocations_phase_2 = chosenTargetLocations_phase_1
+      chosenTargetLocations_phase_2 = chosenTargetLocations_phase_1
+
+    } else {
+
+      if (jatos.studySessionData.random_target_loc){
+        // Choose it randomly
+        chosenTargetLocations_phase_2 = _.sampleSize(allPointsInSpace, nTargets)
       } else {
         // Choose manually
         chosenTargetLocations_phase_2 = [2,8,5]
-        // Choose it randomly
-        chosenTargetLocations_phase_2 = _.sampleSize(allPointsInSpace, nTargets)
-    }
+      }
+
+    };
 
     const basic_parameters = {
 

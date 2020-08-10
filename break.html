@@ -411,32 +411,33 @@
 			show_progress_bar = true
 		} // checking progress state		
 
-		jsPsych.init({
+		if (!jatos.studySessionData.progress_state.includes('starting')){
+			jsPsych.init({
 
-			timeline: timeline,
-			show_progress_bar: show_progress_bar,
+				timeline: timeline,
+				show_progress_bar: show_progress_bar,
 
-			on_finish: function() {
+				on_finish: function() {
 
-				// If its a break between sessions or phases, record in the breaks_results object
-				if (jatos.studySessionData.progress_state == 'advance_phase' || 
-					jatos.studySessionData.progress_state == 'advance_session'){
-					let idx = jatos.studySessionData.outputData[phase_string + '_breaks_results'].length
-					jatos.studySessionData.outputData[phase_string + '_breaks_results'][idx] = jsPsych.data.get().values();	
-				// If its debrief, record in the debrief object
-				} else {
-					let idx = jatos.studySessionData.outputData[phase_string + '_debrief_results'].length
-					jatos.studySessionData.outputData[phase_string + '_debrief_results'][idx] = jsPsych.data.get().values();	
+					// If its a break between sessions or phases, record in the breaks_results object
+					if (jatos.studySessionData.progress_state == 'advance_phase' || 
+						jatos.studySessionData.progress_state == 'advance_session'){
+						let idx = jatos.studySessionData.outputData[phase_string + '_breaks_results'].length
+						jatos.studySessionData.outputData[phase_string + '_breaks_results'][idx] = jsPsych.data.get().values();	
+					// If its debrief, record in the debrief object
+					} else {
+						let idx = jatos.studySessionData.outputData[phase_string + '_debrief_results'].length
+						jatos.studySessionData.outputData[phase_string + '_debrief_results'][idx] = jsPsych.data.get().values();	
+					}
+
+					jatos.submitResultData("[break_start---" + 
+					JSON.stringify(jatos.studySessionData) + 
+					"---break_end]", function(){
+						jatos.startComponentByPos(component_to_start);
+					});
 				}
-
-				jatos.submitResultData("[break_start---" + 
-				JSON.stringify(jatos.studySessionData) + 
-				"---break_end]", function(){
-					jatos.startComponentByPos(component_to_start);
-				});
-			}
-		});
-
+			});
+		}
 	});
 
 	</script>
