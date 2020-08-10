@@ -5,16 +5,10 @@
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0">
     <title>Data Submission</title>	
 	<script src="jspsych-6.1.0/jspsych.js" ></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
+    <script src='./extra_functions/helper_functions.js'></script>
 	<script src="jatos.js"></script>
     <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" type="text/css"></link>
-	<style>	body {background-color:white; font-family: sans-serif; color: black;} </style>
-	<style> p {font-size: 100%; margin-top:0px; margin-right:100px; margin-bottom:10px; margin-left: 100px;} </style>
-	<style> ul {font-size: 100%; margin-top:0px; margin-right:100px; margin-bottom:10px; margin-left: 100px; cursor:default;} </style>
-	<style> .instruct{width:100%; color: black; text-align:center; cursor:default;} </style>
-	<style> .header {position: fixed; left:0; top:0; width:100%; background-color:#F8F8F8; color: black; text-align: center;cursor:default;} </style>
-  </head>
+ </head>
 
   <body>
   <script>
@@ -27,7 +21,7 @@
             // What phase is this?
             [curr_phase,phase_string,curr_session] = getPhaseAndSession()
 
-            var redirect_fn = function () {return window.location.replace(redirect_url);};
+            var redirect_fn = function () {return window.location.replace(jatos.studySessionData.outputData.redirect_url);};
 
             // end study function
             var end_study_fn = function() {
@@ -38,7 +32,7 @@
                     debugger;
 
                     // Redirection URL with the code saying how many sessions they completed
-                    var redirect_url = 'https://app.prolific.co/submissions/complete?cc=PRACTICE_FAILED_' + phase_string;
+                    jatos.studySessionData.outputData.redirect_url = 'https://app.prolific.co/submissions/complete?cc=PRACTICE_FAILED_' + phase_string;
 
                     jatos.endStudyAjax(true, 'PRACTICE_FAILED_' + phase_string + '_' + jatos.studySessionData.prolific_ID, redirect_fn);
 
@@ -48,7 +42,7 @@
                     debugger;
 
                     // Redirection URL with the code saying how many sessions they completed
-                    var redirect_url = 'https://app.prolific.co/submissions/complete?cc=INSTR_FAILED_' + phase_string;
+                    jatos.studySessionData.outputData.redirect_url = 'https://app.prolific.co/submissions/complete?cc=INSTR_FAILED_' + phase_string;
 
                     jatos.endStudyAjax(true, 'INSTR_FAILED_' + phase_string + '_' + jatos.studySessionData.prolific_ID, redirect_fn);
 
@@ -58,7 +52,7 @@
                     debugger;
 
                     // Redirection URL with the code saying which phase and how many sessions they completed
-                    var redirect_url = 'https://app.prolific.co/submissions/complete?cc=QC_fail_p'+curr_phase+'_s'+curr_session;
+                    jatos.studySessionData.outputData.redirect_url = 'https://app.prolific.co/submissions/complete?cc=QC_fail_p'+curr_phase+'_s'+curr_session;
 
                     // Create an error text
                     var err = deepCopy(jatos.studySessionData.qc_status);
@@ -72,7 +66,7 @@
                     debugger;
 
                     // Redirection URL with correct completion code
-                    var redirect_url = jatos.componentJsonInput.url;
+                    jatos.studySessionData.outputData.redirect_url = jatos.componentJsonInput.url;
 
                     jatos.endStudyAjax(true, "REDIRECTED_"+ jatos.studySessionData.prolific_ID, redirect_fn);
 

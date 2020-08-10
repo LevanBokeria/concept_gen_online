@@ -1,0 +1,30 @@
+[
+  {
+    "congruency": true,
+    "phase_1_concept": "neck_legs_space",
+    "phase_2_concept": "beak_tail_space",
+    "n_ptp_fail": 0,
+    "n_ptp_pass_or_ongoing": 60
+  },
+  {
+    "congruency": false,
+    "phase_1_concept": "neck_legs_space",
+    "phase_2_concept": "beak_tail_space",
+    "n_ptp_fail": 0,
+    "n_ptp_pass_or_ongoing": 60
+  },
+  {
+    "congruency": true,
+    "phase_2_concept": "neck_legs_space",
+    "phase_1_concept": "beak_tail_space",
+    "n_ptp_fail": 0,
+    "n_ptp_pass_or_ongoing": 60
+  },
+  {
+    "congruency": false,
+    "phase_2_concept": "neck_legs_space",
+    "phase_1_concept": "beak_tail_space",
+    "n_ptp_fail": 0,
+    "n_ptp_pass_or_ongoing": 60
+  }
+]

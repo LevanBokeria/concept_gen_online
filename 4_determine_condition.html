@@ -168,32 +168,54 @@
     let totalPointsInSpace = targetCoordsNames.pointNamesEmpty.length
     let allPointsInSpace   = [...Array(totalPointsInSpace).keys()].map(item => item + 1) // creates an array from 1 to max number
 
-    let chooseConditionsFromBachData = false
+    // let chosenTargetLocations_phase_1 = 
+    //   _.sampleSize(allPointsInSpace, nTargets)
+    
+    let chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
+    let chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruency or not
 
+    let chosenTargetLocations_phase_2
+
+
+    // Get BATCH DATA or not? ////////////////////////////////
+    let chooseConditionsFromBachData = true
+    debugger
     if (chooseConditionsFromBachData){
 
+      // Get batchData
+      let batchData = jatos.batchSession.getAll();
+
+      // Get the number of participants each of them ran
+      let n_ptp_pass_or_ongoing = batchData.map(item => item.n_ptp_pass_or_ongoing)
+
+      // Find the one with least number of ptp
+      let minCond = n_ptp_pass_or_ongoing.indexOf(Math.min(...n_ptp_pass_or_ongoing));
+
+      // Increment its runnning participant count
+      batchData[minCond].n_ptp_pass_or_ongoing ++;
+
+      // Update the batch data
+      jatos.batchSession.setAll(batchData);
+
+      // Set congruency
+      var congruency = batchData[minCond].congruency
+      var phase_1_concept = batchData[minCond].phase_1_concept
+      var phase_2_concept = batchData[minCond].phase_2_concept      
     } else {
+      var congruency = true
+      var phase_1_concept = 'neck_legs_space'
+      var phase_2_concept = 'beak_tail_space'      
+    }
 
-      // let chosenTargetLocations_phase_1 = 
-      //   _.sampleSize(allPointsInSpace, nTargets)
-      
-      let chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
-      let chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruency or not
-
-      let chosenTargetLocations_phase_2
-
-      let congruency = true
-      
-      if (congruency){
+    if (congruency){
         chosenTargetLocations_phase_2 = chosenTargetLocations_phase_1
       } else {
-
         // Choose manually
-        chosenTargetLocations_phase_2
+        chosenTargetLocations_phase_2 = [2,8,5]
         // Choose it randomly
-
-      }
+        chosenTargetLocations_phase_2 = _.sampleSize(allPointsInSpace, nTargets)
     }
+
     const basic_parameters = {
 
         // Display
@@ -324,10 +346,15 @@
         [90,180],[250,450], // fb_imgs coords
         'column')        
 
-    let concepts = {
-        phase_1: neck_legs_space,
-        phase_2: beak_tail_space,
-        phase_3: neck_legs_space,        
+    let all_available_concepts = {
+      neck_legs_space: neck_legs_space,
+      beak_tail_space: beak_tail_space,
+    }
+
+    let conceptsUsed = {
+        phase_1: all_available_concepts[phase_1_concept],
+        phase_2: all_available_concepts[phase_2_concept],
+        phase_3: all_available_concepts[phase_1_concept],        
     }
     
     // Create an array that will hold paths to images to prelod. Will be filled in prior to each session
@@ -343,7 +370,7 @@
       targetCoordsNames: targetCoordsNames,
       basic_parameters:  basic_parameters,
       baseTrialArray:    baseTrialArray,
-      concepts:          concepts,
+      concepts:          conceptsUsed,
       imgs_to_preload:   imgs_to_preload,
       choices:           ['1','2'],
       nTrials:           baseTrialArray.phase_1.length,

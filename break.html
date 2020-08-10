@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-	<title>Break</title>
+	<title>Transition</title>
     <meta charset="utf-8">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0">
 	<script src="jspsych-6.1.0/jspsych.js" ></script>
@@ -64,7 +64,6 @@
 
 
 	const createRealizeMappingDebriefer = function(){
-		debugger
 
 		let concept_1 = jatos.studySessionData.inputData.concepts.phase_1
 		let concept_2 = jatos.studySessionData.inputData.concepts.phase_2	
@@ -149,7 +148,7 @@
         let realize_mapping_preamble = '<p style="font-size: 30px;"><b>Phase 1 / Phase 2 debriefing:</b></p>'
 
         let realize_mapping_page = createImageSurveyTrial(realize_mapping_preamble,[wrapperFlexEl],realize_mapping_questions)
-		debugger
+		
 		return realize_mapping_page
 	};
 
@@ -387,8 +386,6 @@
 
 			show_progress_bar = true
 		} // checking progress state		
-
-
 
 		jsPsych.init({
 
