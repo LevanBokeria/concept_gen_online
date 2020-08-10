@@ -126,14 +126,31 @@
     let last_session_data = jatos.studySessionData.last_session_data
 
     if (curr_phase == 1){
-
+      
+      // Are we checking practice trials?
       if (jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
         
-        // Are we checking practice trials?
+        debugger
+        // 1. Check instructions weren't breezed through too fast
+        let viewing_history = JSON.parse(jatos.studySessionData.outputData.instructions_results.phase_1.view_history)
 
-        // Check instructions weren't breezed through too fast
-        
-        // Check RTs not too low. Also checks that not all trials were missed
+        // How many pages are there?
+        let all_page_idxs = viewing_history.map(item => item.page_index)
+        let max_pages     = Math.max(...all_page_idxs)
+
+        // For each page that was visited for the first time, 
+        // make sure they spent at least certain amount. If not, fail the QC
+        for (iP=0; iP<=max_pages; iP++){
+
+          let curr_idx = all_page_idxs.indexOf(iP)
+          let iPage    = viewing_history[curr_idx]
+          if (iPage.viewing_time < jatos.studySessionData.qc_criteria.min_time_instruct){
+            jatos.studySessionData.qc_status.global_pass = false
+            jatos.studySessionData.qc_status.min_time_instruct_pass = false
+          }
+        };
+
+        // 2. Check RTs not too low. Also checks that not all trials were missed
         let rt_speed_pass_practice = last_session_data.some(item => item.rt > jatos.studySessionData.qc_criteria.rt_min_speed)
 
         // record in the jatos object

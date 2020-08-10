@@ -47,11 +47,9 @@
                         // What phase is this?
                         [curr_phase,phase_string,curr_session] = getPhaseAndSession()
 
-                        let result_data = {};
-
-                        result_data.component_data = jsPsych.data.get().values();
-
-                        jatos.studySessionData.outputData[phase_string+'_debrief_results'][jatos.studySessionData.outputData[phase_string+'_debrief_results'].length] = result_data;
+                        //  Record data
+                        let idx = jatos.studySessionData.outputData.intermediate_feedback_results[phase_string].length 
+                        jatos.studySessionData.outputData.intermediate_feedback_results[phase_string][idx] = jsPsych.data.get().values();
 
                         jatos.submitResultData(
                             "[int_fb_start---" + 

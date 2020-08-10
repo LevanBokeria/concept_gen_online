@@ -27,8 +27,7 @@
 			// What phase and session is this?
 			let [curr_phase,phase_string,curr_session] = getPhaseAndSession() 
 			let curr_concept = jatos.studySessionData.inputData.concepts[phase_string]
-			let nTargets = jatos.studySessionData.inputData.basic_parameters.nTargets
-
+			let nTargets     = jatos.studySessionData.inputData.basic_parameters.nTargets
 
 			// Create HTML elements 
 			let targets_on_page = document.createElement('div')
@@ -225,14 +224,19 @@
 
 				on_finish: function(data) {
 
+					debugger
+
 					// Make JATOS remember that this session was run
                     jatos.studySessionData.latestFinishedComponentId    = jatos.componentId;
                     jatos.studySessionData.latestFinishedComponentPos   = jatos.componentPos;
                     jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
 
-					jatos.submitResultData("[instructions_start---" + 
+					// Record results
+					jatos.studySessionData.outputData.instructions_results[phase_string] = jsPsych.data.get().values()[0];
+
+					jatos.submitResultData('[instructions_start_' + phase_string + '---' + 
 					JSON.stringify(jatos.studySessionData) +
-					"---instructions_end]", 
+					'---' + phase_string + '_instructions_end]', 
 					jatos.startComponentByPos(comp_to_start));
 
 					// jsPsych.data.displayData();
