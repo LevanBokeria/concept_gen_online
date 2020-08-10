@@ -81,6 +81,9 @@
             imgs_to_preload.exemplar_images = 
                 imgs_to_preload.exemplar_images.concat(jatos.studySessionData.inputData.basic_parameters.targetPathsUsed[phase_string])
 
+            let prompt_text = 'Which of the two '+ 
+                jatos.studySessionData.inputData.concepts[phase_string].concept_object +'s below is hiding this toy?'
+
             // //////////// PLUGIN INPUT //////////////////////////////
             var session_procedure = {
                 timeline: [
@@ -117,7 +120,7 @@
 
                         sort_area_width:          750,
                         sort_area_height:         700,
-                        prompt:                  'Which of the two pictures below are associated with this toy?',
+                        prompt:                  prompt_text,
                         choices:                 jatos.studySessionData.inputData.choices,
                         response_ends_trial:     true,
                         timer_after_response:    jatos.studySessionData.timer_after_response,
