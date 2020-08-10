@@ -87,6 +87,7 @@
         min_perf_check_perc: 50,
         perc_max_missed:     100,
         max_training_sess:   10,
+        min_time_instruct:   1,
       }
     } else {
       jatos.studySessionData.qc_criteria = {
@@ -95,7 +96,8 @@
         uniform_resp_perc:   100,
         min_perf_check_perc: 50,
         perc_max_missed:     40,
-        max_training_sess:   6,               
+        max_training_sess:   6,
+        min_time_instruct:   500,               
       }
     }
 
@@ -190,7 +192,9 @@
         get prompt_img_x_coords() {
             return this.sort_area_width/2 - this.prompt_target_width/2;
         },
-        prompt_img_y_coords: 80,            
+        prompt_img_y_coords: 80,       
+        pa_box_height:       350, // height for the area that displays an example PA, during debriefing pages, when asking if the ptp realized congruent mappings.
+        pa_box_width:        350,     
 
         // Feedback items
         fb_correct_img:   './img/feedback/green_tick.png',

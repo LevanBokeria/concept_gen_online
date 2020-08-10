@@ -44,14 +44,12 @@
       //   if(e.which == 13) { 
       //     e.preventDefault();       
       //     jatos.studySessionData.prolific_ID = $("#prolific_id").val();
-      //     var result_data = {
-      //       prolific_ID: jatos.studySessionData.prolific_ID,
-      //       window_width: window.innerWidth,
-      //       window_height: window.innerHeight,
-      //     }
-      //     jatos.addJatosIds(result_data);
+
+      //     jatos.studySessionData.window_width  = window.innerWidth
+      //     jatos.studySessionData.window_height = window.innerHeight          
+         
       //     jatos.submitResultData("[get_pid_comp_start---" + 
-      //       JSON.stringify(result_data) + 
+      //       JSON.stringify(jatos.studySessionData) + 
       //       "---get_pid_comp_end]", jatos.startNextComponent);
       //   }
       // });
@@ -60,11 +58,7 @@
       // Comment out the lines below to disable automatic prolicit ID assignment for debugging
       jatos.studySessionData.prolific_ID = "test";
 
-      var result_data = {
-        prolific_ID: jatos.studySessionData.prolific_ID,
-      }
-      jatos.addJatosIds(result_data);
-      jatos.submitResultData('[get_pid_comp_start---' + JSON.stringify(result_data) + 
+      jatos.submitResultData('[get_pid_comp_start---' + JSON.stringify(jatos.studySessionData) + 
       '---get_pid_comp_end]', jatos.startNextComponent);     
       // Comment out the lines ABOVE to disable automatic prolicit ID assignment for debugging
 

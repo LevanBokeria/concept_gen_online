@@ -14,7 +14,7 @@
 	<link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" type="text/css"></link>
 	
 	<style>	body {background-color: #b9c6c7; font-family: sans-serif; color: black;} </style>
-	<style> p {font-size: 125%; margin-top:5px; margin-right:100px; margin-bottom:20px; margin-left: 100px;} </style>
+	<style> p {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px;} </style>
 	<style> ul {font-size: 125%; margin-top:0px; margin-right:100px; margin-bottom:20px; margin-left: 100px; cursor:default;} </style>
 	<style> .instruct{width:100%; color: black; text-align:center; cursor:default;} </style>
 	<style> .header {position: fixed; left:0; top:0; width:100%; background-color:#8f8d8d; color: white; text-align: center;cursor:default;} </style>
@@ -78,8 +78,11 @@
 		let idxOfTarget_1 = jatos.studySessionData.inputData.basic_parameters.targetPoints.phase_1[0]
 		let idxOfTarget_2 = jatos.studySessionData.inputData.basic_parameters.targetPoints.phase_2[0]			
 		
-		let exemplar_1_width = 200 * 150 / jatos.studySessionData.inputData.basic_parameters.sort_area_width * 1.6
-		let exemplar_2_width = 600 * 150 / jatos.studySessionData.inputData.basic_parameters.sort_area_width * 1.6
+		let pa_box_width, pa_box_height 
+		pa_box_width = pa_box_height = jatos.studySessionData.inputData.basic_parameters.pa_box_width
+
+		let exemplar_1_width = 200 * (pa_box_width-90) / jatos.studySessionData.inputData.basic_parameters.sort_area_width * 1.6
+		let exemplar_2_width = 600 * (pa_box_width-90) / jatos.studySessionData.inputData.basic_parameters.sort_area_width * 1.6
 
 		// Wrapper flex element
 		let wrapperFlexEl  					   = document.createElement('div')
@@ -95,8 +98,8 @@
         paEl_1.style['align-items']      = 'center'
         paEl_1.id                        = 'example_pa1'
         paEl_1.style.border              = '1px solid'
-        paEl_1.style.height              = '200px'
-        paEl_1.style.width               = '200px'
+        paEl_1.style.height              = pa_box_height + 'px'
+        paEl_1.style.width               = pa_box_width  + 'px'
         paEl_1.style['background-color'] = 'white'
         paEl_1.style.margin              = '20px'
 
@@ -139,7 +142,8 @@
                 {prompt: 'During phase 2, did you realize that there is a relationship between the '+ concept_1.concept_object+'s ' + 
                 'that hide the toys in phase 1 and '+ concept_2.concept_object+'s that hide toys in phase 2? <br> ' + 
                 'For example, if a phase-1 '+ concept_1.concept_object+' with a certain '+ concept_1.dim1_name+':'+ concept_1.dim2_name+' ratio was hiding the '+targetName_1+' (as shown above), ' + 
-                'the phase-2 '+ concept_1.concept_object+' that was hiding the '+targetName_1+' also had a similar ratio of '+ concept_2.dim1_name+':'+ concept_2.dim2_name+'.' + 
+                'the phase-2 '+ concept_1.concept_object+' that was hiding the '+targetName_1+' also had a similar ratio of '+ concept_2.dim1_name+':'+ concept_2.dim2_name+'.' +
+				' The same was true for other birds hiding other toys.' + 
                 '<br> If you did realize this, did this help you in performing during phase 2? If so, how did it help you? Please describe.', rows: 3, columns: 100, placeholder: ''},            
             ]
         let realize_mapping_preamble = '<p style="font-size: 30px;"><b>Phase 1 / Phase 2 debriefing:</b></p>'
@@ -364,10 +368,10 @@
 			show_progress_bar = true
 
 		} else if (jatos.studySessionData.progress_state == 'finished_training'){		
-			timeline.push(training_finished_generic_page)
-			timeline.push(general_questions_page)
-			timeline.push(phase_1_questions_page)
-			timeline.push(phase_2_questions_page)
+			// timeline.push(training_finished_generic_page)
+			// timeline.push(general_questions_page)
+			// timeline.push(phase_1_questions_page)
+			// timeline.push(phase_2_questions_page)
 
 			// Realize mapping?
 			if (jatos.studySessionData.inputData.congruency){
