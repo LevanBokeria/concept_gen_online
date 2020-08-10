@@ -41,7 +41,7 @@
     // Auto respond: script will make random responses by itself.
     jatos.studySessionData.debug                    = 0;
     jatos.studySessionData.debug_n_trials           = 5;
-    jatos.studySessionData.show_correct             = 1;
+    jatos.studySessionData.show_correct             = false;
     jatos.studySessionData.pilot                    = 0;
     jatos.studySessionData.pilot_n_trials           = 10;
     jatos.studySessionData.auto_respond             = false;
@@ -164,9 +164,9 @@
     // Randomly choose the target indices. i.e. which pictures to use as targets
     // let chosenTarget_idxs = _.sampleSize(targetCoordsNames.pointNamesTarget.length, basic_parameters.nTargets)
     let chosenTarget_idxs = {
-      phase_1: [0,1,2], 
-      phase_2: [0,1,2],
-      phase_3: [0,1,2],      
+      phase_1: [3,4,5], 
+      phase_2: [3,4,5],
+      phase_3: [3,4,5],      
     }
 
     // The two variables below are needed for randomly generating target locations in the concept space

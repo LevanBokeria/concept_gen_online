@@ -45,7 +45,7 @@ function add_image_info_and_trial_session_idxs(array,session_idx,subjOrder,subjS
 
     for (iE = 0; iE < array.length; iE++){
         
-        if (jatos.studySessionData.show_correct == 1){
+        if (jatos.studySessionData.show_correct){
           array[iE].image = "./img/" + subjSpace + "/pair_imgs_correct_responses/" + subjOrder + "/" + array[iE].image;
         } else {
           array[iE].image = "./img/" + subjSpace + "/pair_imgs/" + subjOrder + "/" + array[iE].image;
