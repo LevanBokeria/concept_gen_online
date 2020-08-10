@@ -267,7 +267,7 @@
 			type: 'survey-text',
 			questions: [
 				{prompt: 'For phase 3, did you realize that the same '+jatos.studySessionData.inputData.concepts.phase_3.concept_object+'s were hiding the same toys as in phase 1?', rows: 3, columns: 100},
-				{prompt: 'Did your phase 1 knowledge of which '+jatos.studySessionData.inputData.concepts[phase_string].concept_object+' was hiding which toy help you in phase 3? <br> Or did you have to re-learn the associations for phase 3 from scratch?', rows: 3, columns: 100},				
+				{prompt: 'Did your phase 1 knowledge of which '+jatos.studySessionData.inputData.concepts.phase_1.concept_object+' was hiding which toy help you in phase 3? <br> Or did you have to re-learn the associations for phase 3 from scratch?', rows: 3, columns: 100},				
 			],
 			button_label: 'Continue',
 			preamble: '<p style="font-size: 30px;"><b>Phase 3 and phase 1 relationship:</b></p>',
@@ -287,7 +287,8 @@
 				'<p> Below you can see your scores from the last session: </p>' +
 				score_box_element.outerHTML + 
 				'<p> <br>Remember, you goal is to reach ' + 
-					jatos.studySessionData.training_criterion + '% on finding each of these toys!' +
+					jatos.studySessionData.training_criterion + '% on finding the '+
+					jatos.studySessionData.inputData.concepts[phase_string].concept_object+'s hiding each of these toys!' +
 				'<p><br> Please take a ' + jatos.studySessionData.short_break_duration + 
 				' second break and click the Next button or press the right-arrow button on the keyboard to start the next session. </p>'
 			],

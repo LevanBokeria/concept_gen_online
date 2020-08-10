@@ -157,10 +157,14 @@ const calcRunningPerf = function(data) {
     
     [curr_phase,phase_string,curr_session] = getPhaseAndSession()
     let curr_trials
+    let phase_string_for_running_perf = deepCopy(phase_string)
 
     if (jatos.componentPos == jatos.studySessionData.script_comp_pos.practice_trials){
         curr_trials = deepCopy(
             jatos.studySessionData.outputData[phase_string+'_practice_results'])
+
+        // For running_perf, record in the "practice" key
+        phase_string_for_running_perf = phase_string+'_practice'
     } else {
         curr_trials = deepCopy(
             jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1])
@@ -186,7 +190,7 @@ const calcRunningPerf = function(data) {
 
     // Record this avg value
     let idx_of_score_box_target = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed[phase_string].indexOf(curr_prompt_path)
-    jatos.studySessionData.inputData.running_perf[phase_string][curr_session-1][idx_of_score_box_target] = avg * 100
+    jatos.studySessionData.inputData.running_perf[phase_string_for_running_perf][curr_session-1][idx_of_score_box_target] = avg * 100
 };
 
 const getPhaseAndSession = function(){
@@ -202,9 +206,15 @@ const createScoreBox = function(){
     // What phase is this?
     let [curr_phase,phase_string,curr_session] = getPhaseAndSession()
     
+    let phase_string_for_running_perf = deepCopy(phase_string)
+
+    if (jatos.componentPos == jatos.studySessionData.script_comp_pos.practice_trials){ 
+        phase_string_for_running_perf = phase_string + '_practice'
+    }
+
     // Get the score box details locally
     let local_score_box_info = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed
-    let running_perf         = jatos.studySessionData.inputData.running_perf[phase_string][curr_session-1].map(item => Math.round(item))
+    let running_perf         = jatos.studySessionData.inputData.running_perf[phase_string_for_running_perf][curr_session-1].map(item => Math.round(item))
 
 
     let img_names = jatos.studySessionData.inputData.basic_parameters.targetNamesUsed[phase_string]
