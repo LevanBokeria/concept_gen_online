@@ -216,6 +216,12 @@
           // Record global pass failure
           jatos.studySessionData.qc_status.global_pass = false
           jatos.studySessionData.progress_state = 'qc_failed_practice'
+        }
+        
+        // So, did they fail here?
+        if (jatos.studySessionData.qc_status.global_pass == false){
+          jatos.submitResultData('Phase 1 practice QC FAILED', 
+            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.break))
         } else {
           // So didn't fail
           jatos.submitResultData('Phase 1 practice QC passed. Starting post practice instructions', 
