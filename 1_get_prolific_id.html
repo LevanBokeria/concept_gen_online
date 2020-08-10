@@ -51,26 +51,26 @@
       };
 
       // Lines below are for manual prolific ID entry:
-      // $("#prolific_id").keypress(function (e) {
-      //   if(e.which == 13) { 
-      //     e.preventDefault();       
-      //     jatos.studySessionData.prolific_ID = $("#prolific_id").val();
+      $("#prolific_id").keypress(function (e) {
+        if(e.which == 13) { 
+          e.preventDefault();       
+          jatos.studySessionData.prolific_ID = $("#prolific_id").val();
 
-      //     jatos.studySessionData.window_width  = window.innerWidth
-      //     jatos.studySessionData.window_height = window.innerHeight          
+          jatos.studySessionData.window_width  = window.innerWidth
+          jatos.studySessionData.window_height = window.innerHeight          
          
-      //     jatos.submitResultData("[get_pid_comp_start---" + 
-      //       JSON.stringify(jatos.studySessionData) + 
-      //       "---get_pid_comp_end]", jatos.startNextComponent);
-      //   }
-      // });
+          jatos.submitResultData("[get_pid_comp_start---" + 
+            JSON.stringify(jatos.studySessionData) + 
+            "---get_pid_comp_end]", jatos.startNextComponent);
+        }
+      });
       // Lines ABOVE are for manual prolific ID entry:
         
       // Comment out the lines below to disable automatic prolicit ID assignment for debugging
-      jatos.studySessionData.prolific_ID = "test";
+      // jatos.studySessionData.prolific_ID = "test";
 
-      jatos.submitResultData('[get_pid_comp_start---' + JSON.stringify(jatos.studySessionData) + 
-      '---get_pid_comp_end]', jatos.startNextComponent);     
+      // jatos.submitResultData('[get_pid_comp_start---' + JSON.stringify(jatos.studySessionData) + 
+      // '---get_pid_comp_end]', jatos.startNextComponent);     
       // Comment out the lines ABOVE to disable automatic prolicit ID assignment for debugging
 
       var w = window.innerWidth;

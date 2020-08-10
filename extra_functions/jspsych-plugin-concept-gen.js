@@ -92,12 +92,12 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
         default: undefined,
         description: 'Red X.'
       },    
-			audio_stimulus: {
-				type: jsPsych.plugins.parameterType.AUDIO,
-        pretty_name: 'Audio feedback',
-        default: undefined,
-				description: 'Correct and incorrect audio to be played.'
-      },                    
+			// audio_stimulus: {
+			// 	type: jsPsych.plugins.parameterType.AUDIO,
+      //   pretty_name: 'Audio feedback',
+      //   default: undefined,
+			// 	description: 'Correct and incorrect audio to be played.'
+      // },                    
       onscreen_idx: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'On screen indices',
