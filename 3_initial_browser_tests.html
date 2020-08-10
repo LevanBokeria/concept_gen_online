@@ -14,56 +14,62 @@
 </body>
 <script>
 
-    var mw = 750;
-    var mh = 700;
-
     jatos.onLoad(function() {
+
+      jatos.studySessionData.browser_device_test = {
+        curr_browser: [],
+        device_type:  [],
+        test_status:  [],
+        fail_reason:  [],
+        err_msg:      [],
+      }
 
       var curr_browser = getBrowser();
       // record browser status in jatos
-      jatos.studySessionData.curr_browser = curr_browser;
+      jatos.studySessionData.browser_device_test.curr_browser = curr_browser;
       
       var device_type = userAgentDetect();
-
-      /* Variables to hold information regarding the browser and speed, so a proper message can be displayed later */
-      var result_data = {};
-      
-      result_data.prolific_ID = jatos.studySessionData.prolific_ID;
-
-      jatos.addJatosIds(result_data);
+      jatos.studySessionData.browser_device_test.device_type = device_type
 
       /* If this is IE - checks the document mode, to verify it's 10 or later, otherwise displays an error message */
       var docMode = document.documentMode; 
       if (device_type=='smartphone' || device_type=='tablet') {
 
         $("#error_msg").html("<p><br><br><br>It looks like you&#39;re using a mobile device. This study cannot be done on a mobile phone or tablet.<br><br>Please mark the experiment as incomplete.</p>"); 
-        result_data.test_status = "fail";
-        result_data.fail_reason = "MOBILE";
-        result_json = JSON.stringify(result_data);
+        jatos.studySessionData.browser_device_test.test_status = "fail";
+        jatos.studySessionData.browser_device_test.fail_reason = "MOBILE";
+        
         var err_msg = 'MOBILE';
+        jatos.studySessionData.browser_device_test.err_msg = err_msg;
+
         if ("prolific_ID" in jatos.studySessionData) {
             err_msg = err_msg + '_' + jatos.studySessionData.prolific_ID;
         }
-        jatos.submitResultData(result_json, function() {return jatos.endStudyAjax(false,err_msg);});
+        jatos.submitResultData(JSON.stringify(jatos.studySessionData), function() {return jatos.endStudyAjax(false,err_msg);});
 
       } else if (curr_browser=='IE' && docMode < 10) {
 
         $("#error_msg").html("<p><br><br><br>It looks like you&#39;re using an old version of IE. This study can only be run on IE 10 and up.<br><br>Please mark the experiment as incomplete.</p>"); 
-        result_data.test_status = "fail";
-        result_data.fail_reason = "old_IE";
-        result_json = JSON.stringify(result_data);
+        jatos.studySessionData.browser_device_test.test_status = "fail";
+        jatos.studySessionData.browser_device_test.fail_reason = "old_IE";
+
         var err_msg = 'OLD_IE';
+        jatos.studySessionData.browser_device_test.err_msg = err_msg;
+
         if ("prolific_ID" in jatos.studySessionData) {
             err_msg = err_msg + '_' + jatos.studySessionData.prolific_ID;
         }
-        jatos.submitResultData(result_json, function() {return jatos.endStudyAjax(false,err_msg);});
+        jatos.submitResultData(JSON.stringify(jatos.studySessionData), function() {return jatos.endStudyAjax(false,err_msg);});
 
       } else {
         // $("#error_msg").html("<p> You've passed the test</p>");
 
-        jatos.submitResultData('Browser ok.', jatos.startNextComponent);
+        jatos.submitResultData(JSON.stringify(jatos.studySessionData), jatos.startNextComponent);
       }
     });
+
+
+  // ////////////////////////////////////// FUNCTIONS ///////////////////////////////////////////// 
 
   function getBrowser () {
     // Opera 8.0+
