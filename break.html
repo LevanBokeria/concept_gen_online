@@ -50,10 +50,11 @@
         spatialLayoutImgEl.style.padding = '20px'
 
         let spatial_questions = [
-                {prompt: 'At any point during the experiment, did you realize that the all the '+ iConcept.concept_object + 's you saw with different ' + 
+                {prompt: 'At any point during the experiment, did you realize that all the '+ iConcept.concept_object + 's you saw with different ' + 
                 'sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + ', <br>can be represented in a 2-dimensional space as depicted above? ' +
                 ' <br>Each '+ iConcept.concept_object + ' is a point in this space, and the value on each dimension specifies the sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + '.' + 
-                '<br> If you did realize this, did this help you in learning the '+ iConcept.concept_object + '-toy associations?', rows: 3, columns: 100, placeholder: ''},            
+				'<br> If you did realize this, did this help you in learning the '+ iConcept.concept_object + '-toy associations?' + 
+				'<br> If this question is unclear and does not explain well what is meant by this 2-dimensional representation, please indicate below.', rows: 3, columns: 100, placeholder: ''},            
             ]
         let spatial_preamble = '<p style="font-size: 30px;"><b>Phase '+ iPhase + ' debriefing about the '+ iConcept.concept_object + 's:</b></p>'
 
@@ -61,7 +62,6 @@
 		
 		return spatialLayoutPage
 	};
-
 
 	const createRealizeMappingDebriefer = function(){
 
@@ -156,12 +156,11 @@
 
 	//start timeline
 	jatos.onLoad(function() {
-
+		
 		// What phase is this?
 		let [curr_phase,phase_string,curr_session] = getPhaseAndSession()
 
 		let trial_dur_sec = jatos.studySessionData.timer_response_window / 1000
-		let curr_concept  = jatos.studySessionData.inputData.concepts[phase_string].concept_object
 
 		// Create the score box
 		let score_box_element = createScoreBox()
@@ -180,12 +179,27 @@
 					'<div class="instruct">'+
 						'<p> Unfortunately, your performance did not pass our quality checks. </p> ' + 
 						'<p> As we stated in the instructions, in such case we have to discontinue the study. </p>' +
-						'<p> You will still be paid for the sections of the experiment you performed. </p> ' + 
+						'<p> You will be paid for completing the study up to this stage. </p> ' + 
 						'<p> But first, please complete the debriefing survey by clicking the "Debrief" button.</p>' +
 					'</div>'
 					],
 			show_clickable_nav: true,
 			button_label_next: '<span style="color: black"d;> <strong> Debrief </stong></span>',
+			allow_backward: false,
+		};
+
+		var qc_failed_instructions_page = {
+
+			type: 'instructions',
+			pages : [				
+					'<div class="instruct">'+
+						'<p> Unfortunately, your performance did not pass our quality checks. </p> ' + 
+						'<p> As we stated in the instructions, in such case we have to discontinue the study. </p>' +
+						'<p> You will be paid for completing the study up to this stage. </p> ' + 
+					'</div>'
+					],
+			show_clickable_nav: true,
+			button_label_next: '<span style="color: black"d;> <strong> Continue </stong></span>',
 			allow_backward: false,
 		};
 
@@ -302,7 +316,11 @@
 
 		let show_progress_bar = false
 
-		if (jatos.studySessionData.progress_state == 'advance_phase') {
+		if (jatos.studySessionData.progress_state == 'starting'){
+
+			jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.post_practice_instructions)
+
+		} else if (jatos.studySessionData.progress_state == 'advance_phase') {
 			timeline.push(long_break_page)
 
 			jatos.studySessionData.phase_counter ++
@@ -314,6 +332,12 @@
 			jatos.studySessionData.session_counter[phase_string] ++			
 
 			component_to_start = jatos.studySessionData.script_comp_pos.phase_pa
+
+		} else if (jatos.studySessionData.progress_state == 'qc_failed_instructions'){
+			timeline.push(qc_failed_instructions_page)
+			timeline.push(debriefing_finished_generic_page)
+
+			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
 
 		} else if (jatos.studySessionData.progress_state == 'qc_failed_phase_1'){			
 			timeline.push(qc_failed_generic_page)

@@ -23,8 +23,65 @@
 
 <script>
 
-  // Define a function to do the checks
-  const session_qc_check = function(last_session_data){
+  jatos.onLoad(function() {
+
+    // What phase is this?
+    let [curr_phase,phase_string,curr_session] = getPhaseAndSession() 
+    
+    // //////////////////////////////////// FUNCTIONS /////////////////////////////////////////////
+
+    // Simulate data to make sure our scripts work correctly
+    const simulate_data = function(last_session_data,conditionToSimulate){
+      
+      if (!jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
+        // rt_min_speed and rt_min_perc:
+        if (conditionToSimulate == 'rt'){
+
+          // get the criteria locally 
+          let rt_min_speed = jatos.studySessionData.qc_criteria.rt_min_speed
+          let rt_min_perc  = jatos.studySessionData.qc_criteria.rt_min_perc       
+
+          // How many to change?
+          let nChange = Math.round(last_session_data.length * rt_min_perc / 100) + 1
+
+          for (iTrial=0; iTrial<nChange; iTrial++){
+            last_session_data[iTrial].rt = rt_min_speed - 5
+          }
+
+        } else if (conditionToSimulate == 'uniform_resp_perc'){
+
+          // Get criteria locally
+          uniform_resp_perc = jatos.studySessionData.qc_criteria.uniform_resp_perc
+
+          let nChange = Math.round(last_session_data.length * uniform_resp_perc / 100) + 1
+
+          for (iTrial=0; iTrial<nChange; iTrial++){
+            last_session_data[iTrial].key_press = '49'
+          }
+
+          for (iTrial=nChange; iTrial<last_session_data.length; iTrial++){
+            last_session_data[iTrial].key_press = '50'
+          }
+
+
+        } else if (conditionToSimulate == 'perc_max_missed'){
+        
+          // get the criteria locally 
+          let perc_max_missed = jatos.studySessionData.qc_criteria.perc_max_missed
+
+          // How many to change?
+          let nChange = Math.round(last_session_data.length * perc_max_missed / 100) + 1
+
+          for (iTrial=0; iTrial<nChange; iTrial++){
+            last_session_data[iTrial].rt = null
+          }
+        }
+      }
+      return last_session_data
+    };
+
+    // Define a function to do the checks
+    const session_qc_check = function(last_session_data){
       
       [curr_phase,phase_string,curr_session] = getPhaseAndSession()
 
@@ -114,16 +171,16 @@
 
   }; // end of the function session_qc_check
 
-  jatos.onLoad(function() {
-
-    // What phase is this?
-    let [curr_phase,phase_string,curr_session] = getPhaseAndSession() 
-    
     // ////////////////////////////////////////////// START CHECKS //////////////////////////////////////////////////////////////
 
     // Get the latest data
     let last_session_data = jatos.studySessionData.last_session_data
 
+    // If we are simulating data:
+    if (jatos.studySessionData.simulate_data){
+      last_session_data = simulate_data(last_session_data,jatos.studySessionData.simulate_condition)
+    }
+    
     if (curr_phase == 1){
       
       // Are we checking practice trials?
@@ -162,7 +219,7 @@
         } else {
           // So didn't fail
           jatos.submitResultData('Phase 1 practice QC passed. Starting post practice instructions', 
-            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.post_practice_instructions))
+            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.break))
         }
 
       } else {
