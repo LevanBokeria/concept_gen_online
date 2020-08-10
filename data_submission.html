@@ -25,14 +25,12 @@
 
             debugger
             // What phase is this?
-            let curr_phase   = jatos.studySessionData.phase_counter
-            let phase_string = 'phase_'+curr_phase
-            let curr_session = jatos.studySessionData.session_counter[phase_string]
+            [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+
+            var redirect_fn = function () {return window.location.replace(redirect_url);};
 
             // end study function
             var end_study_fn = function() {
-
-                var redirect_fn = function () {return window.location.replace(redirect_url);};
 
                 // If failed at the practice trials
                 if (jatos.studySessionData.qc_status.practice_pass == false){

@@ -67,7 +67,7 @@
       }
 
       // 4. If session >= 2, check better than chance
-      if (curr_session >= 2){
+      if (curr_session >= jatos.studySessionData.qc_criteria.min_perf_check_ses){
 
           let n_targets_above_chance = 
           jatos.studySessionData.inputData.running_perf.filter(item => item > 
