@@ -424,7 +424,7 @@
 
 				on_finish: function() {
 
-					// If its a break between sessions or phases, record in the breaks_results object
+					// If its a transition between sessions or phases, record in the transitions_results object
 					if (jatos.studySessionData.progress_state == 'advance_phase' || 
 						jatos.studySessionData.progress_state == 'advance_session'){
 						let idx = jatos.studySessionData.outputData[phase_string + '_transitions_results'].length
