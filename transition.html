@@ -190,7 +190,8 @@
 			allow_backward: false,
 		};
 
-		var qc_failed_instructions_page = {
+		// In case they fail at the instructions or the practice trials
+		var qc_failed_instr_practice_page = {
 
 			type: 'instructions',
 			pages : [				
@@ -336,8 +337,9 @@
 
 			component_to_start = jatos.studySessionData.script_comp_pos.phase_pa
 
-		} else if (jatos.studySessionData.progress_state == 'qc_failed_instructions'){
-			timeline.push(qc_failed_instructions_page)
+		} else if (jatos.studySessionData.progress_state == 'qc_failed_instructions' ||
+				   jatos.studySessionData.progress_state == 'qc_failed_practice'){
+			timeline.push(qc_failed_instr_practice_page)
 			timeline.push(debriefing_finished_generic_page)
 
 			component_to_start = jatos.studySessionData.script_comp_pos.data_submission
@@ -425,17 +427,17 @@
 					// If its a break between sessions or phases, record in the breaks_results object
 					if (jatos.studySessionData.progress_state == 'advance_phase' || 
 						jatos.studySessionData.progress_state == 'advance_session'){
-						let idx = jatos.studySessionData.outputData[phase_string + '_breaks_results'].length
-						jatos.studySessionData.outputData[phase_string + '_breaks_results'][idx] = jsPsych.data.get().values();	
+						let idx = jatos.studySessionData.outputData[phase_string + '_transitions_results'].length
+						jatos.studySessionData.outputData[phase_string + '_transitions_results'][idx] = jsPsych.data.get().values();	
 					// If its debrief, record in the debrief object
 					} else {
 						let idx = jatos.studySessionData.outputData[phase_string + '_debrief_results'].length
 						jatos.studySessionData.outputData[phase_string + '_debrief_results'][idx] = jsPsych.data.get().values();	
 					}
 
-					jatos.submitResultData("[break_start---" + 
+					jatos.submitResultData("[transition_start---" + 
 					JSON.stringify(jatos.studySessionData) + 
-					"---break_end]", function(){
+					"---transition_end]", function(){
 						jatos.startComponentByPos(component_to_start);
 					});
 				}

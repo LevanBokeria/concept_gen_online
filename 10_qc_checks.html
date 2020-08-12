@@ -221,11 +221,11 @@
         // So, did they fail here?
         if (jatos.studySessionData.qc_status.global_pass == false){
           jatos.submitResultData('Phase 1 practice QC FAILED', 
-            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.break))
+            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.transition))
         } else {
           // So didn't fail
           jatos.submitResultData('Phase 1 practice QC passed. Starting post practice instructions', 
-            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.break))
+            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.transition))
         }
 
       } else {
@@ -236,9 +236,9 @@
         // This function will check all the qc criteria, and determine what to do next
         session_qc_check(last_session_data)
 
-        // Start the break script
+        // Start the transition script
         jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC.`, 
-          jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.break))
+          jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.transition))
 
       } // Checking the real sessions section
 
@@ -249,9 +249,9 @@
       // This function will check all the qc criteria, and determine what to do next
       session_qc_check(last_session_data)
 
-      // Start the break script
-      jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC passed. Giving a break`, 
-        jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.break))
+      // Start the transition script
+      jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC passed. Giving a transition`, 
+        jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.transition))
 
     } // phase bracket
 

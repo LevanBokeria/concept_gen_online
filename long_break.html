@@ -78,12 +78,12 @@ jatos.onLoad(function() {
 
 		result_data.component_data = jsPsych.data.get().values();
 
-        jatos.studySessionData.allData.breaks_results[jatos.studySessionData.allData.breaks_results.length] = result_data;
+        jatos.studySessionData.allData.transitions_results[jatos.studySessionData.allData.transitions_results.length] = result_data;
 
 
-        jatos.submitResultData("[long_break_start---" + 
+        jatos.submitResultData("[long_transition_start---" + 
 		JSON.stringify(jatos.studySessionData) + 
-		"---long_break_end]", function(){
+		"---long_transition_end]", function(){
 			jatos.startComponentByPos(component_to_start);
 		});
 		}
