@@ -297,7 +297,7 @@ const deepCopy = function(object){
     return JSON.parse(JSON.stringify(object))
 };
 
-const createImageSurveyTrial = function(preamble,imageElementArray, questions){
+const createImageSurveyTrial = function(preamble,imageElementArray, questions,tag){
     
     let html = ''
 
@@ -325,7 +325,8 @@ const createImageSurveyTrial = function(preamble,imageElementArray, questions){
     var spatialLayoutTrial = {
         type: 'survey-html-form',
         preamble: preamble,
-        html: html
+        html: html,
+        data: tag,
     };        
     return spatialLayoutTrial
 };

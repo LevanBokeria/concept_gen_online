@@ -39,6 +39,7 @@
 					],
 				button_label: 'Continue',
 				preamble: '<p style="font-size: 30px;"><b>Phase '+iPhase+' debriefing about the '+ iConcept.concept_object +'s with '+iConcept.dim1_name+' and '+iConcept.dim2_name +' :</b></p>',
+				data: {test_part: 'phase_' + iPhase + '_debriefer'},
 			};    
 			
 			return phase_debriefer
@@ -76,7 +77,10 @@
 				]
 			let spatial_preamble = '<p style="font-size: 30px;"><b>Phase '+ iPhase + ' debriefing about the '+ iConcept.concept_object + 's:</b></p>'
 
-			let spatialLayoutPage = createImageSurveyTrial(spatial_preamble,[spatialLayoutImgEl],spatial_questions)
+			// A tag that will be added to the trial, will let us see in the results what this page was for
+			let tag = {test_part: 'phase_' + iPhase + '_spatial_layout'}
+			
+			let spatialLayoutPage = createImageSurveyTrial(spatial_preamble,[spatialLayoutImgEl],spatial_questions,tag)
 			
 			// Which imgs to preload?
 			imgs_to_preload.push(spatialLayoutImgEl.src)
@@ -167,8 +171,11 @@
 					'<br> If you did realize this, did this help you in performing during phase 2? If so, how did it help you? Please describe.', rows: 3, columns: 100, placeholder: ''},            
 				]
 			let realize_mapping_preamble = '<p style="font-size: 30px;"><b>Phase 1 / Phase 2 debriefing:</b></p>'
+			
+			// A tag that will be added to the trial, will let us see in the results what this page was for
+			let tag = {test_part: 'realize_mapping_page'}
 
-			let realize_mapping_page = createImageSurveyTrial(realize_mapping_preamble,[wrapperFlexEl],realize_mapping_questions)
+			let realize_mapping_page = createImageSurveyTrial(realize_mapping_preamble,[wrapperFlexEl],realize_mapping_questions,tag)
 			
 			// Which images to preload? Add the exemplar and toy images
 			imgs_to_preload.push(exemplarEl_1.src, exemplarEl_2.src, toyElement_1.src, toyElement_2.src)
@@ -210,6 +217,7 @@
 			show_clickable_nav: true,
 			button_label_next: '<span style="color: black"d;> <strong> Debrief </stong></span>',
 			allow_backward: false,
+			data: {test_part: 'qc_failed_generic_page'},
 		};
 
 		// In case they fail at the instructions or the practice trials
@@ -226,6 +234,7 @@
 			show_clickable_nav: true,
 			button_label_next: '<span style="color: black"d;> <strong> Continue </stong></span>',
 			allow_backward: false,
+			data: {test_part: 'qc_failed_instr_practice_page'},
 		};
 
 		// Generic message saying thank you for training please answer debrief
@@ -244,6 +253,7 @@
 			show_clickable_nav: true,
 			button_label_next: '<span style="color: black"d;> <strong> Debrief </stong></span>',
 			allow_backward: false,
+			data: {test_part: 'training_finished_generic_page'},
 		};		
 
 		// Generic message saying thank you for training please answer debrief
@@ -258,6 +268,7 @@
 					],
 			show_clickable_nav: true,
 			button_label_next: '<span style="color: black"d;> <strong> Finish Experiment </stong></span>',
+			data: {test_part: 'debriefing_finished_generic_page'},
 		};				
 
 		// Generic questions to ask regardless of where the ptp failed, or if the ptp succeeded
@@ -272,6 +283,7 @@
                 ],
 			button_label: 'Continue',
 			preamble: '<p style="font-size: 30px;"><b>Please answer the following questions:</b></p>',
+			data: {test_part: 'general_questions_page'},
 		};		
 		
 		// Questions to ask for any specific phase
@@ -279,7 +291,7 @@
 			var phase_1_questions_page = createPhaseDebriefer(1,jatos.studySessionData.inputData.concepts.phase_1)
 			// Phase 2
 			var phase_2_questions_page = createPhaseDebriefer(2,jatos.studySessionData.inputData.concepts.phase_2)
-debugger
+
 		// Element asking about the spatial layout.
 			// Phase 1
 			var phase_1_spatial_page = createSpatialLayoutDebriefer(1,jatos.studySessionData.inputData.concepts.phase_1)
@@ -296,7 +308,7 @@ debugger
 			],
 			button_label: 'Continue',
 			preamble: '<p style="font-size: 30px;"><b>Phase 3 and phase 1 relationship:</b></p>',
-
+			data: {test_part: 'phase_3_was_1_page'},
 		};
 
 
@@ -319,8 +331,8 @@ debugger
 			],
 			show_clickable_nav: true,
 			button_label_next: "<span style='color: blue';> <strong> Next </stong></span>",
-			n_seconds: jatos.studySessionData.short_break_duration
-
+			n_seconds: jatos.studySessionData.short_break_duration,
+			data: {test_part: 'short_break_page'},
 		};
 
 		// For long break
@@ -337,8 +349,8 @@ debugger
 			],
 			show_clickable_nav: true,
 			button_label_next: "<span style='color: blue';> <strong> Next </stong></span>",
-			n_seconds: jatos.studySessionData.long_break_duration
-
+			n_seconds: jatos.studySessionData.long_break_duration,
+			data: {test_part: 'long_break_page'},
 		};
 
 		let show_progress_bar = false
@@ -438,7 +450,7 @@ debugger
 
 			show_progress_bar = true
 		} // checking progress state		
-
+		
 		if (!jatos.studySessionData.progress_state.includes('starting')){
 			jsPsych.init({
 
@@ -447,7 +459,7 @@ debugger
 				preload_images: imgs_to_preload,
 
 				on_finish: function() {
-
+					
 					// If its a transition between sessions or phases, record in the transitions_results object
 					if (jatos.studySessionData.progress_state == 'advance_phase' || 
 						jatos.studySessionData.progress_state == 'advance_session'){
