@@ -39,20 +39,20 @@
     // A conditional that determines whether we are debugging or not. If debugging, fewer trials will be done.
     // The pilot flag is for when asking labmates to test the paradigm, it just reduces the number of trials they'll have to do per sesiosn.
     // Auto respond: script will make random responses by itself.
-    jatos.studySessionData.debug                    = 0;
+    jatos.studySessionData.debug                    = true;
     jatos.studySessionData.debug_n_trials           = 10;
     jatos.studySessionData.show_correct             = false;
-    jatos.studySessionData.pilot                    = 0;
+    jatos.studySessionData.pilot                    = false;
     jatos.studySessionData.pilot_n_trials           = 10;
-    jatos.studySessionData.auto_respond             = false;
+    jatos.studySessionData.auto_respond             = true;
     jatos.studySessionData.simulate_data            = false; // Simulate data to intentionally fail the QC?
     jatos.studySessionData.simulate_condition       = 'perc_max_missed' // what QC condition should we intentionally fail 
     jatos.studySessionData.perf_check_over_n_trials = 15; // Over how many previous trials is the performance calculated?
     jatos.studySessionData.random_target_loc        = false
-    jatos.studySessionData.use_batch_data           = true
+    jatos.studySessionData.use_batch_data           = false
 
     // Duration of trials, breaks, ITI, etc
-    if (jatos.studySessionData.debug == 1 || jatos.studySessionData.pilot == 1) {
+    if (jatos.studySessionData.debug || jatos.studySessionData.pilot) {
       jatos.studySessionData.short_break_duration = 2; // seconds
       jatos.studySessionData.long_break_duration  = 2; // seconds
 
@@ -209,9 +209,9 @@
     } else {
 
       // So not reading the batch. Set manually
-      var congruency = false
-      var phase_1_concept = 'neck_legs_space'
-      var phase_2_concept = 'beak_tail_space'      
+      var congruency = true
+      var phase_2_concept = 'neck_legs_space'
+      var phase_1_concept = 'beak_tail_space'      
     }
 
     if (congruency){
@@ -337,7 +337,7 @@
     }
     
     // If debug, then shorten these arrays
-    if (jatos.studySessionData.debug == 1){
+    if (jatos.studySessionData.debug){
       baseTrialArray.phase_1 = deepCopy(shuffle(baseTrialArray.phase_1).slice(0,jatos.studySessionData.debug_n_trials))
       baseTrialArray.phase_2 = deepCopy(shuffle(baseTrialArray.phase_2).slice(0,jatos.studySessionData.debug_n_trials))
       baseTrialArray.phase_3 = deepCopy(shuffle(baseTrialArray.phase_3).slice(0,jatos.studySessionData.debug_n_trials))            
@@ -346,6 +346,7 @@
     // Define the neck_legs_space
     let neck_legs_space = new ConceptCreator('neck_legs_space','bird',
         'neck','legs',
+        200, // if displaying individual ones, whats the width
         undefined,350,10,10,
         [170,525],[350,400], // onscreen idx coords
         [90,560],[350,400], // fb_imgs coords
@@ -354,6 +355,7 @@
     // Define the beak_tail_space            
     let beak_tail_space = new ConceptCreator('beak_tail_space','bird',
         'beak','tail',
+        600, // if displaying individual ones, whats the width
         undefined,650,10,10,
         [220,310],[220,400], // onscreen idx coords6
         [90,180],[250,450], // fb_imgs coords
@@ -377,7 +379,7 @@
     }
 
     imgs_to_preload.base_images = [basic_parameters.fb_correct_img, basic_parameters.fb_incorrect_img]
-    debugger
+    
     // Record all these variables in JATOS
     jatos.studySessionData.inputData = {
       targetCoordsNames: targetCoordsNames,
@@ -406,7 +408,8 @@
 
   // Create a constructor function for creating an object with info for each space
   let ConceptCreator = function(concept_space,concept_object,dim1_name,dim2_name,
-      ex_pairs_img_height,ex_pairs_img_width,ex_pairs_x_coord,ex_pairs_y_coord,
+      single_ex_img_width, ex_pairs_img_height,ex_pairs_img_width,
+      ex_pairs_x_coord,ex_pairs_y_coord,
       onscreen_idx_x_coords,onscreen_idx_y_coords,
       fb_imgs_x_coords,fb_imgs_y_coords,debrief_flex_dir){
 
@@ -414,6 +417,7 @@
           this.concept_object         = concept_object,
           this.dim1_name              = dim1_name,
           this.dim2_name              = dim2_name,
+          this.single_ex_img_width    = single_ex_img_width,
           this.ex_pairs_img_height    = ex_pairs_img_height,
           this.ex_pairs_img_width     = ex_pairs_img_width,
           this.ex_pairs_x_coord       = ex_pairs_x_coord,

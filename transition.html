@@ -24,141 +24,147 @@
   <body>
   <script>
 
-	// /////////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////
-	const createPhaseDebriefer = function(iPhase,iConcept){
-        let phase_debriefer = {
-            type: 'survey-text',
-			questions: [
-                {prompt: 'How did you learn which ' + iConcept.concept_object + ' was hiding which toy? Did you have any strategy for memorizing?', rows: 3, columns: 100},
-                {prompt: 'Did you make any drawings or take any screenshots or pictures ' + 
-                'to help remember which '+iConcept.concept_object+' was hiding which toy? <br>(you will not be penalised if you did, we just need to know so we can correctly analyze the data)', rows: 3, columns: 100},
-                ],
-			button_label: 'Continue',
-			preamble: '<p style="font-size: 30px;"><b>Phase '+iPhase+' debriefing about the '+ iConcept.concept_object +'s with '+iConcept.dim1_name+' and '+iConcept.dim2_name +' :</b></p>',
-		};    
-		
-		return phase_debriefer
-	};
-
-	const createSpatialLayoutDebriefer = function(iPhase,iConcept){
-
-        let spatialLayoutImgEl           = document.createElement('img')
-        spatialLayoutImgEl.src           = './img/' + iConcept.concept_space + '/2d_space.png'
-        spatialLayoutImgEl.id            = '2d_layout'
-        spatialLayoutImgEl.style.height  = '300px'
-        spatialLayoutImgEl.style.width   = '300px'
-        spatialLayoutImgEl.style.padding = '20px'
-
-        let spatial_questions = [
-                {prompt: 'At any point during the experiment, did you realize that all the '+ iConcept.concept_object + 's you saw with different ' + 
-                'sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + ', <br>can be represented in a 2-dimensional space as depicted above? ' +
-				' <br>Each '+ iConcept.concept_object + ' is a point in this space, and the value on each dimension specifies the sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + '.' + 
-				'<br> So, each toy hidden by a particular ' + iConcept.concept_object + ' is "located" in this 2-dimensional space at the point corresponding to that ' + iConcept.concept_object + '.' +
-				'<br> If you did realize this, did this help you in learning the '+ iConcept.concept_object + '-toy associations?' + 
-				'<br> If this question is unclear and does not explain well what is meant by this 2-dimensional representation, please indicate below.', rows: 3, columns: 100, placeholder: ''},            
-            ]
-        let spatial_preamble = '<p style="font-size: 30px;"><b>Phase '+ iPhase + ' debriefing about the '+ iConcept.concept_object + 's:</b></p>'
-
-		let spatialLayoutPage = createImageSurveyTrial(spatial_preamble,[spatialLayoutImgEl],spatial_questions)
-		
-		return spatialLayoutPage
-	};
-
-	const createRealizeMappingDebriefer = function(){
-
-		let concept_1 = jatos.studySessionData.inputData.concepts.phase_1
-		let concept_2 = jatos.studySessionData.inputData.concepts.phase_2	
-
-		// Which PA to use?
-		let targetPath_1 = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed.phase_1[0]
-		let targetPath_2 = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed.phase_2[0]
-		
-		let targetName_1 = jatos.studySessionData.inputData.basic_parameters.targetNamesUsed.phase_1[0]		
-
-		let idxOfTarget_1 = jatos.studySessionData.inputData.basic_parameters.targetPoints.phase_1[0]
-		let idxOfTarget_2 = jatos.studySessionData.inputData.basic_parameters.targetPoints.phase_2[0]			
-		
-		let pa_box_width, pa_box_height 
-		pa_box_width = pa_box_height = jatos.studySessionData.inputData.basic_parameters.pa_box_width
-
-		let exemplar_1_width = 200 * (pa_box_width-90) / jatos.studySessionData.inputData.basic_parameters.sort_area_width * 1.6
-		let exemplar_2_width = 600 * (pa_box_width-90) / jatos.studySessionData.inputData.basic_parameters.sort_area_width * 1.6
-
-		// Wrapper flex element
-		let wrapperFlexEl  					   = document.createElement('div')
-        wrapperFlexEl.style.display            = 'flex'
-        wrapperFlexEl.style['justify-content'] = 'center'
-        wrapperFlexEl.style['align-items']     = 'center'        
-
-		// Image showing an example PA from phase 1
-        let paEl_1                       = document.createElement('div')
-		paEl_1.style.display             = 'flex'
-		paEl_1.style['flex-direction']   = concept_1.debrief_flex_dir
-        paEl_1.style['justify-content']  = 'center'
-        paEl_1.style['align-items']      = 'center'
-        paEl_1.id                        = 'example_pa1'
-        paEl_1.style.border              = '1px solid'
-        paEl_1.style.height              = pa_box_height + 'px'
-        paEl_1.style.width               = pa_box_width  + 'px'
-        paEl_1.style['background-color'] = 'white'
-        paEl_1.style.margin              = '20px'
-
-		// Image showing an example PA from phase 2
-		paEl_2 = paEl_1.cloneNode(true)
-		paEl_2.id = 'example_pa2'
-		paEl_2.style['flex-direction']   = concept_2.debrief_flex_dir
-
-		// Make the concept exemplar elements
-        let exemplarEl_1          = document.createElement('img')
-        exemplarEl_1.id           = 'exemplarEl_1'
-        exemplarEl_1.src          = './img/' + jatos.studySessionData.inputData.concepts.phase_1.concept_space + '/individual_imgs/stim_'+idxOfTarget_1+'.png'
-        exemplarEl_1.style.width = exemplar_1_width+'px'   
-
-		exemplarEl_2              = exemplarEl_1.cloneNode(true)
-		exemplarEl_2.id           = 'exemplarEl_2'
-		exemplarEl_2.src          = './img/' + jatos.studySessionData.inputData.concepts.phase_2.concept_space + '/individual_imgs/stim_'+idxOfTarget_1+'.png'
-		exemplarEl_2.style.width = exemplar_2_width+'px'   
-
-		// Make the toys
-        let toyElement_1          = document.createElement('img')
-        toyElement_1.id           = 'toy_1'
-        toyElement_1.src          = targetPath_1
-        toyElement_1.style.height = '50px'
-
-		toyElement_2     = toyElement_1.cloneNode(true)
-		toyElement_2.id  = 'toy_2'
-		toyElement_2.src = targetPath_2
-
-		// Append all the elements to the flex box
-		paEl_1.appendChild(exemplarEl_1)
-		paEl_1.appendChild(toyElement_1)
-		paEl_2.appendChild(exemplarEl_2)
-		paEl_2.appendChild(toyElement_2)	
-
-		wrapperFlexEl.appendChild(paEl_1)
-		wrapperFlexEl.appendChild(paEl_2)						
-
-        let realize_mapping_questions = [
-                {prompt: 'During phase 2, did you realize that there is a relationship between the '+ concept_1.concept_object+'s ' + 
-                'that hide the toys in phase 1 and '+ concept_2.concept_object+'s that hide toys in phase 2? <br> ' + 
-                'For example, if a phase-1 '+ concept_1.concept_object+' with a certain '+ concept_1.dim1_name+':'+ concept_1.dim2_name+' ratio was hiding the '+targetName_1+' (as shown above), ' + 
-                'the phase-2 '+ concept_1.concept_object+' that was hiding the '+targetName_1+' also had a similar ratio of '+ concept_2.dim1_name+':'+ concept_2.dim2_name+'.' +
-				' The same was true for other birds hiding other toys.' + 
-                '<br> If you did realize this, did this help you in performing during phase 2? If so, how did it help you? Please describe.', rows: 3, columns: 100, placeholder: ''},            
-            ]
-        let realize_mapping_preamble = '<p style="font-size: 30px;"><b>Phase 1 / Phase 2 debriefing:</b></p>'
-
-        let realize_mapping_page = createImageSurveyTrial(realize_mapping_preamble,[wrapperFlexEl],realize_mapping_questions)
-		
-		return realize_mapping_page
-	};
-
-	////////////////////////////////////////////////////////////////////////////////////////
-
 	//start timeline
 	jatos.onLoad(function() {
 		
+		// /////////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////
+		const createPhaseDebriefer = function(iPhase,iConcept){
+			let phase_debriefer = {
+				type: 'survey-text',
+				questions: [
+					{prompt: 'How did you learn which ' + iConcept.concept_object + ' was hiding which toy? Did you have any strategy for memorizing?', rows: 3, columns: 100},
+					{prompt: 'Did you make any drawings or take any screenshots or pictures ' + 
+					'to help remember which '+iConcept.concept_object+' was hiding which toy? <br>(you will not be penalised if you did, we just need to know so we can correctly analyze the data)', rows: 3, columns: 100},
+					],
+				button_label: 'Continue',
+				preamble: '<p style="font-size: 30px;"><b>Phase '+iPhase+' debriefing about the '+ iConcept.concept_object +'s with '+iConcept.dim1_name+' and '+iConcept.dim2_name +' :</b></p>',
+			};    
+			
+			return phase_debriefer
+		};
+
+		const createSpatialLayoutDebriefer = function(iPhase,iConcept){
+
+			let spatialLayoutImgEl           = document.createElement('img')
+			spatialLayoutImgEl.src           = './img/' + iConcept.concept_space + '/2d_space.png'
+			spatialLayoutImgEl.id            = '2d_layout'
+			spatialLayoutImgEl.style.height  = '300px'
+			spatialLayoutImgEl.style.width   = '300px'
+			spatialLayoutImgEl.style.padding = '20px'
+
+			let spatial_questions = [
+					{prompt: 'At any point during the experiment, did you realize that all the '+ iConcept.concept_object + 's you saw with different ' + 
+					'sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + ', <br>can be represented in a 2-dimensional space as depicted above? ' +
+					' <br>Each '+ iConcept.concept_object + ' is a point in this space, and the value on each dimension specifies the sizes of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + '.' + 
+					'<br> So, each toy hidden by a particular ' + iConcept.concept_object + ' is "located" in this 2-dimensional space at the point corresponding to that ' + iConcept.concept_object + '.' +
+					'<br> If you did realize this, did this help you in learning the '+ iConcept.concept_object + '-toy associations?' + 
+					'<br> If this question is unclear and does not explain well what is meant by this 2-dimensional representation, please indicate below.', rows: 3, columns: 100, placeholder: ''},            
+				]
+			let spatial_preamble = '<p style="font-size: 30px;"><b>Phase '+ iPhase + ' debriefing about the '+ iConcept.concept_object + 's:</b></p>'
+
+			let spatialLayoutPage = createImageSurveyTrial(spatial_preamble,[spatialLayoutImgEl],spatial_questions)
+			
+			// Which imgs to preload?
+			imgs_to_preload.push(spatialLayoutImgEl.src)
+
+			return spatialLayoutPage
+		};
+
+		const createRealizeMappingDebriefer = function(){
+
+			let concept_1 = jatos.studySessionData.inputData.concepts.phase_1
+			let concept_2 = jatos.studySessionData.inputData.concepts.phase_2	
+
+			// Which PA to use?
+			let targetPath_1 = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed.phase_1[0]
+			let targetPath_2 = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed.phase_2[0]
+			
+			let targetName_1 = jatos.studySessionData.inputData.basic_parameters.targetNamesUsed.phase_1[0]		
+
+			let idxOfTarget_1 = jatos.studySessionData.inputData.basic_parameters.targetPoints.phase_1[0]
+			let idxOfTarget_2 = jatos.studySessionData.inputData.basic_parameters.targetPoints.phase_2[0]			
+			
+			let pa_box_width, pa_box_height 
+			pa_box_width = pa_box_height = jatos.studySessionData.inputData.basic_parameters.pa_box_width
+
+			let exemplar_1_width = jatos.studySessionData.inputData.concepts.phase_1.single_ex_img_width * (pa_box_width-90) / jatos.studySessionData.inputData.basic_parameters.sort_area_width * 1.6
+			let exemplar_2_width = jatos.studySessionData.inputData.concepts.phase_2.single_ex_img_width * (pa_box_width-90) / jatos.studySessionData.inputData.basic_parameters.sort_area_width * 1.6
+
+			// Wrapper flex element
+			let wrapperFlexEl  					   = document.createElement('div')
+			wrapperFlexEl.style.display            = 'flex'
+			wrapperFlexEl.style['justify-content'] = 'center'
+			wrapperFlexEl.style['align-items']     = 'center'        
+
+			// Image showing an example PA from phase 1
+			let paEl_1                       = document.createElement('div')
+			paEl_1.style.display             = 'flex'
+			paEl_1.style['flex-direction']   = concept_1.debrief_flex_dir
+			paEl_1.style['justify-content']  = 'center'
+			paEl_1.style['align-items']      = 'center'
+			paEl_1.id                        = 'example_pa1'
+			paEl_1.style.border              = '1px solid'
+			paEl_1.style.height              = pa_box_height + 'px'
+			paEl_1.style.width               = pa_box_width  + 'px'
+			paEl_1.style['background-color'] = 'white'
+			paEl_1.style.margin              = '20px'
+
+			// Image showing an example PA from phase 2
+			paEl_2 = paEl_1.cloneNode(true)
+			paEl_2.id = 'example_pa2'
+			paEl_2.style['flex-direction']   = concept_2.debrief_flex_dir
+
+			// Make the concept exemplar elements
+			let exemplarEl_1          = document.createElement('img')
+			exemplarEl_1.id           = 'exemplarEl_1'
+			exemplarEl_1.src          = './img/' + jatos.studySessionData.inputData.concepts.phase_1.concept_space + '/individual_imgs/stim_'+idxOfTarget_1+'.png'
+			exemplarEl_1.style.width = exemplar_1_width+'px'   
+
+			exemplarEl_2              = exemplarEl_1.cloneNode(true)
+			exemplarEl_2.id           = 'exemplarEl_2'
+			exemplarEl_2.src          = './img/' + jatos.studySessionData.inputData.concepts.phase_2.concept_space + '/individual_imgs/stim_'+idxOfTarget_1+'.png'
+			exemplarEl_2.style.width = exemplar_2_width+'px'   
+
+			// Make the toys
+			let toyElement_1          = document.createElement('img')
+			toyElement_1.id           = 'toy_1'
+			toyElement_1.src          = targetPath_1
+			toyElement_1.style.height = '50px'
+
+			toyElement_2     = toyElement_1.cloneNode(true)
+			toyElement_2.id  = 'toy_2'
+			toyElement_2.src = targetPath_2
+
+			// Append all the elements to the flex box
+			paEl_1.appendChild(exemplarEl_1)
+			paEl_1.appendChild(toyElement_1)
+			paEl_2.appendChild(exemplarEl_2)
+			paEl_2.appendChild(toyElement_2)	
+
+			wrapperFlexEl.appendChild(paEl_1)
+			wrapperFlexEl.appendChild(paEl_2)						
+
+			let realize_mapping_questions = [
+					{prompt: 'During phase 2, did you realize that there is a relationship between the '+ concept_1.concept_object+'s ' + 
+					'that hide the toys in phase 1 and '+ concept_2.concept_object+'s that hide toys in phase 2? <br> ' + 
+					'For example, if a phase-1 '+ concept_1.concept_object+' with a certain '+ concept_1.dim1_name+':'+ concept_1.dim2_name+' ratio was hiding the '+targetName_1+' (as shown above), ' + 
+					'the phase-2 '+ concept_1.concept_object+' that was hiding the '+targetName_1+' also had a similar ratio of '+ concept_2.dim1_name+':'+ concept_2.dim2_name+'.' +
+					' The same was true for other birds hiding other toys.' + 
+					'<br> If you did realize this, did this help you in performing during phase 2? If so, how did it help you? Please describe.', rows: 3, columns: 100, placeholder: ''},            
+				]
+			let realize_mapping_preamble = '<p style="font-size: 30px;"><b>Phase 1 / Phase 2 debriefing:</b></p>'
+
+			let realize_mapping_page = createImageSurveyTrial(realize_mapping_preamble,[wrapperFlexEl],realize_mapping_questions)
+			
+			// Which images to preload? Add the exemplar and toy images
+			imgs_to_preload.push(exemplarEl_1.src, exemplarEl_2.src, toyElement_1.src, toyElement_2.src)
+
+			return realize_mapping_page
+		};
+
+		////////////////////////////////////////////////////////////////////////////////////////
+
 		// What phase is this?
 		let [curr_phase,phase_string,curr_session] = getPhaseAndSession()
 
@@ -172,6 +178,9 @@
 
 		//make a timeline
 		var timeline = []; 
+		
+		// preload imgs in case defriefing page contains them. Start already with the target items
+		let imgs_to_preload = [...jatos.studySessionData.inputData.basic_parameters.targetPathsUsed[phase_string]]; 
 
 		// Generic message saying "sorry you failed QC". Will then be followed by appropriate debriefing pages, and data submission
 		var qc_failed_generic_page = {
@@ -257,7 +266,7 @@
 			var phase_1_questions_page = createPhaseDebriefer(1,jatos.studySessionData.inputData.concepts.phase_1)
 			// Phase 2
 			var phase_2_questions_page = createPhaseDebriefer(2,jatos.studySessionData.inputData.concepts.phase_2)
-
+debugger
 		// Element asking about the spatial layout.
 			// Phase 1
 			var phase_1_spatial_page = createSpatialLayoutDebriefer(1,jatos.studySessionData.inputData.concepts.phase_1)
@@ -421,6 +430,7 @@
 
 				timeline: timeline,
 				show_progress_bar: show_progress_bar,
+				preload_images: imgs_to_preload,
 
 				on_finish: function() {
 
