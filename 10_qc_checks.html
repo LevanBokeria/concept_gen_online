@@ -161,6 +161,7 @@
             debugger
             if (jatos.studySessionData.session_counter[phase_string] == jatos.studySessionData.qc_criteria.max_training_sess){
               jatos.studySessionData.qc_status.max_training_sess_pass = false
+              jatos.studySessionData.qc_status.global_pass            = false
               jatos.studySessionData.progress_state = 'qc_failed_' + phase_string             
             } else {
               jatos.studySessionData.progress_state = 'advance_session'
