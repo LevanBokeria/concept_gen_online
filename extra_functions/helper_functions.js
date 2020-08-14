@@ -196,9 +196,9 @@ const calcRunningPerf = function(data) {
 const getPhaseAndSession = function(){
     let curr_phase   = jatos.studySessionData.phase_counter; 
     let phase_string = 'phase_' + curr_phase;
-    let curr_session = jatos.studySessionData.session_counter;
+    let curr_session = jatos.studySessionData.session_counter[phase_string];
 
-    return [curr_phase, phase_string, curr_session[phase_string]];
+    return [curr_phase, phase_string, curr_session];
 };
 
 const createScoreBox = function(){

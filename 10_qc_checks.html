@@ -82,9 +82,7 @@
 
     // Define a function to do the checks
     const session_qc_check = function(last_session_data){
-      
-      [curr_phase,phase_string,curr_session] = getPhaseAndSession()
-
+    
       // 1. Not too many missed trials
       let n_missed_trials    = last_session_data.filter(item => item.rt==null).length
       let perc_missed_trials = n_missed_trials * 100 / last_session_data.length
@@ -142,7 +140,7 @@
           
       } else {
       // So didn't fail
-
+          debugger
           // Check, if exceeded the performance, then continue to next step
           let all_targets_learned = jatos.studySessionData.inputData.running_perf[phase_string][curr_session-1].every(
           item => item >= jatos.studySessionData.training_criterion
@@ -150,23 +148,26 @@
         
           if (all_targets_learned) {
 
-              if (curr_phase == 1){
-                  jatos.studySessionData.progress_state = 'advance_phase'
-              } else if (curr_phase == 2){
-                  jatos.studySessionData.progress_state = 'advance_phase'
-              } else if (curr_phase == 3){
-                  jatos.studySessionData.progress_state = 'finished_training'
-              }
+            if (curr_phase == 1){
+                jatos.studySessionData.progress_state = 'advance_phase'
+            } else if (curr_phase == 2){
+                jatos.studySessionData.progress_state = 'advance_phase'
+            } else if (curr_phase == 3){
+                jatos.studySessionData.progress_state = 'finished_training'
+            }
 
           } else {
-              jatos.studySessionData.progress_state = 'advance_session'
-          }
-
-          // Check if too many sessions, then stop training
-          if (jatos.studySessionData.session_counter >= jatos.studySessionData.qc_criteria.max_training_sess){
+            // So, they haven't failed but havent learned. Check if they've done too many sessions, if not then advance a session
+            debugger
+            if (jatos.studySessionData.session_counter[phase_string] == jatos.studySessionData.qc_criteria.max_training_sess){
               jatos.studySessionData.qc_status.max_training_sess_pass = false
               jatos.studySessionData.progress_state = 'qc_failed_' + phase_string             
+            } else {
+              jatos.studySessionData.progress_state = 'advance_session'
+            }
           }
+
+
       } // global pass fail? if/else section
 
   }; // end of the function session_qc_check
