@@ -133,7 +133,7 @@
           
       } else {
       // So didn't fail
-          debugger
+          
           // Check, if exceeded the performance, then continue to next step
           let all_targets_learned = jatos.studySessionData.inputData.running_perf[phase_string][curr_session-1].every(
           item => item >= jatos.studySessionData.training_criterion
@@ -151,7 +151,7 @@
 
           } else {
             // So, they haven't failed but havent learned. Check if they've done too many sessions, if not then advance a session
-            debugger
+            
             if (jatos.studySessionData.session_counter[phase_string] == jatos.studySessionData.qc_criteria.max_training_sess){
               jatos.studySessionData.qc_status.max_training_sess_pass = false
               jatos.studySessionData.qc_status.global_pass            = false

@@ -51,7 +51,7 @@
                         '<p>Please note that your responses are monitored automatically.</p>' +
                         '<p><strong>You might be disqualified during the study if you take too many sessions to learn or ' + 
                         ' if your responses have signs of inattention. </strong></p>' +
-                        '<p>Your data is really important for our students and for understanding how the human brain learns.</p>' + 
+                        '<p><br>Your data will help us understand how the human brain works!</p>' + 
                         '<p>Please be attentive and complete this game truthfully. Thank you so much!</p>' + 
                         '<p> Click next to start the 1st session! Good luck! </p>' +
                     '</div>',
@@ -65,14 +65,9 @@
             timeline: [practice_trials_end],
             on_finish: function(data) {
 
-
                 // Make JATOS remember that this session was run
                 jatos.studySessionData.latestFinishedComponentId  = jatos.componentId;
                 jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
-
-                // result_data.component_data = jsPsych.data.get().values();
-
-                // jatos.studySessionData.allData.post_practice_trials_instructions = result_data;
 
                 jatos.submitResultData("[post_ex_trials_start---" + 
                 JSON.stringify(jatos.studySessionData) +
