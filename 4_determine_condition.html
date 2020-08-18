@@ -39,7 +39,7 @@
     // A conditional that determines whether we are debugging or not. If debugging, fewer trials will be done.
     // The pilot flag is for when asking labmates to test the paradigm, it just reduces the number of trials they'll have to do per sesiosn.
     // Auto respond: script will make random responses by itself.
-    jatos.studySessionData.debug                    = false;
+    jatos.studySessionData.debug                    = true;
     jatos.studySessionData.debug_n_trials           = 10;
     jatos.studySessionData.auto_respond             = false;
     jatos.studySessionData.show_correct             = false;
@@ -89,7 +89,7 @@
         min_perf_check_perc: 50,
         min_perf_check_ses:  3,
         perc_max_missed:     100,
-        max_training_sess:   2,
+        max_training_sess:   6,
         min_time_instruct:   1,
       }
     } else {
