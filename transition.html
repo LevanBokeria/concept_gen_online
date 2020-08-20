@@ -54,20 +54,16 @@
 					{prompt: 
 					'As you noticed, the '+ iConcept.concept_object + 's in phase 1 differed from each other by the size of their '+ 
 					iConcept.dim1_name + ' and '+ iConcept.dim2_name + '. ' + 
-					'<br>Imagine drawing a 2-dimensional space, where the dimensions are the size of '+ iConcept.dim1_name + ' and '+ 
-					iConcept.dim2_name + ',' +
-					' just like in the image above. <br> Every point in that space has coordinates along each of the two dimensions. '+ 
-					'Thus, every '+ iConcept.concept_object + ' with a certain size of '+ iConcept.dim1_name + ' and '+ 
-					iConcept.dim2_name + ','+
-					' can be represented as a point in this 2-dimensional space. <br> Every toy that was "hidden" by a '+ 
-					iConcept.concept_object + 
-					' with a particular size of '+ iConcept.dim1_name + ' and '+ iConcept.dim2_name + 
-					', is thus "located" at the same spot as the '+ iConcept.concept_object + ' in this 2-dimensional space.' + 
-					'<br>At any point during the experiment, did you realize that the '+ 
-					iConcept.concept_object + 's and their toys could be characterized as locations in such a 2-dimensional space? ' +
+					'Thus, each ' + iConcept.concept_object + ' can be represented as a point in a 2-dimensional space, ' +
+					' where each dimension specifies the size of '+ iConcept.dim1_name + ' and '+ 
+					iConcept.dim2_name + 
+					'. <br><br>Thus, each toy that was hidden by some particular '+ iConcept.concept_object + ' has a "location" ' + 
+					' in this 2-dimensional space.' + 
+					'<br><br>Did you realize or visualize such a 2-dimensional organization of the ' + 
+					iConcept.concept_object + 's and their toys?' +
 					'<br> If you did realize this, did this help you in learning the '+ 
 					iConcept.concept_object + '-toy associations?' + 
-					'<br> If this question is unclear and does not explain well what is meant by this 2-dimensional representation, please indicate below.', 
+					'<br> If this question is unclear, please indicate below.', 
 					rows: 3, columns: 100, placeholder: ''},            
 				]
 			let spatial_preamble = '<p style="font-size: 30px;"><b>Phase '+ iPhase + ' debriefing about the '+ iConcept.concept_object + 's:</b></p>'
@@ -336,7 +332,7 @@
 				'<p> Congratulations! You have finished phase ' + curr_phase + ' of the game! </p>' + 
 				'<p> Below you can see your finishing scores for phase ' + curr_phase + ': </p>' +
 				score_box_element.outerHTML + 
-				'<p> Please take a ' + jatos.studySessionData.short_break_duration + 
+				'<p> Please take a ' + jatos.studySessionData.long_break_duration + 
 				' second break, and then click the Next button to read instructions for phase ' + 
 				(curr_phase+1) + '!</p>' +
 				'<p> Thank you very much for staying attentive! </p>'
