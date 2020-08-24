@@ -37,11 +37,7 @@
         phase_2_results: [],
         phase_3_results: [],        
         phase_1_practice_results: [],
-        intermediate_feedback_results: {
-          phase_1: [],
-          phase_2: [],
-          phase_3: [],
-        },
+        intermediate_feedback_results: [],
         phase_1_debrief_results: [],
         phase_2_debrief_results: [], 
         phase_3_debrief_results: [],                
@@ -51,7 +47,7 @@
       };
 
       // Enter PID automatically or manually? Auto for debug
-      let manualPID = true
+      let manualPID = false
 
       if (manualPID){
         $("#prolific_id").keypress(function (e) {

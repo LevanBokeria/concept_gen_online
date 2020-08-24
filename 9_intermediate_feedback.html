@@ -43,10 +43,22 @@
 
                         // What phase is this?
                         [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+                        debugger
 
                         //  Record data
-                        let idx = jatos.studySessionData.outputData.intermediate_feedback_results[phase_string].length 
-                        jatos.studySessionData.outputData.intermediate_feedback_results[phase_string][idx] = jsPsych.data.get().values();
+                        let dataOut = jsPsych.data.get().values()[0];
+
+                        // Add infor about which phase and which session this is
+                        dataOut.phase = curr_phase
+
+                        if (!jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
+                            dataOut.session = curr_session
+                        } else {
+                            dataOut.session = 'practice'
+                        }
+                        
+                        jatos.studySessionData.outputData.intermediate_feedback_results.push(dataOut)
+
 
                         jatos.submitResultData(
                             "[int_fb_start---" + 
