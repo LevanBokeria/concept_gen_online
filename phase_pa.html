@@ -22,7 +22,7 @@
 
             // If this for practice run?
             if (jatos.componentProperties.title.includes('practice_trials')){
-
+                debugger
                 // Reset the running performance for practice
                 jatos.studySessionData.inputData.running_perf[phase_string+'_practice'][curr_session-1] = 
                     new Array(jatos.studySessionData.inputData.basic_parameters.nTargets).fill(0)
@@ -158,6 +158,7 @@
 
                     // submit results to JATOS
                     output_trial_data = jsPsych.data.get().values();
+                    debugger
                     // Combine it with pre-existing trial information
                     if (jatos.componentProperties.title.includes('practice_trials')){
                         for (iT=0; iT<output_trial_data.length; iT++){
