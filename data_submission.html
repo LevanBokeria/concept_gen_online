@@ -18,7 +18,7 @@
         jatos.onLoad(function() {
 
             // What phase is this?
-            [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()
+            [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession()
 
             var redirect_fn = function () {return window.location.replace(jatos.studySessionData.outputData.redirect_url);};
 

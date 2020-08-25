@@ -19,9 +19,10 @@
       phase_2: 1,
       phase_3: 1,
     }
-    jatos.studySessionData.phase_counter = 1;    
-    jatos.studySessionData.trial_counter = 1; // a global variable to keep track of overall how many trials have run. Use when recording trial info in the outputData.phase_results array.
-    
+    jatos.studySessionData.phase_counter         = 1;    
+    jatos.studySessionData.global_trial_counter  = 1; // a global variable to keep track of overall how many trials have run. Use when recording trial info in the outputData.phase_results array.
+    jatos.studySessionData.session_trial_counter = 1;
+
     jatos.studySessionData.progress_state = 'starting' // a string that will say whether to advance a session, phase, fail the participant, or whatnot.
 
     // Which scripts have which component IDs?
@@ -42,7 +43,7 @@
     // Auto respond: script will make random responses by itself.
     jatos.studySessionData.debug                    = false;
     jatos.studySessionData.debug_n_trials           = 10;
-    jatos.studySessionData.auto_respond             = true;
+    jatos.studySessionData.auto_respond             = false;
     jatos.studySessionData.show_correct             = false;
     jatos.studySessionData.pilot                    = false;
     jatos.studySessionData.pilot_n_trials           = 10;

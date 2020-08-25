@@ -224,7 +224,7 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
 
   plugin.trial = function(display_element, trial) {
 
-    [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()    
+    [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession()    
 
     // // setup audio stimulus
     // var context = jsPsych.pluginAPI.audioContext();

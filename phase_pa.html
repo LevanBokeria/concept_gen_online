@@ -17,9 +17,12 @@
         jatos.onLoad(function() {
             
             // What phase is this?
-            [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()
+            [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession()
             let curr_space_object = jatos.studySessionData.inputData.concepts[phase_string]
             
+            // reset the session trial counter
+            jatos.studySessionData.session_trial_counter = 1;
+
             // If this for practice run?
             if (jatos.componentProperties.title.includes('practice_trials')){
                 
@@ -62,7 +65,7 @@
             // Record the current trial array in the outputData variable
             jatos.studySessionData.outputData.phase_results = 
                 jatos.studySessionData.outputData.phase_results.concat(session_trials)
-                debugger
+                
             let n_trials = session_trials.length           
 
             let imgs_to_preload = deepCopy(jatos.studySessionData.inputData.imgs_to_preload)
@@ -141,7 +144,7 @@
                 on_finish: function(data) {
                     
                     // What phase is this?
-                    [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()
+                    [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession()
 
                     // Make JATOS remember that this session was run
                     jatos.studySessionData.latestFinishedComponentId    = jatos.componentId;

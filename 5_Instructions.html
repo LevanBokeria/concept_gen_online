@@ -20,7 +20,7 @@
 		jatos.onLoad(function() {
 
 			// What phase and session is this?
-			let [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession() 
+			let [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession() 
 			let curr_concept = jatos.studySessionData.inputData.concepts[phase_string]
 			let nTargets     = jatos.studySessionData.inputData.basic_parameters.nTargets
 

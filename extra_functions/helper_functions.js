@@ -75,7 +75,7 @@ function add_image_info_and_trial_session_idxs_practice_trials(array,session_idx
 };    
 
 const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,iPhase,iSession){
-    debugger
+    
     // What phase is this?
     let phase_string = 'phase_' + iPhase
 
@@ -144,7 +144,7 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
       // Record the phase and session
       baseTrialArrayInner[i].phase        = iPhase
       baseTrialArrayInner[i].session      = iSession        
-      baseTrialArrayInner[i].running_perf = [new Array(basic_parameters.nTargets).fill(0)]
+      baseTrialArrayInner[i].running_perf = new Array(basic_parameters.nTargets).fill(0)
 
     }  
 
@@ -155,26 +155,25 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
 }; // function trialCreator
 
 const calcRunningPerf = function(data) {
-    debugger
-    [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()
+    
+    [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession()
     let curr_session_trials
     let phase_string_for_running_perf = deepCopy(phase_string)
 
     // Add the current trial data to the outputData object
     data.session      = curr_session
     data.phase        = curr_phase
-    data.global_trial = curr_trial
+    data.global_trial = curr_global_trial
     
     // Add data from this trial to the outputData object
-    jatos.studySessionData.outputData.phase_results[curr_trial-1] = 
-        Object.assign(jatos.studySessionData.outputData.phase_results[curr_trial-1],
+    jatos.studySessionData.outputData.phase_results[curr_global_trial-1] = 
+        Object.assign(jatos.studySessionData.outputData.phase_results[curr_global_trial-1],
             data)
 
     // Get all the trials of this particular session
-
     if (jatos.componentPos == jatos.studySessionData.script_comp_pos.practice_trials){
         curr_session_trials = deepCopy(
-            jatos.studySessionData.outputData.phase_results.map(item => item.session == 'practice'))
+            jatos.studySessionData.outputData.phase_results.filter(item => item.session == 'practice'))
 
         // For running_perf, record in the "practice" key
         phase_string_for_running_perf = phase_string+'_practice'
@@ -202,36 +201,49 @@ const calcRunningPerf = function(data) {
     avg = avg / last_prompt_trials.length
 
     // Record this avg value
+    debugger
+    let curr_running_perf
+    if (jatos.studySessionData.session_trial_counter == 1){
+        curr_running_perf = jatos.studySessionData.outputData.phase_results[jatos.studySessionData.global_trial_counter-1].running_perf
+    } else {
+        curr_running_perf = jatos.studySessionData.outputData.phase_results[jatos.studySessionData.global_trial_counter-2].running_perf
+    }
+
     let idx_of_score_box_target = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed[phase_string].indexOf(curr_prompt_path)
-    jatos.studySessionData.inputData.running_perf[phase_string_for_running_perf][curr_session-1][idx_of_score_box_target] = avg * 100
+
+    curr_running_perf[idx_of_score_box_target] = avg * 100
+
+    jatos.studySessionData.outputData.phase_results[jatos.studySessionData.global_trial_counter-1].running_perf = curr_running_perf
+    // jatos.studySessionData.inputData.running_perf[phase_string_for_running_perf][curr_session-1][idx_of_score_box_target] = avg * 100
 
     // update the global trial counter
-    jatos.studySessionData.trial_counter++
+    jatos.studySessionData.global_trial_counter++
+    jatos.studySessionData.session_trial_counter++
 
 };
 
 const getPhaseAndSession = function(){
     let curr_phase   = jatos.studySessionData.phase_counter; 
     let phase_string = 'phase_' + curr_phase;
-    let curr_trial   = jatos.studySessionData.trial_counter
+    let curr_global_trial   = jatos.studySessionData.global_trial_counter
 
     let curr_session
     
-    // If practice hasn't been done, or has just been done, then output 'practice'
-    if (jatos.studySessionData.outputData.phase_results.length == 0 ||
-        jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
+    // If practice is currently ongoing, or the haven't reached the phase_pa component, then curr_session = 'practice'
+    if (jatos.componentProperties.title.includes('practice') ||
+        jatos.componentPos < jatos.studySessionData.script_comp_pos.phase_pa){
         curr_session = 'practice'
     } else {
         curr_session = jatos.studySessionData.session_counter[phase_string];
     }
 
-    return [curr_phase, phase_string, curr_session, curr_trial];
+    return [curr_phase, phase_string, curr_session, curr_global_trial];
 };
 
 const createScoreBox = function(){
-
+    debugger
     // What phase is this?
-    let [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()
+    let [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession()
     
     let phase_string_for_running_perf = deepCopy(phase_string)
 
@@ -241,8 +253,15 @@ const createScoreBox = function(){
 
     // Get the score box details locally
     let local_score_box_info = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed
-    let running_perf         = jatos.studySessionData.inputData.running_perf[phase_string_for_running_perf][curr_session-1].map(item => Math.round(item))
 
+    let running_perf
+    // If its the very first trial of a session, then set the scores to 0
+    if (jatos.studySessionData.session_trial_counter == 1){
+        running_perf = new Array(jatos.studySessionData.inputData.basic_parameters.nTargets).fill(0)
+    } else {
+        // If not, then use the performance of the previous trial to be displayed
+        running_perf = jatos.studySessionData.outputData.phase_results[curr_global_trial-2].running_perf.map(item => Math.round(item))
+    }
 
     let img_names = jatos.studySessionData.inputData.basic_parameters.targetNamesUsed[phase_string]
     let img_paths = local_score_box_info[phase_string]
