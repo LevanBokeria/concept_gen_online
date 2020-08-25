@@ -75,7 +75,7 @@ function add_image_info_and_trial_session_idxs_practice_trials(array,session_idx
 };    
 
 const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,iPhase,iSession){
-
+    debugger
     // What phase is this?
     let phase_string = 'phase_' + iPhase
 
@@ -142,8 +142,9 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
       // baseTrialArrayInner[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_16_16.png'                
 
       // Record the phase and session
-      baseTrialArrayInner[i].phase   = iPhase
-      baseTrialArrayInner[i].session = iSession        
+      baseTrialArrayInner[i].phase        = iPhase
+      baseTrialArrayInner[i].session      = iSession        
+      baseTrialArrayInner[i].running_perf = [new Array(basic_parameters.nTargets).fill(0)]
 
     }  
 
@@ -154,28 +155,40 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
 }; // function trialCreator
 
 const calcRunningPerf = function(data) {
-    
-    [curr_phase,phase_string,curr_session] = getPhaseAndSession()
-    let curr_trials
+    debugger
+    [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()
+    let curr_session_trials
     let phase_string_for_running_perf = deepCopy(phase_string)
 
+    // Add the current trial data to the outputData object
+    data.session      = curr_session
+    data.phase        = curr_phase
+    data.global_trial = curr_trial
+    
+    // Add data from this trial to the outputData object
+    jatos.studySessionData.outputData.phase_results[curr_trial-1] = 
+        Object.assign(jatos.studySessionData.outputData.phase_results[curr_trial-1],
+            data)
+
+    // Get all the trials of this particular session
+
     if (jatos.componentPos == jatos.studySessionData.script_comp_pos.practice_trials){
-        curr_trials = deepCopy(
-            jatos.studySessionData.outputData[phase_string+'_practice_results'])
+        curr_session_trials = deepCopy(
+            jatos.studySessionData.outputData.phase_results.map(item => item.session == 'practice'))
 
         // For running_perf, record in the "practice" key
         phase_string_for_running_perf = phase_string+'_practice'
     } else {
-        curr_trials = deepCopy(
+        curr_session_trials = deepCopy(
             jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1])
     }
 
-    curr_trials = curr_trials.slice(0,data.trial_index+1)
-    let curr_prompt_path = curr_trials[data.trial_index].prompt_img_path
+    curr_session_trials = curr_session_trials.slice(0,data.trial_index+1)
+    let curr_prompt_path = curr_session_trials[data.trial_index].prompt_img_path
 
     // Find  trials with this image:
-    let last_prompt_trials = curr_trials.filter(function(curr_trials){
-        return curr_trials.prompt_img_path == curr_prompt_path
+    let last_prompt_trials = curr_session_trials.filter(function(curr_session_trials){
+        return curr_session_trials.prompt_img_path == curr_prompt_path
     })
 
     if (last_prompt_trials.length > jatos.studySessionData.perf_check_over_n_trials){
@@ -191,20 +204,34 @@ const calcRunningPerf = function(data) {
     // Record this avg value
     let idx_of_score_box_target = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed[phase_string].indexOf(curr_prompt_path)
     jatos.studySessionData.inputData.running_perf[phase_string_for_running_perf][curr_session-1][idx_of_score_box_target] = avg * 100
+
+    // update the global trial counter
+    jatos.studySessionData.trial_counter++
+
 };
 
 const getPhaseAndSession = function(){
     let curr_phase   = jatos.studySessionData.phase_counter; 
     let phase_string = 'phase_' + curr_phase;
-    let curr_session = jatos.studySessionData.session_counter[phase_string];
+    let curr_trial   = jatos.studySessionData.trial_counter
 
-    return [curr_phase, phase_string, curr_session];
+    let curr_session
+    
+    // If practice hasn't been done, or has just been done, then output 'practice'
+    if (jatos.studySessionData.outputData.phase_results.length == 0 ||
+        jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
+        curr_session = 'practice'
+    } else {
+        curr_session = jatos.studySessionData.session_counter[phase_string];
+    }
+
+    return [curr_phase, phase_string, curr_session, curr_trial];
 };
 
 const createScoreBox = function(){
 
     // What phase is this?
-    let [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+    let [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()
     
     let phase_string_for_running_perf = deepCopy(phase_string)
 

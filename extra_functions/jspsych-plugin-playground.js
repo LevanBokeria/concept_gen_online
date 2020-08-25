@@ -228,7 +228,7 @@ jsPsych.plugins["plugin-playground"] = (function() {
 
   plugin.trial = function(display_element, trial) {
 
-    [curr_phase,phase_string,curr_session] = getPhaseAndSession()    
+    [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()    
 
     // // setup audio stimulus
     // var context = jsPsych.pluginAPI.audioContext();

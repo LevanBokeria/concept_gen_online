@@ -224,7 +224,7 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
 
   plugin.trial = function(display_element, trial) {
 
-    [curr_phase,phase_string,curr_session] = getPhaseAndSession()    
+    [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()    
 
     // // setup audio stimulus
     // var context = jsPsych.pluginAPI.audioContext();
@@ -259,7 +259,7 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
     // Create an element containing text about session, trial, and phase progress
     const progress_text = document.createElement('P')
     
-    if (trial.session == 0){
+    if (trial.session == 'practice'){
       progress_text.innerText = 'Practice. Trial ' + (jsPsych.data.get().values().length + 1) + '/' + trial.n_trials;
 
     } else {
@@ -453,18 +453,6 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
         "correct": response.correct
       };
 
-      // Record all the information in the jatos object
-      if (trial.session == 0){
-        jatos.studySessionData.outputData[phase_string + '_practice_results'][jsPsych.data.get().values().length] = 
-        Object.assign(
-        jatos.studySessionData.outputData[phase_string + '_practice_results'][jsPsych.data.get().values().length],
-          trial_data)
-      } else {
-        jatos.studySessionData.outputData[phase_string+'_results'][trial.session-1][jsPsych.data.get().values().length] = 
-        Object.assign(
-        jatos.studySessionData.outputData[phase_string+'_results'][trial.session-1][jsPsych.data.get().values().length],
-          trial_data)
-      }
       // clear the display
       // display_element.innerHTML = '';
       document.querySelector("#prompt_img").style.visibility            = 'hidden';

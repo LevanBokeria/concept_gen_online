@@ -20,6 +20,7 @@
       phase_3: 1,
     }
     jatos.studySessionData.phase_counter = 1;    
+    jatos.studySessionData.trial_counter = 1; // a global variable to keep track of overall how many trials have run. Use when recording trial info in the outputData.phase_results array.
     
     jatos.studySessionData.progress_state = 'starting' // a string that will say whether to advance a session, phase, fail the participant, or whatnot.
 
@@ -300,14 +301,6 @@
           phase_3: Array(16).fill('Empty'),          
         },
     }
-
-    // Variable to hold the running performance for each phase
-    let running_perf = {
-      phase_1_practice: [new Array(basic_parameters.nTargets).fill(0)],
-      phase_1:          [new Array(basic_parameters.nTargets).fill(0)],
-      phase_2:          [new Array(basic_parameters.nTargets).fill(0)],
-      phase_3:          [new Array(basic_parameters.nTargets).fill(0)],
-    }
     
     // For each phase, specify which points are used as targets, paths to those targets, and the names of all 16 points.
     for (iPhase=0; iPhase<Object.keys(basic_parameters.targetPathsUsed).length; iPhase++){
@@ -391,13 +384,17 @@
       imgs_to_preload:   imgs_to_preload,
       choices:           ['1','2'],
       nTrials:           baseTrialArray.phase_1.length,
-      running_perf:      running_perf,
       congruency:        congruency
     }
 
     // ////////////////////////////////////////////////////////////////////////////////////////////
     // ////////////////////////////////////////////////////////////////////////////////////////////
     // Create save the sessions in jatos studySessionData.
+
+    // Make JATOS remember that this session was run
+    jatos.studySessionData.latestFinishedComponentId    = jatos.componentId;
+    jatos.studySessionData.latestFinishedComponentPos   = jatos.componentPos;
+    jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
 
     jatos.submitResultData("[conditions_start---" + 
     JSON.stringify(jatos.studySessionData) + "---conditions_end]", jatos.startNextComponent);

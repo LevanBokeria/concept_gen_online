@@ -32,11 +32,8 @@
           phase_1: [],
           phase_2: [],
           phase_3: [],
-        },          
-        phase_1_results: [],
-        phase_2_results: [],
-        phase_3_results: [],        
-        phase_1_practice_results: [],
+        },      
+        phase_results:   [],    
         intermediate_feedback_results: [],
         phase_1_debrief_results: [],
         phase_2_debrief_results: [], 
@@ -100,6 +97,11 @@
 
         // document.getElementById("error_msg").style.visibility = "hidden";
         // document.getElementById("prolific_div").style.visibility = "visible";
+
+      // Make JATOS remember that this session was run
+      jatos.studySessionData.latestFinishedComponentId    = jatos.componentId;
+      jatos.studySessionData.latestFinishedComponentPos   = jatos.componentPos;
+      jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
 
     });
 </script>

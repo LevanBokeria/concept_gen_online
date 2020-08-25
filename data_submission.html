@@ -18,7 +18,7 @@
         jatos.onLoad(function() {
 
             // What phase is this?
-            [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+            [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()
 
             var redirect_fn = function () {return window.location.replace(jatos.studySessionData.outputData.redirect_url);};
 
@@ -45,7 +45,7 @@
                 } else if (jatos.studySessionData.qc_status.global_pass == false){
 
                     // Redirection URL with the code saying which phase and how many sessions they completed
-                    jatos.studySessionData.outputData.redirect_url = 'https://app.prolific.co/submissions/complete?cc=QC_fail_p'+curr_phase+'_s'+curr_session;
+                    jatos.studySessionData.outputData.redirect_url = 'https://app.prolific.co/submissions/complete?cc=QC_fail_p_'+curr_phase+'_s_'+curr_session;
 
                     // Create an error text
                     var err = deepCopy(jatos.studySessionData.qc_status);

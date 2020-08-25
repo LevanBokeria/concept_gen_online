@@ -17,22 +17,18 @@
         jatos.onLoad(function() {
             
             // What phase is this?
-            [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+            [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()
             let curr_space_object = jatos.studySessionData.inputData.concepts[phase_string]
-
+            
             // If this for practice run?
             if (jatos.componentProperties.title.includes('practice_trials')){
-                debugger
-                // Reset the running performance for practice
-                jatos.studySessionData.inputData.running_perf[phase_string+'_practice'][curr_session-1] = 
-                    new Array(jatos.studySessionData.inputData.basic_parameters.nTargets).fill(0)
-
+                
                 // Generate a full array of trials for a full session
                 var session_trials = 
                     trialCreator(jatos.studySessionData.inputData.concepts[phase_string],
                                 jatos.studySessionData.inputData.baseTrialArray[phase_string],
                                 jatos.studySessionData.inputData.basic_parameters,
-                                curr_phase,0)     
+                                curr_phase,curr_session)     
 
                 // Now, choose trials such that each item is used at least twice
                 var practice_session_trials = []
@@ -51,26 +47,22 @@
                 // Now slice it
                 session_trials = session_trials.slice(0,jatos.studySessionData.n_practice_trials)
 
-                // Record the current trial array in the outputData variable
-                jatos.studySessionData.outputData[phase_string+'_practice_results'] = session_trials
             } else {
 
                 // So not practice trials
 
-                // Reset the running performance
-                jatos.studySessionData.inputData.running_perf[phase_string][curr_session-1] = 
-                    new Array(jatos.studySessionData.inputData.basic_parameters.nTargets).fill(0)
-                    
                 // Then, generate trials for this session
                 var session_trials = 
                     trialCreator(jatos.studySessionData.inputData.concepts[phase_string],
                                 jatos.studySessionData.inputData.baseTrialArray[phase_string],
                                 jatos.studySessionData.inputData.basic_parameters,
                                 curr_phase,curr_session)
-
-                // Record the current trial array in the outputData variable
-                jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1] = session_trials                 
             } 
+
+            // Record the current trial array in the outputData variable
+            jatos.studySessionData.outputData.phase_results = 
+                jatos.studySessionData.outputData.phase_results.concat(session_trials)
+                debugger
             let n_trials = session_trials.length           
 
             let imgs_to_preload = deepCopy(jatos.studySessionData.inputData.imgs_to_preload)
@@ -149,7 +141,7 @@
                 on_finish: function(data) {
                     
                     // What phase is this?
-                    [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+                    [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()
 
                     // Make JATOS remember that this session was run
                     jatos.studySessionData.latestFinishedComponentId    = jatos.componentId;
@@ -161,29 +153,19 @@
                     debugger
                     // Combine it with pre-existing trial information
                     if (jatos.componentProperties.title.includes('practice_trials')){
-                        for (iT=0; iT<output_trial_data.length; iT++){
-                            jatos.studySessionData.outputData[phase_string+'_practice_results'][iT] = 
-                                Object.assign(jatos.studySessionData.outputData[phase_string+'_practice_results'][iT],
-                                            output_trial_data[iT])
-                        }
-
+            
                         // Create a temporary variable to hold data of the latest run session, so qc can be performed on this
                         jatos.studySessionData.last_session_data = 
-                        deepCopy(jatos.studySessionData.outputData[phase_string+'_practice_results']);
+                        deepCopy(jatos.studySessionData.outputData.map(item => item.session == 'practice'));
 
                         var results_delimiter_start = "[" + phase_string + "_practice_start---"
                         var results_delimiter_end   = "---" + phase_string + "_practice_end]"                        
 
                     } else {
-                        for (iT=0; iT<output_trial_data.length; iT++){
-                            jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1][iT] = 
-                                Object.assign(jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1][iT],
-                                            output_trial_data[iT])
-                        }
-
+           
                         // Create a temporary variable to hold data of the latest run session, so qc can be performed on this
                         jatos.studySessionData.last_session_data = 
-                        deepCopy(jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1]);                        
+                        deepCopy(jatos.studySessionData.outputDatamap(item => item.session == curr_session));                        
 
                         var results_delimiter_start = "[" + phase_string + "_ses_" + curr_session + "_start---"
                         var results_delimiter_end   = "---" + phase_string + "_ses_" + curr_session + "_end]" 
@@ -196,7 +178,7 @@
                             jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.intermediate_feedback);
                         }
                     );
-                } 
+                }
                 
                 // on_finish: function(data) {
                 //     console.log('Over');

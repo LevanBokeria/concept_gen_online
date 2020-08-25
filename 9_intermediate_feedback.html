@@ -42,19 +42,14 @@
                     on_finish: function() {
 
                         // What phase is this?
-                        [curr_phase,phase_string,curr_session] = getPhaseAndSession()
+                        [curr_phase,phase_string,curr_session,curr_trial] = getPhaseAndSession()
 
                         //  Record data
                         let dataOut = jsPsych.data.get().values()[0];
 
                         // Add infor about which phase and which session this is
-                        dataOut.phase = curr_phase
-
-                        if (!jatos.studySessionData.latestFinishedComponentTitle.includes('practice')){
-                            dataOut.session = curr_session
-                        } else {
-                            dataOut.session = 'practice'
-                        }
+                        dataOut.phase   = curr_phase
+                        dataOut.session = curr_session
                         
                         jatos.studySessionData.outputData.intermediate_feedback_results.push(dataOut)
 
