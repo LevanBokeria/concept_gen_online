@@ -155,10 +155,14 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
 }; // function trialCreator
 
 const calcRunningPerf = function(data) {
+    // DESCRIPTION
+
+    // This function is called at the end of each trial by the plugin.
+    // Calculates the current running performance on each target, taking into account latest trial
+    // Also, it updates the global_trial_counter and the session_trial_counters
     
     [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession()
     let curr_session_trials
-    let phase_string_for_running_perf = deepCopy(phase_string)
 
     // Add the current trial data to the outputData object
     data.session      = curr_session
@@ -169,18 +173,10 @@ const calcRunningPerf = function(data) {
     jatos.studySessionData.outputData.phase_results[curr_global_trial-1] = 
         Object.assign(jatos.studySessionData.outputData.phase_results[curr_global_trial-1],
             data)
-
+    
     // Get all the trials of this particular session
-    if (jatos.componentPos == jatos.studySessionData.script_comp_pos.practice_trials){
-        curr_session_trials = deepCopy(
-            jatos.studySessionData.outputData.phase_results.filter(item => item.session == 'practice'))
-
-        // For running_perf, record in the "practice" key
-        phase_string_for_running_perf = phase_string+'_practice'
-    } else {
-        curr_session_trials = deepCopy(
-            jatos.studySessionData.outputData[phase_string+'_results'][curr_session-1])
-    }
+    curr_session_trials = deepCopy(
+        jatos.studySessionData.outputData.phase_results.filter(item => item.session == curr_session))
 
     curr_session_trials = curr_session_trials.slice(0,data.trial_index+1)
     let curr_prompt_path = curr_session_trials[data.trial_index].prompt_img_path
@@ -201,7 +197,7 @@ const calcRunningPerf = function(data) {
     avg = avg / last_prompt_trials.length
 
     // Record this avg value
-    debugger
+    
     let curr_running_perf
     if (jatos.studySessionData.session_trial_counter == 1){
         curr_running_perf = jatos.studySessionData.outputData.phase_results[jatos.studySessionData.global_trial_counter-1].running_perf
@@ -214,7 +210,6 @@ const calcRunningPerf = function(data) {
     curr_running_perf[idx_of_score_box_target] = avg * 100
 
     jatos.studySessionData.outputData.phase_results[jatos.studySessionData.global_trial_counter-1].running_perf = curr_running_perf
-    // jatos.studySessionData.inputData.running_perf[phase_string_for_running_perf][curr_session-1][idx_of_score_box_target] = avg * 100
 
     // update the global trial counter
     jatos.studySessionData.global_trial_counter++
@@ -241,7 +236,7 @@ const getPhaseAndSession = function(){
 };
 
 const createScoreBox = function(){
-    debugger
+    
     // What phase is this?
     let [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession()
     
