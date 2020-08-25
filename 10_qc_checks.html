@@ -17,7 +17,7 @@
 <script>
 
   jatos.onLoad(function() {
-    debugger
+    
     // What phase is this?
     let [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession() 
     
@@ -133,7 +133,7 @@
           
       } else {
       // So didn't fail
-          debugger
+          
           // Check, if exceeded the performance, then continue to next step
           let all_targets_learned = last_session_data[last_session_data.length-1].running_perf.every(
             item => item >= jatos.studySessionData.training_criterion

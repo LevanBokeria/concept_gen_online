@@ -240,8 +240,6 @@ const createScoreBox = function(){
     // What phase is this?
     let [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession()
     
-    let phase_string_for_running_perf = deepCopy(phase_string)
-
     if (jatos.componentPos == jatos.studySessionData.script_comp_pos.practice_trials){ 
         phase_string_for_running_perf = phase_string + '_practice'
     }
