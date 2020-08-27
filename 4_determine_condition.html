@@ -41,10 +41,10 @@
     // A conditional that determines whether we are debugging or not. If debugging, fewer trials will be done.
     // The pilot flag is for when asking labmates to test the paradigm, it just reduces the number of trials they'll have to do per sesiosn.
     // Auto respond: script will make random responses by itself.
-    jatos.studySessionData.debug                    = false;
+    jatos.studySessionData.debug                    = true;
     jatos.studySessionData.debug_n_trials           = 10;
-    jatos.studySessionData.auto_respond             = false;
-    jatos.studySessionData.show_correct             = true;
+    jatos.studySessionData.auto_respond             = true;
+    jatos.studySessionData.show_correct             = false;
     jatos.studySessionData.pilot                    = false;
     jatos.studySessionData.pilot_n_trials           = 10;
     jatos.studySessionData.simulate_data            = false; // Simulate data to intentionally fail the QC?
@@ -212,8 +212,8 @@
 
       // So not reading the batch. Set manually
       var congruency = true
-      var phase_1_concept = 'neck_legs_space'
-      var phase_2_concept = 'beak_tail_space'      
+      var phase_2_concept = 'neck_legs_space'
+      var phase_1_concept = 'beak_tail_space'      
     }
 
     if (congruency){
