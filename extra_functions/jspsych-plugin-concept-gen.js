@@ -350,7 +350,7 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
       i_item_img_name.innerText = trial.item_img_names[iImg]
       i_item_img_name.id = 'item_img_name' + (iImg+1)
       i_item_img_name.style = 'position: absolute; top:' + (trial.fb_imgs_y_coords[iImg]-50) + 'px; left:' 
-      + (trial.fb_imgs_x_coords[iImg]+13) + 'px;'       
+      + (trial.fb_imgs_x_coords[iImg]+5) + 'px;'       
 
       feedback_element.appendChild(i_item_img_name)
 
