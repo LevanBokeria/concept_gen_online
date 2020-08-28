@@ -112,18 +112,21 @@
           jatos.studySessionData.qc_status.uniform_resp_perc_pass = false;
 
       }
-
+      
       // 4. If session >= preset_amount, check better than chance
       if (curr_session >= jatos.studySessionData.qc_criteria.min_perf_check_ses){
 
-          let n_targets_above_chance = 
-          jatos.studySessionData.inputData.running_perf[phase_string][curr_session-1].filter(item => item > 
-              jatos.studySessionData.qc_criteria.min_perf_check_perc).length
+        // Get the current performance
+        let curr_running_perf = last_session_data[last_session_data.length-1].running_perf
 
-          if (n_targets_above_chance < jatos.studySessionData.inputData.basic_parameters.nTargets) {
+        let n_targets_above_chance = 
+        curr_running_perf.filter(item => item > 
+            jatos.studySessionData.qc_criteria.min_perf_check_perc).length
+
+        if (n_targets_above_chance < jatos.studySessionData.inputData.basic_parameters.nTargets) {
           jatos.studySessionData.qc_status.global_pass   = false;
           jatos.studySessionData.qc_status.min_perf_pass = false;
-          }
+        }
       }
 
       // Has the ptp failed?
