@@ -44,9 +44,9 @@
       };
 
       // Enter PID automatically or manually? Auto for debug
-      let manualPID = true
+      let autoPID = false
 
-      if (manualPID){
+      if (!autoPID){
         $("#prolific_id").keypress(function (e) {
           if(e.which == 13) { 
             e.preventDefault();       

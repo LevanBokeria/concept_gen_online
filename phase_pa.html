@@ -155,7 +155,7 @@
                         
                     // Create a temporary variable to hold data of the latest run session, so qc can be performed on this
                     jatos.studySessionData.last_session_data = 
-                    deepCopy(jatos.studySessionData.outputData.phase_results.filter(item => item.session == curr_session && item.phase == curr_phase));                        
+                        deepCopy(jatos.studySessionData.outputData.phase_results.filter(item => item.session == curr_session && item.phase == curr_phase));                        
 
                     var results_delimiter_start = "[" + phase_string + "_ses_" + curr_session + "_start---"
                     var results_delimiter_end   = "---" + phase_string + "_ses_" + curr_session + "_end]" 

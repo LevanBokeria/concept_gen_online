@@ -176,7 +176,7 @@ const calcRunningPerf = function(data) {
     
     // Get all the trials of this particular session
     curr_session_trials = deepCopy(
-        jatos.studySessionData.outputData.phase_results.filter(item => item.session == curr_session))
+        jatos.studySessionData.outputData.phase_results.filter(item => item.session == curr_session && item.phase == curr_phase))
 
     curr_session_trials = curr_session_trials.slice(0,data.trial_index+1)
     let curr_prompt_path = curr_session_trials[data.trial_index].prompt_img_path
