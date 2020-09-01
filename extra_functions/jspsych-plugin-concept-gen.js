@@ -402,7 +402,7 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
     // ////////////////////////////////////////////// FUNCTIONS /////////////////////////////////////////////////////
 
     var after_space_key = function(info){
-      debugger
+      
       if (allow_space_key){
         // Record when the space key was pressed
         response.space_key_pressed = true

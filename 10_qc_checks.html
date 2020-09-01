@@ -23,6 +23,35 @@
     
     // //////////////////////////////////// FUNCTIONS /////////////////////////////////////////////
 
+    // Updating batch data to reflect failure
+    const batch_data_reflect_failure = function(){
+
+      debugger
+
+      if (jatos.studySessionData.use_batch_data){
+
+        // Update the batch data to reflect that this ptp failed.
+        var batchData = jatos.batchSession.getAll();
+
+        // Find the condition
+        for (i = 0; i < batchData.length; i++){
+          
+          if(batchData[i].congruency      == jatos.studySessionData.inputData.congruency && 
+            batchData[i].phase_1_concept == jatos.studySessionData.inputData.concepts.phase_1.concept_space && 
+            batchData[i].phase_2_concept == jatos.studySessionData.inputData.concepts.phase_2.concept_space){
+
+            batchData[i].n_ptp_fail ++;
+            batchData[i].n_ptp_pass_or_ongoing --;
+          }
+        }
+
+        // Update the batch data
+        jatos.batchSession.setAll(batchData);
+
+      } // if use_batch_data
+    }
+
+
     // Simulate data to make sure our scripts work correctly
     const simulate_data = function(last_session_data,conditionToSimulate){
       
@@ -132,6 +161,9 @@
       // Has the ptp failed?
       if (jatos.studySessionData.qc_status.global_pass == false){
           
+          // Update batch data to reflect failure
+          batch_data_reflect_failure();
+
           jatos.studySessionData.progress_state = 'qc_failed_' + phase_string
           
       } else {
@@ -216,6 +248,10 @@
         
         // So, did they fail here?
         if (jatos.studySessionData.qc_status.global_pass == false){
+
+          // Update batch data to reflect failure
+          batch_data_reflect_failure();
+
           jatos.submitResultData('Phase 1 practice QC FAILED', 
             jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.transition))
         } else {
