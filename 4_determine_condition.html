@@ -45,7 +45,7 @@
     jatos.studySessionData.debug_n_trials           = 10;
     jatos.studySessionData.auto_respond             = false;
     jatos.studySessionData.show_correct             = false;
-    jatos.studySessionData.use_batch_data           = true;
+    jatos.studySessionData.use_batch_data           = false;
     jatos.studySessionData.pilot                    = false;
     jatos.studySessionData.pilot_n_trials           = 10;
     jatos.studySessionData.simulate_data            = false; // Simulate data to intentionally fail the QC?
@@ -72,7 +72,7 @@
       jatos.studySessionData.short_break_duration = 15; // seconds
       jatos.studySessionData.long_break_duration  = 30; // seconds
 
-      jatos.studySessionData.timer_after_response    = 2000; // milliseconds
+      jatos.studySessionData.timer_after_response    = 4000; // milliseconds
       jatos.studySessionData.timer_no_resp_fb_freeze = 2000; // milliseconds
       jatos.studySessionData.timer_response_window   = 10000; // milliseconds                  
       jatos.studySessionData.post_trial_gap          = 500; // milliseconds
@@ -212,8 +212,8 @@
 
       // So not reading the batch. Set manually
       var congruency = false
-      var phase_2_concept = 'neck_legs_space'
-      var phase_1_concept = 'beak_tail_space'      
+      var phase_1_concept = 'neck_legs_space'
+      var phase_2_concept = 'beak_tail_space'      
     }
 
     if (congruency){

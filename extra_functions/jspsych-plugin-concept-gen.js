@@ -248,6 +248,15 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
 
     display_element.innerHTML = html;
 
+    // Create the text saying to press space key to move on
+    let press_space_key_element = document.createElement('div')
+    press_space_key_element.innerText = 'Space key = next trial'
+    press_space_key_element.style.visibility = 'hidden'
+    display_element.querySelector("#jspsych-free-sort-arena").appendChild(press_space_key_element)
+    press_space_key_element.style.position = 'absolute'
+    press_space_key_element.style.top      = '660px'
+    press_space_key_element.style.left     = '560px'     
+
 		// Create the score box
 		let score_box_element = createScoreBox()
     score_box_element.style.position = 'absolute'
@@ -392,7 +401,7 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
 
     // function to handle responses by the subject
     var after_response = function(info) {
-      
+      debugger
       // Clear the trial duration timeout
       clearTimeout(ticking_response_window)
 
@@ -419,9 +428,24 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
 
       if (trial.response_ends_trial) {
 
-        // End the trial after 2 seconds 
+        // End the trial after max seconds 
         jsPsych.pluginAPI.setTimeout(end_trial, trial.timer_after_response)
-      }
+
+        // In 0.5 seconds, start listening to a space key to move to next trial
+        jsPsych.pluginAPI.setTimeout(function(){
+          spaceKeyListener = jsPsych.pluginAPI.getKeyboardResponse({
+            callback_function: end_trial,
+            valid_responses: '32',
+            rt_method: 'performance',
+            persist: false,
+            allow_held_key: false
+          });
+
+          press_space_key_element.style.visibility = 'visible'
+
+        }, 500)
+      
+      } // if response ends trial.
     };
 
     // function to end trial when it is time
@@ -445,6 +469,9 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
       if (typeof keyboardListener !== 'undefined') {
         jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
       }
+      if (typeof spaceKeyListener !== 'undefined') {
+        jsPsych.pluginAPI.cancelKeyboardResponse(spaceKeyListener);
+      }      
 
       // gather the data to store for the trial
       var trial_data = {
@@ -510,8 +537,11 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
         allow_held_key: false
       });
     }
-  
-    // If no response in time, show feedback and freeze the feedback for a while
+
+    // Create a variable to be used later to start listening to the space key
+    var spaceKeyListener;
+    
+    // If no response in time, show feedback and allow space key to move on
     var ticking_response_window = jsPsych.pluginAPI.setTimeout(function(){
       
       // kill keyboard listeners
@@ -525,8 +555,19 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
       // Show feedback
       show_feedback(response.correct)
 
-      // Freeze feedback, then end the trial
-      jsPsych.pluginAPI.setTimeout(end_trial, trial.timer_no_resp_fb_freeze)
+      // End the trial after max seconds 
+      jsPsych.pluginAPI.setTimeout(end_trial, trial.timer_after_response)
+
+      // In 0.5 seconds, start listening to a space key to move to next trial
+      jsPsych.pluginAPI.setTimeout(function(){
+        spaceKeyListener = jsPsych.pluginAPI.getKeyboardResponse({
+          callback_function: end_trial,
+          valid_responses: '49',
+          rt_method: 'performance',
+          persist: false,
+          allow_held_key: false
+        });
+      }, 500)
 
     }, trial.timer_response_window)
 
