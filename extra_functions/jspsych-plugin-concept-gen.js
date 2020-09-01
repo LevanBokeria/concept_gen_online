@@ -146,11 +146,11 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
         default: null,
         description: 'How long to wait until next trial starts automatically after response.'
       },         
-      timer_no_resp_fb_freeze: {
+      timer_allow_space_key: {
         type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Post-no-response freeze timer',
+        pretty_name: 'When to allow space key',
         default: null,
-        description: 'If there is no response, how long to freeze the feedback.'
+        description: 'When to allow space key to move to the next trial manually'
       },               
       timer_response_window: {
         type: jsPsych.plugins.parameterType.INT,
@@ -389,7 +389,9 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
     var response = {
       rt: null,
       key: null,
-      correct: null
+      correct: null,
+      space_key_pressed: false,
+      space_key_rt: null,
     };
 
     // If the show correct flag is on, show the feedback from the beginning
@@ -399,9 +401,19 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
 
     // ////////////////////////////////////////////// FUNCTIONS /////////////////////////////////////////////////////
 
+    var after_space_key = function(info){
+      debugger
+      if (allow_space_key){
+        // Record when the space key was pressed
+        response.space_key_pressed = true
+        response.space_key_rt = info.rt
+        end_trial();
+      }
+    }
+
     // function to handle responses by the subject
     var after_response = function(info) {
-      debugger
+      
       // Clear the trial duration timeout
       clearTimeout(ticking_response_window)
 
@@ -415,7 +427,9 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
       } else {
         // only record the first response
         if (response.key == null) {
-          response = info;
+
+          // Copy the details from info to response
+          Object.assign(response,info);
         }
         // Was it correct or not?
         response.correct = (response.key == '49' & trial.correct_response == 1) |
@@ -433,17 +447,11 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
 
         // In 0.5 seconds, start listening to a space key to move to next trial
         jsPsych.pluginAPI.setTimeout(function(){
-          spaceKeyListener = jsPsych.pluginAPI.getKeyboardResponse({
-            callback_function: end_trial,
-            valid_responses: '32',
-            rt_method: 'performance',
-            persist: false,
-            allow_held_key: false
-          });
 
+          allow_space_key = true
           press_space_key_element.style.visibility = 'visible'
 
-        }, 500)
+        }, trial.timer_allow_space_key)
       
       } // if response ends trial.
     };
@@ -460,7 +468,6 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
 			// 	audio.pause();
 			// 	audio.removeEventListener('ended', end_trial);
 			// }
-
 
       // kill any remaining setTimeout handlers
       jsPsych.pluginAPI.clearAllTimeouts();
@@ -481,13 +488,14 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
       };
 
       // clear the display
-      // display_element.innerHTML = '';
-      document.querySelector("#prompt_img").style.visibility            = 'hidden';
-      document.querySelector("#prompt_img_name").style.visibility       = 'hidden';      
-      document.querySelector("#ex_pairs_img_path").style.visibility     = 'hidden';
-      document.querySelector("#onscreen_idx_0").style.visibility        = 'hidden';
-      document.querySelector("#onscreen_idx_1").style.visibility        = 'hidden';
-      display_element.querySelector('.feedback_items').style.visibility = 'hidden';
+
+      document.querySelector("#onscreen_idx_0").style.visibility    = 'hidden';
+      document.querySelector("#onscreen_idx_1").style.visibility    = 'hidden';
+      document.querySelector('.feedback_items').style.visibility    = 'hidden';
+      prompt_img.style.visibility              = 'hidden';
+      prompt_img_name.style.visibility         = 'hidden';      
+      ex_pairs_img_path.style.visibility       = 'hidden';
+      press_space_key_element.style.visibility = 'hidden';
           
 
       // move on to the next trial
@@ -539,7 +547,15 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
     }
 
     // Create a variable to be used later to start listening to the space key
-    var spaceKeyListener;
+    var spaceKeyListener = jsPsych.pluginAPI.getKeyboardResponse({
+      callback_function: after_space_key,
+      valid_responses: ['space'],
+      rt_method: 'performance',
+      persist: true,
+      allow_held_key: false
+    });
+
+    var allow_space_key = false
     
     // If no response in time, show feedback and allow space key to move on
     var ticking_response_window = jsPsych.pluginAPI.setTimeout(function(){
@@ -560,14 +576,12 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
 
       // In 0.5 seconds, start listening to a space key to move to next trial
       jsPsych.pluginAPI.setTimeout(function(){
-        spaceKeyListener = jsPsych.pluginAPI.getKeyboardResponse({
-          callback_function: end_trial,
-          valid_responses: '49',
-          rt_method: 'performance',
-          persist: false,
-          allow_held_key: false
-        });
-      }, 500)
+ 
+        allow_space_key = true
+
+        press_space_key_element.style.visibility = 'visible'
+
+      }, trial.timer_allow_space_key)
 
     }, trial.timer_response_window)
 
