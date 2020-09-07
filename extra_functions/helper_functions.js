@@ -82,6 +82,15 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
     // Shuffle the base trial array
     let baseTrialArrayInner = deepCopy(shuffle(baseTrialArray))
 
+    // For trials with both exemplars being associated with toys:
+    // Make sure which one is the prompt item is evenly spread
+    // So, create an array to record which one has already been used.
+    let targetUsedAsPrompt = new Array(jatos.studySessionData.inputData.basic_parameters.nTargets).fill(0)
+    
+    // What are the names of the target points used for this session? Define in a temp variable for convenience.
+    let targetPointNames = jatos.studySessionData.inputData.basic_parameters.targetPointNames[phase_string]
+    
+    debugger
     // Populate the baseTrialArrayInner with details for each trial
     for(i = 0, j = 0; i < baseTrialArrayInner.length; i++, j+=2) {
 
@@ -90,14 +99,37 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
           [baseTrialArrayInner[i].item1, baseTrialArrayInner[i].item2] = [baseTrialArrayInner[i].item2, baseTrialArrayInner[i].item1]               
       }
 
-      // Which one is the prompt item? If one of them is empty, prompt is the non-empty. Else, determine randomly
+      // Which one is the prompt item? If one of them is empty, prompt is the non-empty. Else, determine evenly
       if (baseTrialArrayInner[i].item1.includes('E')){
           baseTrialArrayInner[i].prompt_item_idx = 2
       } else if (baseTrialArrayInner[i].item2.includes('E')){
           baseTrialArrayInner[i].prompt_item_idx = 1
       } else {
-          // Choose randomly
-          baseTrialArrayInner[i].prompt_item_idx = Math.floor(Math.random()*1) + 1
+        // Choose evenly
+        debugger
+
+        //   Has the first one been a prompt already? If not, make it. If yes, make the other one.
+        let idx_of_item1 = targetPointNames.indexOf(baseTrialArrayInner[i].item1)
+        let idx_of_item2 = targetPointNames.indexOf(baseTrialArrayInner[i].item2)        
+
+        if (targetUsedAsPrompt[idx_of_item1] == 0){
+           
+            baseTrialArrayInner[i].prompt_item_idx = 1
+
+            // Remember it has been used:
+            targetUsedAsPrompt[idx_of_item1] = 1
+        } else if(targetUsedAsPrompt[idx_of_item2] == 0) {
+           
+            baseTrialArrayInner[i].prompt_item_idx = 2
+
+            // Remember it has been used:
+            targetUsedAsPrompt[idx_of_item2] = 1
+        } else {
+            // Throw an error
+            console.error('Both items already used as prompts!')
+        }
+
+        baseTrialArrayInner[i].prompt_item_idx = Math.floor(Math.random()*1) + 1
       }
       // Choose as foil the other one   
       if (baseTrialArrayInner[i].prompt_item_idx == 1){
