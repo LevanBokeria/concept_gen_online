@@ -44,7 +44,7 @@
     jatos.studySessionData.debug                    = true;
     jatos.studySessionData.debug_n_trials           = 10;
     jatos.studySessionData.auto_respond             = false;
-    jatos.studySessionData.show_correct             = false;
+    jatos.studySessionData.show_correct             = true;
     jatos.studySessionData.use_batch_data           = true;
     jatos.studySessionData.pilot                    = false;
     jatos.studySessionData.pilot_n_trials           = 10;
@@ -322,7 +322,7 @@
         basic_parameters.imgNamesUsed[phase_string][iLocation]   = iImageName
              
         // For the score box, create names of the target itesm
-        basic_parameters.targetPathsUsed[phase_string][iT] = './img/targets/' + iImageName + '.png'
+        basic_parameters.targetPathsUsed[phase_string][iT] = './img/targets/' + iImageName + '.jpg'
       }
     }
 

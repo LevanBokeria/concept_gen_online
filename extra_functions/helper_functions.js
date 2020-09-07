@@ -148,7 +148,7 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
         let pointNameIdx = basic_parameters.pointNamesUsed[phase_string].indexOf(pointName)
 
         baseTrialArrayInner[i].item_img_names[k]  = basic_parameters.imgNamesUsed[phase_string][pointNameIdx] 
-        baseTrialArrayInner[i].item_img_paths[k]  = './img/targets/' + baseTrialArrayInner[i].item_img_names[k] + '.png'
+        baseTrialArrayInner[i].item_img_paths[k]  = './img/targets/' + baseTrialArrayInner[i].item_img_names[k] + '.jpg'
         baseTrialArrayInner[i].item_point_idxs[k] = basic_parameters.pointNamesUsed[phase_string].indexOf(pointName)+1
       }
 
@@ -158,14 +158,14 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
       baseTrialArrayInner[i].prompt_img_name = 
           basic_parameters.imgNamesUsed[phase_string][basic_parameters.pointNamesUsed[phase_string].indexOf(baseTrialArrayInner[i].prompt_point_name)]
       // prompt img path?
-      baseTrialArrayInner[i].prompt_img_path = './img/targets/' + baseTrialArrayInner[i].prompt_img_name + '.png'
+      baseTrialArrayInner[i].prompt_img_path = './img/targets/' + baseTrialArrayInner[i].prompt_img_name + '.jpg'
       // point name of the foil item?
       baseTrialArrayInner[i].foil_point_name = baseTrialArrayInner[i]["item" + baseTrialArrayInner[i].foil_item_idx]
       // target name of the foil item?
       baseTrialArrayInner[i].foil_img_name = 
           basic_parameters.imgNamesUsed[phase_string][basic_parameters.pointNamesUsed[phase_string].indexOf(baseTrialArrayInner[i].foil_point_name)]
       // foil img path?
-      baseTrialArrayInner[i].foil_img_path = './img/targets/' + baseTrialArrayInner[i].foil_img_name + '.png'
+      baseTrialArrayInner[i].foil_img_path = './img/targets/' + baseTrialArrayInner[i].foil_img_name + '.jpg'
       // Exemplar img to load?
       baseTrialArrayInner[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' + 
               baseTrialArrayInner[i].item_point_idxs[0] + '_' + baseTrialArrayInner[i].item_point_idxs[1] + '.png'            
@@ -227,19 +227,19 @@ const calcRunningPerf = function(data) {
     avg = avg / last_prompt_trials.length
 
     // Record this avg value
-    
-    let curr_running_perf
+    debugger
+    let curr_running_perf = []
     if (jatos.studySessionData.session_trial_counter == 1){
-        curr_running_perf = jatos.studySessionData.outputData.phase_results[jatos.studySessionData.global_trial_counter-1].running_perf
+        curr_running_perf = deepCopy(jatos.studySessionData.outputData.phase_results[jatos.studySessionData.global_trial_counter-1].running_perf)
     } else {
-        curr_running_perf = jatos.studySessionData.outputData.phase_results[jatos.studySessionData.global_trial_counter-2].running_perf
+        curr_running_perf = deepCopy(jatos.studySessionData.outputData.phase_results[jatos.studySessionData.global_trial_counter-2].running_perf)
     }
 
     let idx_of_score_box_target = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed[phase_string].indexOf(curr_prompt_path)
 
     curr_running_perf[idx_of_score_box_target] = avg * 100
-
-    jatos.studySessionData.outputData.phase_results[jatos.studySessionData.global_trial_counter-1].running_perf = curr_running_perf
+    
+    jatos.studySessionData.outputData.phase_results[jatos.studySessionData.global_trial_counter-1].running_perf = deepCopy(curr_running_perf)
 
     // update the global trial counter
     jatos.studySessionData.global_trial_counter++
