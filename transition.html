@@ -181,8 +181,11 @@
 
 		let trial_dur_sec = jatos.studySessionData.timer_response_window / 1000
 
+		// Temp variables to hold the concept info, for convenience
+		let concept_1 = jatos.studySessionData.inputData.concepts.phase_1
+		let concept_2 = jatos.studySessionData.inputData.concepts.phase_2	
+
 		// Create the score box
-		
 		let score_box_element = createScoreBox()
 		score_box_element.style.margin = '0 auto'
 
@@ -200,10 +203,11 @@
 			type: 'instructions',
 			pages : [				
 					'<div class="instruct">'+
-						'<p> Unfortunately, your performance did not pass our quality checks. </p> ' + 
-						'<p> As we stated in the instructions, in such case we have to discontinue the study. </p>' +
-						'<p> You will be paid for completing the study up to this stage. </p> ' + 
-						'<p> But first, please complete the debriefing survey by clicking the "Debrief" button.</p>' +
+						'<p>Unfortunately, your performance did not pass our quality checks. </p> ' + 
+						'<p>As we stated in the instructions, in such case we have to discontinue the study. </p>' +
+						'<p>You will be paid for completing the study up to this stage. </p> ' + 
+						'<p>But first, please complete the debriefing survey by clicking the "Debrief" button.</p>' +
+						'<p>The last page contains information about the experiment, contact information of the researcher, and a button to redirect you to Prolific.</p>' +
 					'</div>'
 					],
 			show_clickable_nav: true,
@@ -239,7 +243,7 @@
 						'<p> Below you can see your finishing scores for phase ' + curr_phase + ': </p>' +
 						score_box_element.outerHTML + 
 						'<p> Please complete the debriefing survey by clicking the "Debrief" button.</p>' +
-						'<p> After that, the experiment is over. Thank you! </p>'+
+						'<p>The last page contains information about the experiment, contact information of the researcher, and a button to redirect you to Prolific.</p>' +
 					'</div>'
 					],
 			show_clickable_nav: true,
@@ -247,21 +251,38 @@
 			allow_backward: false,
 			data: {test_part: 'training_finished_generic_page'},
 		};		
+		
+		// A page to explain the experiment at the very end, and redirect
+		let congruency_condition_name;
+		if (jatos.studySessionData.inputData.congruency){
+			congruency_condition_name = 'congruent'
+		} else {
+			congruency_condition_name = 'incongruent'
+		}
 
-		// Generic message saying thank you for training please answer debrief
 		var debriefing_finished_generic_page = {
-
 			type: 'instructions',
-			pages : [				
-					'<div class="instruct">'+
-						'<p> Click "Finish Experiment" below to submit your data and be redirected to prolific! </p> ' +  
-						'<p> Thank you! </p>'+
-					'</div>'
-					],
+			pages: [
+				'<div class="instruct">'+
+					'<p> <strong> Click the "Finish Experiment" button at the bottom of this page, to submit your data and be redirected to Prolific! </strong></p> '+
+
+					'<p><br>Below, you can read what the experiment was about and find my contact information' +
+					' in case you have further questions. </p>' + 
+					'<p><br>I am investigating human learning and memory; specifically how fast humans can learn new information and what influences that speed of learning.' + 
+					'<p>Two versions of this experiment are released online: “congruent” and  “incongruent” versions. </p>' +
+					'<p>You were in the "' + congruency_condition_name + '" condition.</p>' + 
+					'<p>In the “congruent” condition, the phase 1 '+ concept_1.concept_object+' that was associated with a certain toy (for example the '+ jatos.studySessionData.inputData.basic_parameters.targetNamesUsed.phase_1[0] +') had a similar ratio of '+ concept_1.dim1_name+':'+ concept_1.dim2_name+' length as the ratio of '+ concept_2.dim1_name+':'+ concept_2.dim2_name+' length of the phase 2 '+ concept_2.concept_object+' that was associated with the same toy. In the “incongruent” condition, no such relationship between the ratio of '+ concept_1.dim1_name+':'+ concept_1.dim2_name+' and '+ concept_2.dim1_name+':'+ concept_2.dim2_name+' existed between the two phases. </p>' + 
+					'<p>For the participants in the “congruent” condition, detecting a relationship between phase 1 and phase 2 should help complete phase 2 faster, compared to the participants in the “incongruent” condition. Such generalization of knowledge happens during “analogical thinking” and is known to be helpful in speeding up learning. For example, learning about the structure of an atom (heavy nucleus in the center orbited by lighter and smaller electrons) is much easier if one makes an analogy with the solar system (heavy sun in the center orbited by lighter and smaller planets). </p>' + 
+					'<p> We are running multiple people in the “congruent” and “incongruent” conditions. We hope to show a difference between these two conditions, which would be evidence that the participants in the "congruent" condition engage in some form of analogical thinking. We then plan to explore various interventions that might facilitate or inhibit such analogical thinking between phases of our experiment. We hope that this paradigm can become a quick and systematic method to study generalization of information in healthy adults, which will contribute to our understanding of how information and memories are organized in the human mind. </p>' +
+					'<p>We hope that understanding what factors improve generalization and analogical thinking will eventually lead to development of practical strategies and methods for improving these skills in everyday life, whether with students in classrooms or professionals in their careers. </p>' +
+					'<p>Thank you once again for completing the game and contributing to science!</p>' + 
+					'<p>If you have any questions about the experiment, please do not hesitate to contact me at levan.bokeria@mrc-cbu.cam.ac.uk </p>'+
+				'</div>'
+			],
 			show_clickable_nav: true,
 			button_label_next: '<span style="color: black"d;> <strong> Finish Experiment </stong></span>',
 			data: {test_part: 'debriefing_finished_generic_page'},
-		};				
+		};
 
 		// Generic questions to ask regardless of where the ptp failed, or if the ptp succeeded
         var general_questions_page = {

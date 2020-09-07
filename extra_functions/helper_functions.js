@@ -90,7 +90,6 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
     // What are the names of the target points used for this session? Define in a temp variable for convenience.
     let targetPointNames = jatos.studySessionData.inputData.basic_parameters.targetPointNames[phase_string]
     
-    debugger
     // Populate the baseTrialArrayInner with details for each trial
     for(i = 0, j = 0; i < baseTrialArrayInner.length; i++, j+=2) {
 
@@ -106,7 +105,6 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
           baseTrialArrayInner[i].prompt_item_idx = 1
       } else {
         // Choose evenly
-        debugger
 
         //   Has the first one been a prompt already? If not, make it. If yes, make the other one.
         let idx_of_item1 = targetPointNames.indexOf(baseTrialArrayInner[i].item1)
