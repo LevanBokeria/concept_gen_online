@@ -257,7 +257,8 @@ const getPhaseAndSession = function(){
     // If practice is currently ongoing, or the haven't reached the phase_pa component, then curr_session = 'practice'
     if (jatos.componentProperties.title.includes('practice') ||
         jatos.componentPos < jatos.studySessionData.script_comp_pos.phase_pa){
-        curr_session = 'practice'
+        // curr_session = 'practice'
+        curr_session = -1
     } else {
         curr_session = jatos.studySessionData.session_counter[phase_string];
     }

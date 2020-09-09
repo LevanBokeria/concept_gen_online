@@ -41,10 +41,10 @@
     // A conditional that determines whether we are debugging or not. If debugging, fewer trials will be done.
     // The pilot flag is for when asking labmates to test the paradigm, it just reduces the number of trials they'll have to do per sesiosn.
     // Auto respond: script will make random responses by itself.
-    jatos.studySessionData.debug                    = true;
+    jatos.studySessionData.debug                    = false;
     jatos.studySessionData.debug_n_trials           = 10;
-    jatos.studySessionData.auto_respond             = false;
-    jatos.studySessionData.show_correct             = true;
+    jatos.studySessionData.auto_respond             = true;
+    jatos.studySessionData.show_correct             = false;
     jatos.studySessionData.use_batch_data           = true;
     jatos.studySessionData.pilot                    = false;
     jatos.studySessionData.pilot_n_trials           = 10;
@@ -59,7 +59,7 @@
       jatos.studySessionData.long_break_duration  = 2; // seconds
 
       jatos.studySessionData.timer_after_response    = 100; // milliseconds
-      jatos.studySessionData.timer_allow_space_key   = 500;
+      jatos.studySessionData.timer_allow_space_key   = 500; // milliseconds. After a response is made, or missed, how long to wait until allowing a space key?
       jatos.studySessionData.timer_response_window   = 10000; // milliseconds            
       jatos.studySessionData.post_trial_gap          = 10; // milliseconds
       jatos.studySessionData.n_practice_trials       = 2;

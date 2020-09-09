@@ -217,7 +217,7 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Current session',
         default: null,
-        description: 'What session is this? If 0 thats practice trials.'
+        description: 'What session is this? If -1 thats practice trials.'
       }                       
     } // parameters
   } // plugin.info
@@ -268,7 +268,7 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
     // Create an element containing text about session, trial, and phase progress
     const progress_text = document.createElement('P')
     
-    if (trial.session == 'practice'){
+    if (trial.session == -1){
       progress_text.innerText = 'Practice. Trial ' + (jsPsych.data.get().values().length + 1) + '/' + trial.n_trials;
 
     } else {
@@ -280,7 +280,6 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
     // progress_text.style = 'font-size: 15px; display: block; margin-left: auto; margin-right: auto;'
 
     score_box_element.appendChild(progress_text)
-
 
     // ADD PROMPT TEXT
     const prompt = document.createElement('P')
