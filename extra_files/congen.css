@@ -4,7 +4,7 @@ body {
     color: black;
 }
 
-p {
+p, li {
     font-size: 125%; 
     margin-top:0px; 
     margin-right:100px; 
@@ -21,6 +21,10 @@ ul {
     margin-left: 100px; 
     cursor:default;
 }
+
+/* li {
+    font-size: 125%;
+} */
 
 /* Those paragraphs with instrcut class. Used in the instructions, post-practice instructions, and transition. */
 .instruct {
