@@ -72,7 +72,13 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
         pretty_name: 'ex pairs width',
         default: 100,
         description: 'Width of images in pixels'
-      },     
+      }, 
+      ex_pairs_img_margin_top: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'ex pairs margin on top',
+        default: 100,
+        description: 'A bit of space on top, after the prompt image'
+      },       
       item_img_names: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Item image names',
@@ -276,7 +282,7 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
     };
 
     progress_text.id    = 'progress_text'
-    progress_text.style = 'font-size: 15px; text-align: center; position: absolute; top: -40px; left: 10px;'
+    progress_text.style = 'font-size: 15px; text-align: center; position: absolute; top: -40px; left: 10px; z-index: 1;'
     // progress_text.style = 'font-size: 15px; display: block; margin-left: auto; margin-right: auto;'
 
     score_box_element.appendChild(progress_text)
@@ -316,8 +322,9 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
     ex_pairs_img_path.id = 'ex_pairs_img_path'
 
     ex_pairs_img_path.width = trial.ex_pairs_img_width
-    ex_pairs_img_path.style = 'position: absolute; z-index: 0; top:' + (trial.prompt_img_y_coords + trial.prompt_img_height + 30) + 
-                              'px; left:' + (trial.sort_area_width/2 - trial.ex_pairs_img_width/2) + 'px;'
+    // ex_pairs_img_path.style = 'position: absolute; z-index: 0; top:' + (trial.prompt_img_y_coords + trial.prompt_img_height + 50) + 
+    //                           'px; left:' + (trial.sort_area_width/2 - trial.ex_pairs_img_width/2) + 'px;'
+    ex_pairs_img_path.style = 'z-index: 0; margin-top: ' + trial.ex_pairs_img_margin_top + 'px;'                              
 
     display_element.querySelector("#jspsych-free-sort-arena").appendChild(ex_pairs_img_path)
 
@@ -346,8 +353,8 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
       let i_fb_img = document.createElement('img')
       i_fb_img.src = trial.fb_img_paths[iImg]
       i_fb_img.id = 'fb_img' + (iImg+1)
-      i_fb_img.width = trial.prompt_img_width
-      i_fb_img.height = trial.prompt_img_height
+      i_fb_img.width = trial.prompt_img_width*70/100
+      i_fb_img.height = trial.prompt_img_height*70/100
       i_fb_img.style = 'position: absolute; top:' + trial.fb_imgs_y_coords[iImg] + 'px; left:' 
         + trial.fb_imgs_x_coords[iImg] + 'px;'
 
@@ -357,8 +364,10 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
       let i_item_img_name = document.createElement('P')
       i_item_img_name.innerText = trial.item_img_names[iImg]
       i_item_img_name.id = 'item_img_name' + (iImg+1)
-      i_item_img_name.style = 'position: absolute; top:' + (trial.fb_imgs_y_coords[iImg]-50) + 'px; left:' 
-      + (trial.fb_imgs_x_coords[iImg]+5) + 'px;'       
+      i_item_img_name.style = 'position: absolute; top:' + (trial.fb_imgs_y_coords[iImg]-40) + 'px; left:' 
+      + (trial.fb_imgs_x_coords[iImg]+5) + 'px;'
+     
+      i_item_img_name.style['font-size'] = '0.8em'    
 
       feedback_element.appendChild(i_item_img_name)
 
@@ -397,7 +406,7 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
     if (jatos.studySessionData.show_correct){
       display_element.querySelector('.feedback_items').style.visibility = 'visible';
     }
-
+    debugger
     // ////////////////////////////////////////////// FUNCTIONS /////////////////////////////////////////////////////
 
     var after_space_key = function(info){

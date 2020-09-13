@@ -41,11 +41,11 @@
     // A conditional that determines whether we are debugging or not. If debugging, fewer trials will be done.
     // The pilot flag is for when asking labmates to test the paradigm, it just reduces the number of trials they'll have to do per sesiosn.
     // Auto respond: script will make random responses by itself.
-    jatos.studySessionData.debug                    = false;
+    jatos.studySessionData.debug                    = true;
     jatos.studySessionData.debug_n_trials           = 10;
     jatos.studySessionData.auto_respond             = false;
-    jatos.studySessionData.show_correct             = false;
-    jatos.studySessionData.use_batch_data           = true;
+    jatos.studySessionData.show_correct             = true;
+    jatos.studySessionData.use_batch_data           = false;
     jatos.studySessionData.pilot                    = false;
     jatos.studySessionData.pilot_n_trials           = 10;
     jatos.studySessionData.simulate_data            = false; // Simulate data to intentionally fail the QC?
@@ -212,8 +212,8 @@
 
       // So not reading the batch. Set manually
       var congruency = false
-      var phase_1_concept = 'neck_legs_space'
-      var phase_2_concept = 'beak_tail_space'      
+      var phase_2_concept = 'neck_legs_space'
+      var phase_1_concept = 'beak_tail_space'      
     }
 
     if (congruency){
@@ -344,7 +344,7 @@
     let neck_legs_space = new ConceptCreator('neck_legs_space','bird',
         'neck','legs',
         200, // if displaying individual ones, whats the width
-        undefined,350,10,10,
+        undefined,350,60,
         [170,525],[350,400], // onscreen idx coords
         [90,560],[350,400], // fb_imgs coords
         'row') 
@@ -353,9 +353,9 @@
     let beak_tail_space = new ConceptCreator('beak_tail_space','bird',
         'beak','tail',
         600, // if displaying individual ones, whats the width
-        undefined,650,10,10,
-        [220,285],[220,440], // onscreen idx coords6
-        [100,180],[270,480], // fb_imgs coords
+        undefined,650,80,
+        [250,310],[220,440], // onscreen idx coords6
+        [350,410],[195,409], // fb_imgs coords
         'column')        
 
     let all_available_concepts = {
@@ -410,7 +410,7 @@
   // Create a constructor function for creating an object with info for each space
   let ConceptCreator = function(concept_space,concept_object,dim1_name,dim2_name,
       single_ex_img_width, ex_pairs_img_height,ex_pairs_img_width,
-      ex_pairs_x_coord,ex_pairs_y_coord,
+      ex_pairs_img_margin_top,
       onscreen_idx_x_coords,onscreen_idx_y_coords,
       fb_imgs_x_coords,fb_imgs_y_coords,debrief_flex_dir){
 
@@ -421,8 +421,7 @@
           this.single_ex_img_width    = single_ex_img_width,
           this.ex_pairs_img_height    = ex_pairs_img_height,
           this.ex_pairs_img_width     = ex_pairs_img_width,
-          this.ex_pairs_x_coord       = ex_pairs_x_coord,
-          this.ex_pairs_y_coord       = ex_pairs_y_coord,
+          this.ex_pairs_img_margin_top = ex_pairs_img_margin_top,
           this.onscreen_idx_x_coords  = onscreen_idx_x_coords,
           this.onscreen_idx_y_coords  = onscreen_idx_y_coords,   
           this.fb_imgs_x_coords       = fb_imgs_x_coords,
