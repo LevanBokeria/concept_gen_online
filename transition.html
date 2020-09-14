@@ -342,7 +342,8 @@
 				score_box_element.outerHTML + 
 				'<p> <br>Remember, you goal is to reach ' + 
 					jatos.studySessionData.training_criterion + '% on finding the '+
-					jatos.studySessionData.inputData.concepts[phase_string].concept_object+'s hiding each of these toys!' +
+					jatos.studySessionData.inputData.concepts[phase_string].concept_object+'s hiding each of these toys!</p>' +
+				'<p>You have '+(jatos.studySessionData.qc_criteria.max_training_sess - jatos.studySessionData.session_counter[phase_string]) + ' more sessions left to achieve this!</p>'	+
 				'<p><br> Please take a ' + jatos.studySessionData.short_break_duration + 
 				' second break and click the Next button or press the right-arrow button on the keyboard to start the next session. </p>'
 			],

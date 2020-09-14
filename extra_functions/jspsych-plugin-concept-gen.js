@@ -278,7 +278,7 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
       progress_text.innerText = 'Practice. Trial ' + (jsPsych.data.get().values().length + 1) + '/' + trial.n_trials;
 
     } else {
-      progress_text.innerText = 'Session ' + trial.session + '. Trial ' + (jsPsych.data.get().values().length + 1) + '/' + trial.n_trials;
+      progress_text.innerText = 'Session ' + trial.session + '/' + jatos.studySessionData.qc_criteria.max_training_sess + '. Trial ' + (jsPsych.data.get().values().length + 1) + '/' + trial.n_trials;
     };
 
     progress_text.id    = 'progress_text'

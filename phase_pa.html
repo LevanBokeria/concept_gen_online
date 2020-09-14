@@ -32,22 +32,27 @@
                                 jatos.studySessionData.inputData.baseTrialArray[phase_string],
                                 jatos.studySessionData.inputData.basic_parameters,
                                 curr_phase,curr_session)     
+                
+                if (!(jatos.studySessionData.debug || jatos.studySessionData.pilot)){
+                    // Now, choose trials such that each item is used at least twice
+                    var practice_session_trials = []
+                    let n_practice_trials_per_toy = jatos.studySessionData.n_practice_trials/jatos.studySessionData.inputData.basic_parameters.nTargets
 
-                // Now, choose trials such that each item is used at least twice
-                var practice_session_trials = []
-                let n_practice_trials_per_toy = jatos.studySessionData.n_practice_trials/jatos.studySessionData.inputData.basic_parameters.nTargets
+                    for (iPointName of jatos.studySessionData.inputData.basic_parameters.targetPointNames[phase_string]){
+                        // Find trials with this target
+                        let curr_toy_trials = session_trials.filter(item => item.prompt_point_name == iPointName).slice(0,n_practice_trials_per_toy)
 
-                for (iPointName of jatos.studySessionData.inputData.basic_parameters.targetPointNames[phase_string]){
-                    // Find trials with this target
-                    let curr_toy_trials = session_trials.filter(item => item.prompt_point_name == iPointName).slice(0,n_practice_trials_per_toy)
-
-                    practice_session_trials = practice_session_trials.concat(curr_toy_trials)
-                }
-                // Shuffle practice_session_trials
-                session_trials = deepCopy(shuffle(practice_session_trials))
-
-                if (session_trials.length != jatos.studySessionData.n_practice_trials){
-                    console.error('Number of practice trials is not correct!')
+                        practice_session_trials = practice_session_trials.concat(curr_toy_trials)
+                    }
+                    // Shuffle practice_session_trials
+                    session_trials = deepCopy(shuffle(practice_session_trials))
+                    
+                    if (session_trials.length != jatos.studySessionData.n_practice_trials){
+                        console.error('Number of practice trials is not correct!')
+                    }
+                } else {
+                    
+                    session_trials = session_trials.slice(0,jatos.studySessionData.n_practice_trials)
                 }
                 
             } else {

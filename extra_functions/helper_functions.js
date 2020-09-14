@@ -124,6 +124,7 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
             targetUsedAsPrompt[idx_of_item2] = 1
         } else {
             // Throw an error
+            debugger
             console.error('Both items already used as prompts!')
         }
 
