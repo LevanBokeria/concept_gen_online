@@ -84,100 +84,112 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
 
     // For trials with both exemplars being associated with toys:
     // Make sure which one is the prompt item is evenly spread
-    // So, create an array to record which one has already been used.
-    let targetUsedAsPrompt = new Array(jatos.studySessionData.inputData.basic_parameters.nTargets).fill(0)
     
-    // What are the names of the target points used for this session? Define in a temp variable for convenience.
-    let targetPointNames = jatos.studySessionData.inputData.basic_parameters.targetPointNames[phase_string]
+    // Now, first, change the order of item 1 and item2 for every other trial
+    for (i=0; i<baseTrialArrayInner.length; i++){
+        // Randomize item1 and item2
+        if (i % 2 == 0){
+            [baseTrialArrayInner[i].item1, baseTrialArrayInner[i].item2] = [baseTrialArrayInner[i].item2, baseTrialArrayInner[i].item1]               
+        }
+    }
     
+    // ** Now for those trials where both exemplars are targets, choose prompt item evenly: **
+    let only_target_trials = baseTrialArrayInner.filter(item => (!item.item1.includes('E') && !item.item2.includes('E')))
+    // note that this variable is linked now to baseTrialArrayInner. So when we update it, the bastTrialArrayInner also gets updated.
+
+    only_target_trials[0].prompt_item_idx = 1;
+    only_target_trials[0].foil_item_idx   = 2;
+
+    // For the target that as just made a foil, make that one a prompt for the other trial its in:
+    let curr_foil_item = only_target_trials[0]['item' + only_target_trials[0].foil_item_idx]
+    let last_foil_item;
+
+    let the_other_trial = only_target_trials.filter(item => item.item1 == curr_foil_item || item.item2 == curr_foil_item)
+
+    if (the_other_trial[1].item1 == curr_foil_item){
+        the_other_trial[1].prompt_item_idx = 1;
+        the_other_trial[1].foil_item_idx   = 2;
+
+        last_foil_item = the_other_trial[1].item2;
+        
+    } else if (the_other_trial[1].item2 == curr_foil_item){
+        the_other_trial[1].prompt_item_idx = 2;
+        the_other_trial[1].foil_item_idx   = 1;
+
+        last_foil_item = the_other_trial[1].item1;
+    }
+
+    // Finally, for the remaining 3rd trial, make the "last_foil_item" the prompt item
+    let the_last_trial = only_target_trials.filter(item => (item.item1 == last_foil_item || item.item2 == last_foil_item) && item.prompt_item_idx == undefined)
+
+    if (the_last_trial[0].item1 == last_foil_item){
+        the_last_trial[0].prompt_item_idx = 1;
+        the_last_trial[0].foil_item_idx   = 2;
+        
+    } else if (the_last_trial[0].item2 == last_foil_item){
+        the_last_trial[0].prompt_item_idx = 2;
+        the_last_trial[0].foil_item_idx   = 1;
+    }    
+
     // Populate the baseTrialArrayInner with details for each trial
-    for(i = 0, j = 0; i < baseTrialArrayInner.length; i++, j+=2) {
+    for(i = 0; i < baseTrialArrayInner.length; i++) {
 
-      // Randomize item1 and item2
-      if (i % 2 == 0){
-          [baseTrialArrayInner[i].item1, baseTrialArrayInner[i].item2] = [baseTrialArrayInner[i].item2, baseTrialArrayInner[i].item1]               
-      }
-
-      // Which one is the prompt item? If one of them is empty, prompt is the non-empty. Else, determine evenly
-      if (baseTrialArrayInner[i].item1.includes('E')){
-          baseTrialArrayInner[i].prompt_item_idx = 2
-      } else if (baseTrialArrayInner[i].item2.includes('E')){
-          baseTrialArrayInner[i].prompt_item_idx = 1
-      } else {
-        // Choose evenly
-
-        //   Has the first one been a prompt already? If not, make it. If yes, make the other one.
-        let idx_of_item1 = targetPointNames.indexOf(baseTrialArrayInner[i].item1)
-        let idx_of_item2 = targetPointNames.indexOf(baseTrialArrayInner[i].item2)        
-
-        if (targetUsedAsPrompt[idx_of_item1] == 0){
-           
-            baseTrialArrayInner[i].prompt_item_idx = 1
-
-            // Remember it has been used:
-            targetUsedAsPrompt[idx_of_item1] = 1
-        } else if(targetUsedAsPrompt[idx_of_item2] == 0) {
-           
+        // Which one is the prompt item? If one of them is empty, prompt is the non-empty. Else, determine evenly
+        if (baseTrialArrayInner[i].item1.includes('E')){
             baseTrialArrayInner[i].prompt_item_idx = 2
-
-            // Remember it has been used:
-            targetUsedAsPrompt[idx_of_item2] = 1
-        } else {
-            // Throw an error
-            debugger
-            console.error('Both items already used as prompts!')
+        } else if (baseTrialArrayInner[i].item2.includes('E')){
+            baseTrialArrayInner[i].prompt_item_idx = 1
+        } else if (baseTrialArrayInner[i].prompt_item_idx == undefined){
+            console.error('still, some trials with both targets did not get assigned right!!!')
         }
 
-        baseTrialArrayInner[i].prompt_item_idx = Math.floor(Math.random()*1) + 1
-      }
-      // Choose as foil the other one   
-      if (baseTrialArrayInner[i].prompt_item_idx == 1){
-          baseTrialArrayInner[i].foil_item_idx = 2
-      } else {
-          baseTrialArrayInner[i].foil_item_idx = 1
-      }
+        // Choose as foil the other one   
+        if (baseTrialArrayInner[i].prompt_item_idx == 1){
+            baseTrialArrayInner[i].foil_item_idx = 2
+        } else {
+            baseTrialArrayInner[i].foil_item_idx = 1
+        }
 
-      // img names and paths for items. Also point names
-      baseTrialArrayInner[i].item_img_names  = []
-      baseTrialArrayInner[i].item_img_paths  = []
-      baseTrialArrayInner[i].item_point_idxs = []
-      
-      for (k=0; k<2; k++){
+        // img names and paths for items. Also point names
+        baseTrialArrayInner[i].item_img_names  = []
+        baseTrialArrayInner[i].item_img_paths  = []
+        baseTrialArrayInner[i].item_point_idxs = []
+        
+        for (k=0; k<2; k++){
+            let itemString = 'item'+(k+1)
+            let pointName = baseTrialArrayInner[i][itemString]
+            let pointNameIdx = basic_parameters.pointNamesUsed[phase_string].indexOf(pointName)
 
-        let itemString = 'item'+(k+1)
-        let pointName = baseTrialArrayInner[i][itemString]
-        let pointNameIdx = basic_parameters.pointNamesUsed[phase_string].indexOf(pointName)
+            baseTrialArrayInner[i].item_img_names[k]  = basic_parameters.imgNamesUsed[phase_string][pointNameIdx] 
+            baseTrialArrayInner[i].item_img_paths[k]  = './img/targets/' + baseTrialArrayInner[i].item_img_names[k] + '.jpg'
+            baseTrialArrayInner[i].item_point_idxs[k] = basic_parameters.pointNamesUsed[phase_string].indexOf(pointName)+1
+        }
 
-        baseTrialArrayInner[i].item_img_names[k]  = basic_parameters.imgNamesUsed[phase_string][pointNameIdx] 
-        baseTrialArrayInner[i].item_img_paths[k]  = './img/targets/' + baseTrialArrayInner[i].item_img_names[k] + '.jpg'
-        baseTrialArrayInner[i].item_point_idxs[k] = basic_parameters.pointNamesUsed[phase_string].indexOf(pointName)+1
-      }
+        // point name of the prompt item?
+        baseTrialArrayInner[i].prompt_point_name = baseTrialArrayInner[i]["item" + baseTrialArrayInner[i].prompt_item_idx]
+        // target name of the prompt item?
+        baseTrialArrayInner[i].prompt_img_name = 
+            basic_parameters.imgNamesUsed[phase_string][basic_parameters.pointNamesUsed[phase_string].indexOf(baseTrialArrayInner[i].prompt_point_name)]
+        // prompt img path?
+        baseTrialArrayInner[i].prompt_img_path = './img/targets/' + baseTrialArrayInner[i].prompt_img_name + '.jpg'
+        // point name of the foil item?
+        baseTrialArrayInner[i].foil_point_name = baseTrialArrayInner[i]["item" + baseTrialArrayInner[i].foil_item_idx]
+        // target name of the foil item?
+        baseTrialArrayInner[i].foil_img_name = 
+            basic_parameters.imgNamesUsed[phase_string][basic_parameters.pointNamesUsed[phase_string].indexOf(baseTrialArrayInner[i].foil_point_name)]
+        // foil img path?
+        baseTrialArrayInner[i].foil_img_path = './img/targets/' + baseTrialArrayInner[i].foil_img_name + '.jpg'
+        // Exemplar img to load?
+        baseTrialArrayInner[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' + 
+                baseTrialArrayInner[i].item_point_idxs[0] + '_' + baseTrialArrayInner[i].item_point_idxs[1] + '.png'            
+        // baseTrialArrayInner[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_16_16.png'                
 
-      // point name of the prompt item?
-      baseTrialArrayInner[i].prompt_point_name = baseTrialArrayInner[i]["item" + baseTrialArrayInner[i].prompt_item_idx]
-      // target name of the prompt item?
-      baseTrialArrayInner[i].prompt_img_name = 
-          basic_parameters.imgNamesUsed[phase_string][basic_parameters.pointNamesUsed[phase_string].indexOf(baseTrialArrayInner[i].prompt_point_name)]
-      // prompt img path?
-      baseTrialArrayInner[i].prompt_img_path = './img/targets/' + baseTrialArrayInner[i].prompt_img_name + '.jpg'
-      // point name of the foil item?
-      baseTrialArrayInner[i].foil_point_name = baseTrialArrayInner[i]["item" + baseTrialArrayInner[i].foil_item_idx]
-      // target name of the foil item?
-      baseTrialArrayInner[i].foil_img_name = 
-          basic_parameters.imgNamesUsed[phase_string][basic_parameters.pointNamesUsed[phase_string].indexOf(baseTrialArrayInner[i].foil_point_name)]
-      // foil img path?
-      baseTrialArrayInner[i].foil_img_path = './img/targets/' + baseTrialArrayInner[i].foil_img_name + '.jpg'
-      // Exemplar img to load?
-      baseTrialArrayInner[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_' + 
-              baseTrialArrayInner[i].item_point_idxs[0] + '_' + baseTrialArrayInner[i].item_point_idxs[1] + '.png'            
-      // baseTrialArrayInner[i].ex_pairs_img_path = './img/' + curr_space_object.concept_space + '/pair_imgs_both_orders/pairs_16_16.png'                
+        // Record the phase and session
+        baseTrialArrayInner[i].phase        = iPhase
+        baseTrialArrayInner[i].session      = iSession        
+        baseTrialArrayInner[i].running_perf = new Array(basic_parameters.nTargets).fill(0)
 
-      // Record the phase and session
-      baseTrialArrayInner[i].phase        = iPhase
-      baseTrialArrayInner[i].session      = iSession        
-      baseTrialArrayInner[i].running_perf = new Array(basic_parameters.nTargets).fill(0)
-
-    }  
+    }  // main for loop over trials
 
     // Shuffle once again, otherwise prompt item location is predictable 
     baseTrialArrayInner = deepCopy(shuffle(baseTrialArrayInner))
