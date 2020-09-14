@@ -35,21 +35,21 @@
 
                 // Now, choose trials such that each item is used at least twice
                 var practice_session_trials = []
-                
+                let n_practice_trials_per_toy = jatos.studySessionData.n_practice_trials/jatos.studySessionData.inputData.basic_parameters.nTargets
+
                 for (iPointName of jatos.studySessionData.inputData.basic_parameters.targetPointNames[phase_string]){
                     // Find trials with this target
-                    session_trials.map(item => {
-                        if(item.prompt_point_name == iPointName){
-                            practice_session_trials.push(item)
-                        }
-                    })
+                    let curr_toy_trials = session_trials.filter(item => item.prompt_point_name == iPointName).slice(0,n_practice_trials_per_toy)
+
+                    practice_session_trials = practice_session_trials.concat(curr_toy_trials)
                 }
                 // Shuffle practice_session_trials
                 session_trials = deepCopy(shuffle(practice_session_trials))
 
-                // Now slice it
-                session_trials = session_trials.slice(0,jatos.studySessionData.n_practice_trials)
-
+                if (session_trials.length != jatos.studySessionData.n_practice_trials){
+                    console.error('Number of practice trials is not correct!')
+                }
+                
             } else {
 
                 // So not practice trials

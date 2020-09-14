@@ -227,7 +227,6 @@ const calcRunningPerf = function(data) {
     avg = avg / last_prompt_trials.length
 
     // Record this avg value
-    debugger
     let curr_running_perf = []
     if (jatos.studySessionData.session_trial_counter == 1){
         curr_running_perf = deepCopy(jatos.studySessionData.outputData.phase_results[jatos.studySessionData.global_trial_counter-1].running_perf)

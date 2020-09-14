@@ -101,7 +101,6 @@ jsPsych.plugins['instructions-timer'] = (function() {
     var interval;
 
     function btnListener(evt){
-        // debugger;
     	evt.target.removeEventListener('click', btnListener);
     	if(this.id === "jspsych-instructions-back"){
     		back();
@@ -171,7 +170,6 @@ jsPsych.plugins['instructions-timer'] = (function() {
         display_element.querySelector("#countdown-timer").innerHTML = "<p>" + seconds_remaining + " seconds remaining </p>";
         
         if (seconds_remaining == 0){
-            // debugger;
             // Stop interval
             clearInterval(interval);
 
@@ -191,8 +189,6 @@ jsPsych.plugins['instructions-timer'] = (function() {
     function next() {
         // console.log("next clicked!");
         
-        // debugger;
-
         if(allow_next_button) {
 
             add_current_page_to_view_history()

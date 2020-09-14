@@ -406,7 +406,6 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
     if (jatos.studySessionData.show_correct){
       display_element.querySelector('.feedback_items').style.visibility = 'visible';
     }
-    debugger
     // ////////////////////////////////////////////// FUNCTIONS /////////////////////////////////////////////////////
 
     var after_space_key = function(info){

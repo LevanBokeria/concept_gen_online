@@ -111,8 +111,6 @@ jsPsych.plugins['instructions-timer-enhanced'] = (function() {
 
   plugin.trial = function(display_element, trial) {
 
-    // debugger;
-
     var current_page = 0;
 
     var view_history = [];
@@ -257,7 +255,6 @@ jsPsych.plugins['instructions-timer-enhanced'] = (function() {
         
         
         if (seconds_remaining == 0){
-            // debugger;
             
             // Stop interval
             clearInterval(interval);
