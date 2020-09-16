@@ -44,8 +44,8 @@
     jatos.studySessionData.debug                    = false;
     jatos.studySessionData.debug_n_trials           = 10;
     jatos.studySessionData.auto_respond             = false;
-    jatos.studySessionData.show_correct             = true;
-    jatos.studySessionData.use_batch_data           = false;
+    jatos.studySessionData.show_correct             = false;
+    jatos.studySessionData.use_batch_data           = true;
     jatos.studySessionData.pilot                    = false;
     jatos.studySessionData.pilot_n_trials           = 10;
     jatos.studySessionData.simulate_data            = false; // Simulate data to intentionally fail the QC?
@@ -353,9 +353,9 @@
     let beak_tail_space = new ConceptCreator('beak_tail_space','bird',
         'beak','tail',
         600, // if displaying individual ones, whats the width
-        undefined,650,80,
-        [250,310],[220,440], // onscreen idx coords6
-        [350,410],[195,409], // fb_imgs coords
+        undefined,650,100, // height, width, margin on top
+        [250,310],[240,460], // onscreen idx coords6
+        [350,410],[210,424], // fb_imgs coords
         'column')        
 
     let all_available_concepts = {
