@@ -44,9 +44,9 @@
     // - debugging or not. If debugging, fewer trials will be done.
     // - The pilot flag is for when asking labmates to test the paradigm, it just reduces the number of trials they'll have to do per sesiosn.
     // - Auto respond: script will make random responses by itself.
-    jatos.studySessionData.debug                    = false;
+    jatos.studySessionData.debug                    = true;
     jatos.studySessionData.debug_n_trials           = 10;
-    jatos.studySessionData.auto_respond             = false;
+    jatos.studySessionData.auto_respond             = true;
     jatos.studySessionData.show_correct             = false;
     jatos.studySessionData.use_batch_data           = true;
     jatos.studySessionData.pilot                    = false;
@@ -107,7 +107,7 @@
         perc_max_missed:     15, // max percentage of trials allowed to be missed.
         max_training_sess:   4,  // if after these many sessions, performance is not good, discontinue.
         min_training_sess:   2, // force people to do at least this many sessions for each phase.
-        min_time_instruct:   500, // minimum time spent on each instruction page for the first time its visited.               
+        min_time_instruct:   500, // minimum time spent on each instruction page.               
       }
     }
 

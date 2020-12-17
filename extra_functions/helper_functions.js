@@ -97,53 +97,66 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
         let only_target_trials = baseTrialArrayInner.filter(item => (!item.item1.includes('E') && !item.item2.includes('E')))
         // note that this variable is linked now to baseTrialArrayInner. So when we update it, the bastTrialArrayInner also gets updated.
 
-        only_target_trials[0].prompt_item_idx = 1;
-        only_target_trials[0].foil_item_idx   = 2;
+        // If not debugging:
+        if (!jatos.studySessionData.debug){
 
-        // For the target that as just made a foil, make that one a prompt for the other trial its in:
-        let curr_foil_item = only_target_trials[0]['item' + only_target_trials[0].foil_item_idx]
-        let last_foil_item;
+            only_target_trials[0].prompt_item_idx = 1;
+            only_target_trials[0].foil_item_idx   = 2;
 
-        let the_other_trial = only_target_trials.filter(item => item.item1 == curr_foil_item || item.item2 == curr_foil_item)
+            // For the target that was just made a foil, make that one a prompt for the other trial its in:
+            let curr_foil_item = only_target_trials[0]['item' + only_target_trials[0].foil_item_idx]
+            let last_foil_item;
 
-        if (the_other_trial[1].item1 == curr_foil_item){
-            the_other_trial[1].prompt_item_idx = 1;
-            the_other_trial[1].foil_item_idx   = 2;
+            let the_other_trial = only_target_trials.filter(item => item.item1 == curr_foil_item || item.item2 == curr_foil_item)
 
-            last_foil_item = the_other_trial[1].item2;
+            if (the_other_trial[1].item1 == curr_foil_item){
+                the_other_trial[1].prompt_item_idx = 1;
+                the_other_trial[1].foil_item_idx   = 2;
+
+                last_foil_item = the_other_trial[1].item2;
+                
+            } else if (the_other_trial[1].item2 == curr_foil_item){
+                the_other_trial[1].prompt_item_idx = 2;
+                the_other_trial[1].foil_item_idx   = 1;
+
+                last_foil_item = the_other_trial[1].item1;
+            }
+
+            // Finally, for the remaining 3rd trial, make the "last_foil_item" the prompt item
+            let the_last_trial = only_target_trials.filter(item => (item.item1 == last_foil_item || item.item2 == last_foil_item) && item.prompt_item_idx == undefined)
+
+            if (the_last_trial[0].item1 == last_foil_item){
+                the_last_trial[0].prompt_item_idx = 1;
+                the_last_trial[0].foil_item_idx   = 2;
+                
+            } else if (the_last_trial[0].item2 == last_foil_item){
+                the_last_trial[0].prompt_item_idx = 2;
+                the_last_trial[0].foil_item_idx   = 1;
+            }    
             
-        } else if (the_other_trial[1].item2 == curr_foil_item){
-            the_other_trial[1].prompt_item_idx = 2;
-            the_other_trial[1].foil_item_idx   = 1;
+            // Last sanity check. Make sure each target has been assigned to be a prompt item
+            let targetPointNames   = jatos.studySessionData.inputData.basic_parameters.targetPointNames[phase_string]
+            let targetUsedAsPrompt = new Array(jatos.studySessionData.inputData.basic_parameters.nTargets).fill(0)
 
-            last_foil_item = the_other_trial[1].item1;
-        }
+            for (iT=0; iT<only_target_trials.length; iT++){
+                let curr_prompt_idx = only_target_trials[iT].prompt_item_idx
+                let curr_prompt_item = only_target_trials[iT]['item' + curr_prompt_idx]
 
-        // Finally, for the remaining 3rd trial, make the "last_foil_item" the prompt item
-        let the_last_trial = only_target_trials.filter(item => (item.item1 == last_foil_item || item.item2 == last_foil_item) && item.prompt_item_idx == undefined)
+                targetUsedAsPrompt[targetPointNames.indexOf(curr_prompt_item)] = 1;
+            }
+            if (targetUsedAsPrompt.indexOf(0) != -1){
+                console.error('NOT ALL TARGETS ARE PROMPTS on those trials where both on-screen exemplars are targets')
+            }
+        } else {
+            // If debugging just assign randomly to whatever trials exist with both targets on them:
+            debugger
+            for (iT=0; iT<only_target_trials.length; iT++){
+                only_target_trials[iT].prompt_item_idx = 1;
+                only_target_trials[iT].foil_item_idx   = 2;
+            }
 
-        if (the_last_trial[0].item1 == last_foil_item){
-            the_last_trial[0].prompt_item_idx = 1;
-            the_last_trial[0].foil_item_idx   = 2;
-            
-        } else if (the_last_trial[0].item2 == last_foil_item){
-            the_last_trial[0].prompt_item_idx = 2;
-            the_last_trial[0].foil_item_idx   = 1;
-        }    
-        
-        // Last sanity check. Make sure each target has been assigned to be a prompt item
-        let targetPointNames   = jatos.studySessionData.inputData.basic_parameters.targetPointNames[phase_string]
-        let targetUsedAsPrompt = new Array(jatos.studySessionData.inputData.basic_parameters.nTargets).fill(0)
 
-        for (iT=0; iT<only_target_trials.length; iT++){
-            let curr_prompt_idx = only_target_trials[iT].prompt_item_idx
-            let curr_prompt_item = only_target_trials[iT]['item' + curr_prompt_idx]
-
-            targetUsedAsPrompt[targetPointNames.indexOf(curr_prompt_item)] = 1;
-        }
-        if (targetUsedAsPrompt.indexOf(0) != -1){
-            console.error('NOT ALL TARGETS ARE PROMPTS on those trials where both on-screen exemplars are targets')
-        }
+        } // if not debugging
 
     // Now, for all other trials where at least one exemplar is an empty one, determine prompt and foil. Also, populate the baseTrialArrayInner with details for each trial
     for(i = 0; i < baseTrialArrayInner.length; i++) {

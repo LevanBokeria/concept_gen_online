@@ -17,7 +17,7 @@
 <script>
 
   jatos.onLoad(function() {
-    
+    debugger
     // What phase is this?
     let [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession() 
     
@@ -48,7 +48,6 @@
 
       } // if use_batch_data
     }
-
 
     // Simulate data to make sure our scripts work correctly
     const simulate_data = function(last_session_data,conditionToSimulate){
@@ -219,13 +218,17 @@
         let all_page_idxs = viewing_history.map(item => item.page_index)
         let max_pages     = Math.max(...all_page_idxs)
 
-        // For each page that was visited for the first time, 
+        // For each page that was visited, 
         // make sure they spent at least certain amount. If not, fail the QC
         for (iP=0; iP<=max_pages; iP++){
 
-          let curr_idx = all_page_idxs.indexOf(iP)
-          let iPage    = viewing_history[curr_idx]
-          if (iPage.viewing_time < jatos.studySessionData.qc_criteria.min_time_instruct){
+          // Get all the pages with this index
+          let curr_pages = viewing_history.filter( item => item.page_index == iP)
+
+          // Sum the total viewing time
+          let iTotalTime = curr_pages.map(item => item.viewing_time).reduce((acc,item) => acc + item, 0)
+
+          if (iTotalTime < jatos.studySessionData.qc_criteria.min_time_instruct){
             jatos.studySessionData.qc_status.global_pass = false
             jatos.studySessionData.qc_status.min_time_instruct_pass = false
             jatos.studySessionData.progress_state = 'qc_failed_instructions'
