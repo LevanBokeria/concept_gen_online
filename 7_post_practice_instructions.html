@@ -18,15 +18,14 @@
         [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession()
 
         let middle_sentence = {
-            phase_1: '<p><b>If your learning score for each toy is '+ 
+            phase_1: '<p><b>After that, if your learning score for each toy is '+ 
                 jatos.studySessionData.training_criterion +'% or more, you will move to phase 2! </b></p>',
-            phase_2: '<p><b>If your learning score for each toy is '+ 
+            phase_2: '<p><b>After that, if your learning score for each toy is '+ 
                 jatos.studySessionData.training_criterion +'% or more, you will move to phase 3! </b></p>',
-            phase_3: '<p><b>If your learning score for each toy is ' +
+            phase_3: '<p><b>After that, if your learning score for each toy is ' +
                 jatos.studySessionData.training_criterion +'% or more, you will move to the debriefing survey, ' +
                 'after which the experiment is over! </b></p>',
         }
-
 
         var practice_trials_end = {
             type: "instructions",
@@ -39,6 +38,8 @@
                         '<p>You will now start the 1st session of phase '+ curr_phase +', with '+ 
                             + jatos.studySessionData.inputData.nTrials +
                             ' trials! </p>' +
+                        '<p>You will have to do a minimum of '+ 
+                            jatos.studySessionData.qc_criteria.min_training_sess + ' training sessons.</p>' +
                         middle_sentence[phase_string] +
                         '<p>If not, you will get more training sessions. </p>' +
                         '<p>Keep in mind, the scores reset at the start of each session! </p>' +
