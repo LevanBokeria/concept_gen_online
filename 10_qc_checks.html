@@ -17,7 +17,7 @@
 <script>
 
   jatos.onLoad(function() {
-    debugger
+    
     // What phase is this?
     let [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession() 
     
@@ -170,19 +170,19 @@
           let all_targets_learned = last_session_data[last_session_data.length-1].running_perf.every(
             item => item >= jatos.studySessionData.training_criterion
           )
-        
-          if (all_targets_learned) {
 
-            if (curr_phase == 1){
-                jatos.studySessionData.progress_state = 'advance_phase'
-            } else if (curr_phase == 2){
-                jatos.studySessionData.progress_state = 'advance_phase'
-            } else if (curr_phase == 3){
-                jatos.studySessionData.progress_state = 'finished_training'
+          // Also check that minimum number of sessions have been done.
+          if (all_targets_learned && curr_session >= jatos.studySessionData.qc_criteria.min_training_sess) {
+            
+            if (curr_phase == jatos.studySessionData.max_phases){
+              jatos.studySessionData.progress_state = 'advance_phase'
+            } else {
+              jatos.studySessionData.progress_state = 'finished_training'
             }
 
           } else {
-            // So, they haven't failed but havent learned. Check if they've done too many sessions, if not then advance a session
+            // So, they haven't failed but havent learned or havent finished the minimum number of sessions.
+            // Check if they've done too many sessions, if not then advance a session
             
             if (jatos.studySessionData.session_counter[phase_string] == jatos.studySessionData.qc_criteria.max_training_sess){
               jatos.studySessionData.qc_status.max_training_sess_pass = false

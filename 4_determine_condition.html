@@ -14,7 +14,7 @@
   jatos.onLoad(function() {
 
     // How many phases to have? 2 or 3?
-    jatos.studySessionData.number_of_phases = 2;
+    jatos.studySessionData.max_phases = 2;
 
     // Counter for advancing through sessions
     jatos.studySessionData.session_counter = {
@@ -95,6 +95,7 @@
         min_perf_check_ses:  3,
         perc_max_missed:     100,
         max_training_sess:   4,
+        min_training_sess:   2, // force people to do at least this many sessions for each phase.
         min_time_instruct:   1,
       }
     } else {
@@ -175,21 +176,6 @@
       phase_3: [3,4,5],      
     }
 
-    // The two variables below are needed for randomly generating target locations in the concept space
-    let totalPointsInSpace = targetCoordsNames.pointNamesEmpty.length
-    let allPointsInSpace   = [...Array(totalPointsInSpace).keys()].map(item => item + 1) // creates an array from 1 to max number
-
-    let chosenTargetLocations_phase_1, chosenTargetLocations_phase_2, chosenTargetLocations_phase_3
-
-    if (jatos.studySessionData.random_target_loc){
-      // Randomly sample
-      chosenTargetLocations_phase_1 =_.sampleSize(allPointsInSpace, nTargets)
-    } else {
-      // chosenTargetLocations_phase_1 = [1,7,14] // These are base 1, so corresponding to the 16 points in the 4x4 space
-      chosenTargetLocations_phase_1 = [1,8,15]
-    }
-    chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruency or not
-  
     // Get BATCH DATA or not? ////////////////////////////////    
     if (jatos.studySessionData.use_batch_data){
 
@@ -212,6 +198,10 @@
       var congruency = batchData[minCond].congruency
       var phase_1_concept = batchData[minCond].phase_1_concept
       var phase_2_concept = batchData[minCond].phase_2_concept      
+
+      // Set arrangements
+      var phase_1_arrangement = batchData[minCond].phase_1_arrangement
+      var phase_2_arrangement = batchData[minCond].phase_2_arrangement            
     
     } else {
 
@@ -219,9 +209,39 @@
       var congruency = false
       var phase_2_concept = 'neck_legs_space'
       var phase_1_concept = 'beak_tail_space'      
+      var phase_1_arrangement = 'arr1'
+      var phase_2_arrangement = 'arr2'
+
+    } // get batch data or not
+
+    // Define arrangements to use
+    let all_available_arrangements = {
+      arr1: [1,8,15], // These are base 1, so corresponding to the 16 points in the 4x4 space
+      arr2: [14,9,4],
     }
 
+    let arrangementsUsed = {
+      phase_1: all_available_arrangements[phase_1_arrangement],
+      phase_2: all_available_arrangements[phase_2_arrangement],
+    }
+
+    // The two variables below are needed for randomly generating target locations in the concept space
+    let totalPointsInSpace = targetCoordsNames.pointNamesEmpty.length
+    let allPointsInSpace   = [...Array(totalPointsInSpace).keys()].map(item => item + 1) // creates an array from 1 to max number
+
+    let chosenTargetLocations_phase_1, chosenTargetLocations_phase_2, chosenTargetLocations_phase_3
+
+    if (jatos.studySessionData.random_target_loc){
+      // Randomly sample
+      chosenTargetLocations_phase_1 =_.sampleSize(allPointsInSpace, nTargets)
+    } else {
+      // chosenTargetLocations_phase_1 = [1,7,14] 
+      chosenTargetLocations_phase_1 = arrangementsUsed.phase_1
+    }
+    chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruency or not
+
     if (congruency){
+      
       chosenTargetLocations_phase_2 = chosenTargetLocations_phase_1
 
     } else {
@@ -235,7 +255,7 @@
         // chosenTargetLocations_phase_2 = [9,14,4] 
         // chosenTargetLocations_phase_2 = [16,5,2] 
         // chosenTargetLocations_phase_2 = [15,9,4]  
-        chosenTargetLocations_phase_2 = [14,9,4]        
+        chosenTargetLocations_phase_2 = arrangementsUsed.phase_2        
       }
 
     };

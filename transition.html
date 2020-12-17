@@ -334,21 +334,40 @@
 		// Realize mapping?
 		var realize_mapping_page = createRealizeMappingDebriefer()
 
-		// For short break
-		var short_break_page = {
-			type: 'instructions-timer',
-			pages: [
+		let short_break_conditional_statement;
+
+		// Depending on whether minimum number of sessions have been completed, give appropriate instructions:
+		if (curr_session < jatos.studySessionData.qc_criteria.min_training_sess){
+			short_break_page = [
+				'<p> Thank you so much for completing this session! <br> ' + 
+				'We really appreciate you staying attentive and continuing to honestly perform the task. </p>' +
+				'<p> Below you can see your scores from the last session: </p>' +
+				score_box_element.outerHTML + 
+				'<p>You must do at least 2 sessions for this phase of the game.</p>' + 
+				'<p>After that, if you reach ' + 
+					jatos.studySessionData.training_criterion + '% on each of these toys you will move to the next stage!</p>' +
+				'<p>You have '+(jatos.studySessionData.qc_criteria.max_training_sess - jatos.studySessionData.session_counter[phase_string]) + ' more sessions left to achieve those scores!</p>'	+
+				'<p><br> Please take a ' + jatos.studySessionData.short_break_duration + 
+				' second break and click the Next button or press the right-arrow button on the keyboard to start the next session. </p>'
+			]
+		} else {
+			short_break_page = [
 				'<p> Thank you so much for completing this session! <br> ' + 
 				'We really appreciate you staying attentive and continuing to honestly perform the task. </p>' +
 				'<p> Below you can see your scores from the last session: </p>' +
 				score_box_element.outerHTML + 
 				'<p> <br>Remember, you goal is to reach ' + 
-					jatos.studySessionData.training_criterion + '% on finding the '+
-					jatos.studySessionData.inputData.concepts[phase_string].concept_object+'s hiding each of these toys!</p>' +
-				'<p>You have '+(jatos.studySessionData.qc_criteria.max_training_sess - jatos.studySessionData.session_counter[phase_string]) + ' more sessions left to achieve this!</p>'	+
+					jatos.studySessionData.training_criterion + '% on each of these toys!</p>' +
+				'<p>You have '+(jatos.studySessionData.qc_criteria.max_training_sess - jatos.studySessionData.session_counter[phase_string]) + ' more sessions left to achieve those scores!</p>'	+
 				'<p><br> Please take a ' + jatos.studySessionData.short_break_duration + 
 				' second break and click the Next button or press the right-arrow button on the keyboard to start the next session. </p>'
-			],
+			]
+			}
+
+		// For short break
+		var short_break_page = {
+			type: 'instructions-timer',
+			pages: short_break_page,
 			show_clickable_nav: true,
 			button_label_next: "<span style='color: blue';> <strong> Next </stong></span>",
 			n_seconds: jatos.studySessionData.short_break_duration,
@@ -463,7 +482,9 @@
 
 			timeline.push(phase_1_spatial_page)
 			timeline.push(phase_2_spatial_page)	
-			timeline.push(phase_3_was_1_page)
+			if (jatos.studySessionData.max_phases > 2){
+				timeline.push(phase_3_was_1_page)
+			}
 			timeline.push(debriefing_finished_generic_page)
 
 			component_to_start = jatos.studySessionData.script_comp_pos.data_submission

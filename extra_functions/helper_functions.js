@@ -149,7 +149,7 @@ const trialCreator = function(curr_space_object,baseTrialArray,basic_parameters,
             }
         } else {
             // If debugging just assign randomly to whatever trials exist with both targets on them:
-            debugger
+            
             for (iT=0; iT<only_target_trials.length; iT++){
                 only_target_trials[iT].prompt_item_idx = 1;
                 only_target_trials[iT].foil_item_idx   = 2;
