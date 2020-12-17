@@ -244,7 +244,7 @@ const calcRunningPerf = function(data) {
     })
 
     if (last_prompt_trials.length > jatos.studySessionData.perf_check_over_n_trials){
-        // So we have more than 10 entries. Get only the last 10 trials
+        // So we have more than n entries. Get only the last n trials
         last_prompt_trials = last_prompt_trials.slice(last_prompt_trials.length - jatos.studySessionData.perf_check_over_n_trials, last_prompt_trials.length)
     }
     // Calculate the average
