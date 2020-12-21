@@ -168,7 +168,7 @@
     // How many targets
     let nTargets = 3
 
-    // Randomly choose the target indices. i.e. which pictures to use as targets
+    // Randomly choose the target indices. i.e. which pictures to use as targets?
     // let chosenTarget_idxs = _.sampleSize(targetCoordsNames.pointNamesTarget.length, basic_parameters.nTargets)
     let chosenTarget_idxs = {
       phase_1: [3,4,5], 
@@ -213,7 +213,7 @@
       var phase_2_arrangement = 'arr2'
 
     } // get batch data or not
-
+    
     // Define arrangements to use
     let all_available_arrangements = {
       arr1: [1,8,15], // These are base 1, so corresponding to the 16 points in the 4x4 space
@@ -223,41 +223,27 @@
     let arrangementsUsed = {
       phase_1: all_available_arrangements[phase_1_arrangement],
       phase_2: all_available_arrangements[phase_2_arrangement],
+      phase_3: all_available_arrangements[phase_1_arrangement],
     }
 
     // The two variables below are needed for randomly generating target locations in the concept space
     let totalPointsInSpace = targetCoordsNames.pointNamesEmpty.length
     let allPointsInSpace   = [...Array(totalPointsInSpace).keys()].map(item => item + 1) // creates an array from 1 to max number
 
-    let chosenTargetLocations_phase_1, chosenTargetLocations_phase_2, chosenTargetLocations_phase_3
-
     if (jatos.studySessionData.random_target_loc){
       // Randomly sample
-      chosenTargetLocations_phase_1 =_.sampleSize(allPointsInSpace, nTargets)
-    } else {
-      // chosenTargetLocations_phase_1 = [1,7,14] 
-      chosenTargetLocations_phase_1 = arrangementsUsed.phase_1
+      arrangementsUsed.phase_1 =_.sampleSize(allPointsInSpace, nTargets)
     }
-    chosenTargetLocations_phase_3 = chosenTargetLocations_phase_1 // phase 3 is exactly the same, whether its congruency or not
 
-    if (congruency){
-      
-      chosenTargetLocations_phase_2 = chosenTargetLocations_phase_1
+    arrangementsUsed.phase_3 = arrangementsUsed.phase_1 // phase 3 is exactly the same, whether its congruency or not
 
+    if (congruency){ 
+      arrangementsUsed.phase_2 = arrangementsUsed.phase_1
     } else {
-
       if (jatos.studySessionData.random_target_loc){
         // Choose it randomly
-        chosenTargetLocations_phase_2 = _.sampleSize(allPointsInSpace, nTargets)
-      } else {
-        // Choose manually
-        // chosenTargetLocations_phase_2 = [10,16,3]
-        // chosenTargetLocations_phase_2 = [9,14,4] 
-        // chosenTargetLocations_phase_2 = [16,5,2] 
-        // chosenTargetLocations_phase_2 = [15,9,4]  
-        chosenTargetLocations_phase_2 = arrangementsUsed.phase_2        
-      }
-
+        arrangementsUsed.phase_2 = _.sampleSize(allPointsInSpace, nTargets)
+      } 
     };
 
     const basic_parameters = {
@@ -289,9 +275,9 @@
         nTargets: nTargets,
 
         targetPoints: {
-          phase_1: chosenTargetLocations_phase_1,
-          phase_2: chosenTargetLocations_phase_2,
-          phase_3: chosenTargetLocations_phase_3,          
+          phase_1: arrangementsUsed.phase_1,
+          phase_2: arrangementsUsed.phase_2,
+          phase_3: arrangementsUsed.phase_3,          
         },                
         
         // Point names, i.e. T1 T2 T6 etc
