@@ -173,7 +173,7 @@
 
           // Also check that minimum number of sessions have been done.
           if (all_targets_learned && curr_session >= jatos.studySessionData.qc_criteria.min_training_sess) {
-            debugger
+            
             if (curr_phase == jatos.studySessionData.max_phases){
               jatos.studySessionData.progress_state = 'finished_training'
             } else {

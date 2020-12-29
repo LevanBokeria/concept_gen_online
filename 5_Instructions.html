@@ -33,29 +33,8 @@
 			names_on_page.id = 'names_on_page'
 			names_on_page.style = 'display: flex; justify-content: center; align-items: center;'
 
-			let target_array = jatos.studySessionData.inputData.basic_parameters.targetPathsUsed[phase_string]
-			let target_names = jatos.studySessionData.inputData.basic_parameters.targetNamesUsed[phase_string]
-			
-			for (i=0; i<target_array.length; i++){
-				// Create the names flexbox
-				let iN = document.createElement('P')
-				iN.id = 'target_name_' + (i+1)
-				iN.innerText = target_names[i]
-				iN.style = 'height: 20px; margin: 10px; font-size: 15px; text-align: center;'
-
-				// Create the target elements
-				let iT = document.createElement('img')
-				iT.id = 'target_' + (i+1)
-				iT.src = target_array[i]
-				iT.style = 'width: 50px; height: 50px'
-
-				targets_on_page.appendChild(iT)
-				names_on_page.appendChild(iN)
-			}
-
 			// Load the target_grid_element, showing which targets we're using
 			let target_grid_element = createTargetGridForInstructions();
-			debugger
 
 			// What component to start next
 			var comp_to_start;
@@ -102,7 +81,6 @@
 						's are hiding the ' + 
 						nTargets +
 						' toys you see below.</p>' +
-						// names_on_page.outerHTML + targets_on_page.outerHTML +
 						target_grid_element.outerHTML +
 						'<p>Your job is to find out which of the '+ 
 						nTargets +' ' + 

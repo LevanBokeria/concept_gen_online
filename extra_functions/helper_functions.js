@@ -403,7 +403,7 @@ const createScoreBox = function(){
 };
 
 const createTargetGridForInstructions = function(){
-    debugger
+    
     // What phase is this?
     let [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession()
 
@@ -413,7 +413,7 @@ const createTargetGridForInstructions = function(){
     let img_names = jatos.studySessionData.inputData.basic_parameters.targetNamesUsed[phase_string]
     let img_paths = local_score_box_info[phase_string]
 
-    let gaps_col      = 30; // gap between items in the box
+    let gaps_col      = 20; // gap between items in the box
     let target_width  = 2 * jatos.studySessionData.inputData.basic_parameters.score_box_target_width
     let target_height = 2 * jatos.studySessionData.inputData.basic_parameters.score_box_target_height;
 
@@ -430,14 +430,15 @@ const createTargetGridForInstructions = function(){
     score_box.style     = 
         'display: grid;' + 
         'grid-gap: 0px '+ gaps_col + 'px;' +
-        'grid-template-columns: repeat(' + img_paths.length +', '+ target_width + 'px);' +
+        'grid-template-columns: repeat(' + img_paths.length +', 1fr);' +
         'background-color: #fff;' +
         'text-align: center;' +
         'place-items: center center;' +
         'border: 2px solid #444;' + 
         'width: '+score_box_width+'px;' +
         'place-content: center center;' + 
-        'margin: 15px auto;'
+        'margin: 15px auto;' +
+        'justify-content: space-between;'
 
     // Add target names
     for (iN of img_names){
