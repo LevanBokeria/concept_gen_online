@@ -267,7 +267,7 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
 		let score_box_element = createScoreBox()
     score_box_element.style.position = 'absolute'
     score_box_element.style.top      = '580px'
-    score_box_element.style.left     = '10px'             
+    score_box_element.style.left     = '5px'             
     
     display_element.querySelector("#jspsych-free-sort-arena").appendChild(score_box_element)
 
@@ -282,7 +282,7 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
     };
 
     progress_text.id    = 'progress_text'
-    progress_text.style = 'font-size: 15px; text-align: center; position: absolute; top: -40px; left: 10px; z-index: 1;'
+    progress_text.style = 'font-size: 15px; text-align: center; position: absolute; top: -40px; left: 30px; z-index: 1;'
     // progress_text.style = 'font-size: 15px; display: block; margin-left: auto; margin-right: auto;'
 
     score_box_element.appendChild(progress_text)

@@ -330,14 +330,14 @@ const createScoreBox = function(){
     let img_paths = local_score_box_info[phase_string]
 
     let gaps_col      = 30; // gap between items in the box
-    let target_width  = jatos.studySessionData.inputData.basic_parameters.score_box_target_width
+    let target_width  = 5 + jatos.studySessionData.inputData.basic_parameters.score_box_target_width
     let target_height = jatos.studySessionData.inputData.basic_parameters.score_box_target_height;
 
     let score_font_size      = jatos.studySessionData.inputData.basic_parameters.score_box_score_font_size
     let your_score_font_size = jatos.studySessionData.inputData.basic_parameters.score_box_description_font_size
 
     let nTargets        = jatos.studySessionData.inputData.basic_parameters.nTargets
-    let score_box_width = nTargets * target_width + nTargets*gaps_col
+    let score_box_width = nTargets * target_width + nTargets*gaps_col + 10
 
     // Create the main grid element
     let score_box = document.createElement('div')
