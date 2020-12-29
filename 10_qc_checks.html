@@ -10,6 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/js-combinatorics@0.5"></script>
   <script src='./jspsych-6.1.0/plugins/jspsych-survey-text.js'></script>
   <script src="./extra_functions/helper_functions.js"> </script>
+  <script src='./extra_functions/lodash.js'></script>
 </head>
 
 <body></body>
@@ -94,7 +95,7 @@
           for (iTrial=0; iTrial<nChange; iTrial++){
             last_session_data[iTrial].rt = null
           }
-        }
+        } 
       }
       return last_session_data
     };
@@ -200,7 +201,7 @@
 
     // Get the latest data
     let last_session_data = jatos.studySessionData.last_session_data
-
+    
     // If we are simulating data:
     if (jatos.studySessionData.simulate_data){
       last_session_data = simulate_data(last_session_data,jatos.studySessionData.simulate_condition)

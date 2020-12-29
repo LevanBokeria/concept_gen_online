@@ -70,6 +70,9 @@
                 jatos.studySessionData.latestFinishedComponentId  = jatos.componentId;
                 jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
 
+                // Add the data from this component to the studySessionData.outputData
+                jatos.studySessionData.outputData.post_practice_instructions_results[phase_string] = jsPsych.data.get().values()[0];
+
                 jatos.submitResultData("[post_ex_trials_start---" + 
                 JSON.stringify(jatos.studySessionData) +
                 "---post_ex_trials_end]", jatos.startNextComponent);

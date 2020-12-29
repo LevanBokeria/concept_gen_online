@@ -427,9 +427,24 @@ jsPsych.plugins["plugin-concept-gen"] = (function() {
       // If auto respond, change the info
       if (jatos.studySessionData.auto_respond){
 
-        // If correct response is 1, key code is 49. Else its 50
-        trial.correct_response == 1 ? response.key = '49' : response.key = '50'
-        response.correct = 1
+        // Decide whether to answer correctly or incorrectly on this trial
+        let randChoice = Math.random() * 10 // generates a random number from 0 to 10
+
+        if (randChoice <= jatos.studySessionData.auto_respons_probability){
+          // Record the correct responses
+
+          // If correct response is 1, key code is 49. Else its 50
+          trial.correct_response == 1 ? response.key = '49' : response.key = '50'
+          response.correct = 1
+        } else {
+
+          // Record wrong responses
+
+          // If correct response is 1, key code is 49. Else its 50
+          trial.correct_response == 1 ? response.key = '50' : response.key = '49'
+          response.correct = 0
+        }
+
         response.rt = 100
       } else {
         // only record the first response

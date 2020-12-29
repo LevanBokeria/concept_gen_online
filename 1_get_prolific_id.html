@@ -32,7 +32,12 @@
           phase_1: [],
           phase_2: [],
           phase_3: [],
-        },      
+        },  
+        post_practice_instructions_results: {
+          phase_1: [],
+          phase_2: [],
+          phase_3: [],
+        },
         phase_results:   [],    
         intermediate_feedback_results: [],
         phase_1_debrief_results: [],
@@ -44,7 +49,7 @@
       };
 
       // Enter PID automatically or manually? Auto for debug
-      let autoPID = true
+      let autoPID = false
 
       if (!autoPID){
         $("#prolific_id").keypress(function (e) {
