@@ -254,12 +254,6 @@
           // Update batch data to reflect failure
           batch_data_reflect_failure();
 
-          jatos.submitResultData('Phase 1 practice QC FAILED', 
-            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.transition))
-        } else {
-          // So didn't fail
-          jatos.submitResultData('Phase 1 practice QC passed. Starting post practice instructions', 
-            jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.transition))
         }
 
       } else {
@@ -270,10 +264,6 @@
         // This function will check all the qc criteria, and determine what to do next
         session_qc_check(last_session_data)
 
-        // Start the transition script
-        jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC.`, 
-          jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.transition))
-
       } // Checking the real sessions section
 
     } else {
@@ -283,11 +273,13 @@
       // This function will check all the qc criteria, and determine what to do next
       session_qc_check(last_session_data)
 
-      // Start the transition script
-      jatos.submitResultData(`Phase ${curr_phase} session ${curr_session} QC passed. Giving a transition`, 
-        jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.transition))
-
     } // phase bracket
+
+    // Submit the data and move on
+    jatos.submitResultData("[qc_start---" + JSON.stringify(jatos.studySessionData) + 
+      "---qc_end]", function(){
+        jatos.startComponentByPos(jatos.studySessionData.script_comp_pos.transition);
+    });
 
   }); // jatos IFFY
 
