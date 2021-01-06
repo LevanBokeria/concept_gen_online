@@ -18,7 +18,7 @@
 <script>
 
   jatos.onLoad(function() {
-    
+    debugger
     // What phase is this?
     let [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession() 
     
@@ -28,19 +28,24 @@
     const batch_data_reflect_failure = function(){
 
       if (jatos.studySessionData.use_batch_data){
-
+        debugger
         // Update the batch data to reflect that this ptp failed.
         var batchData = jatos.batchSession.getAll();
 
         // Find the condition
         for (i = 0; i < batchData.length; i++){
           
-          if(batchData[i].congruency      == jatos.studySessionData.inputData.congruency && 
+          if(batchData[i].congruency     == jatos.studySessionData.inputData.congruency && 
             batchData[i].phase_1_concept == jatos.studySessionData.inputData.concepts.phase_1.concept_space && 
-            batchData[i].phase_2_concept == jatos.studySessionData.inputData.concepts.phase_2.concept_space){
+            batchData[i].phase_2_concept == jatos.studySessionData.inputData.concepts.phase_2.concept_space &&
+            JSON.stringify(batchData[i].phase_1_arrangement) == 
+            JSON.stringify(jatos.studySessionData.inputData.basic_parameters.targetPoints.phase_1) && 
+            JSON.stringify(batchData[i].phase_2_arrangement) == 
+            JSON.stringify(jatos.studySessionData.inputData.basic_parameters.targetPoints.phase_2)){
 
             batchData[i].n_ptp_fail ++;
             batchData[i].n_ptp_pass_or_ongoing --;
+            batchData[i].n_ptp_needed ++;
           }
         }
 

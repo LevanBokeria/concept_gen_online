@@ -47,7 +47,7 @@
     jatos.studySessionData.debug                    = false;
     jatos.studySessionData.debug_n_trials           = 10;
     jatos.studySessionData.auto_respond             = true;
-    jatos.studySessionData.auto_respons_probability = 7; // how often to select the right answer? Ex: 9 is 90%
+    jatos.studySessionData.auto_respons_probability = 3; // how often to select the right answer? Ex: 9 is 90%
     jatos.studySessionData.show_correct             = false;
     jatos.studySessionData.use_batch_data           = true;
     jatos.studySessionData.pilot                    = false;
@@ -179,30 +179,31 @@
 
     // Get BATCH DATA or not? ////////////////////////////////    
     if (jatos.studySessionData.use_batch_data){
-
+      debugger
       // Get batchData
       let batchData = jatos.batchSession.getAll();
 
-      // Get the number of participants each of them ran
-      let n_ptp_pass_or_ongoing = batchData.map(item => item.n_ptp_pass_or_ongoing)
+      // Get the number of participants needed for each condition
+      let n_ptp_needed = batchData.map(item => item.n_ptp_needed)
 
       // Find the one with least number of ptp
-      let minCond = n_ptp_pass_or_ongoing.indexOf(Math.min(...n_ptp_pass_or_ongoing));
+      let maxCond = n_ptp_needed.indexOf(Math.max(...n_ptp_needed));
 
       // Increment its runnning participant count
-      batchData[minCond].n_ptp_pass_or_ongoing ++;
+      batchData[maxCond].n_ptp_pass_or_ongoing ++;
+      batchData[maxCond].n_ptp_needed --;
 
       // Update the batch data
       jatos.batchSession.setAll(batchData);
 
       // Set congruency
-      var congruency = batchData[minCond].congruency
-      var phase_1_concept = batchData[minCond].phase_1_concept
-      var phase_2_concept = batchData[minCond].phase_2_concept      
+      var congruency = batchData[maxCond].congruency
+      var phase_1_concept = batchData[maxCond].phase_1_concept
+      var phase_2_concept = batchData[maxCond].phase_2_concept      
 
       // Set arrangements
-      var phase_1_arrangement = batchData[minCond].phase_1_arrangement
-      var phase_2_arrangement = batchData[minCond].phase_2_arrangement            
+      var phase_1_arrangement = batchData[maxCond].phase_1_arrangement
+      var phase_2_arrangement = batchData[maxCond].phase_2_arrangement            
     
     } else {
 
@@ -210,8 +211,8 @@
       var congruency = false
       var phase_2_concept = 'neck_legs_space'
       var phase_1_concept = 'beak_tail_space'      
-      var phase_1_arrangement = 'arr1'
-      var phase_2_arrangement = 'arr2'
+      var phase_1_arrangement = [1,8,15]
+      var phase_2_arrangement = [14,9,4]
 
     } // get batch data or not
     
@@ -222,9 +223,9 @@
     }
 
     let arrangementsUsed = {
-      phase_1: all_available_arrangements[phase_1_arrangement],
-      phase_2: all_available_arrangements[phase_2_arrangement],
-      phase_3: all_available_arrangements[phase_1_arrangement],
+      phase_1: phase_1_arrangement,
+      phase_2: phase_2_arrangement,
+      phase_3: phase_1_arrangement,
     }
 
     // The two variables below are needed for randomly generating target locations in the concept space
