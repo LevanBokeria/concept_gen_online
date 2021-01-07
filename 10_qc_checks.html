@@ -18,7 +18,7 @@
 <script>
 
   jatos.onLoad(function() {
-    debugger
+    
     // What phase is this?
     let [curr_phase,phase_string,curr_session,curr_global_trial] = getPhaseAndSession() 
     
@@ -28,7 +28,7 @@
     const batch_data_reflect_failure = function(){
 
       if (jatos.studySessionData.use_batch_data){
-        debugger
+        
         // Update the batch data to reflect that this ptp failed.
         var batchData = jatos.batchSession.getAll();
 

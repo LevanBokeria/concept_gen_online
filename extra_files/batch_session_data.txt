@@ -6,8 +6,8 @@
     "phase_1_arrangement": [1,8,15],
     "phase_2_arrangement": [14,9,4],
     "n_ptp_fail": 0,
-    "n_ptp_pass_or_ongoing": 1,
-    "n_ptp_needed": 5
+    "n_ptp_pass_or_ongoing": 0,
+    "n_ptp_needed": 6
   },
   {
     "congruency": false,
