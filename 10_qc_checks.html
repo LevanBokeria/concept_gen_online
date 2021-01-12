@@ -193,7 +193,11 @@
             if (jatos.studySessionData.session_counter[phase_string] == jatos.studySessionData.qc_criteria.max_training_sess){
               jatos.studySessionData.qc_status.max_training_sess_pass = false
               jatos.studySessionData.qc_status.global_pass            = false
-              jatos.studySessionData.progress_state = 'qc_failed_' + phase_string             
+              jatos.studySessionData.progress_state = 'qc_failed_' + phase_string    
+              
+              // Update batch data to reflect failure
+              batch_data_reflect_failure();
+
             } else {
               jatos.studySessionData.progress_state = 'advance_session'
             }
