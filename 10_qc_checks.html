@@ -113,7 +113,7 @@
       let perc_missed_trials = n_missed_trials * 100 / last_session_data.length
 
       if (perc_missed_trials >= jatos.studySessionData.qc_criteria.perc_max_missed){
-          jatos.studySessionData.qc_status.perc_max_missed_pass = false
+          jatos.studySessionData.qc_status.perc_max_misses_pass = false
           jatos.studySessionData.qc_status.global_pass          = false            
       }
 

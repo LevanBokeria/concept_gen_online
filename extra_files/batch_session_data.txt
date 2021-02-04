@@ -4,143 +4,143 @@
     "phase_1_concept": "beak_tail_space",
     "phase_2_concept": "neck_legs_space",
     "phase_1_arrangement": [
-      1,
-      8,
-      15
+      15,
+      5,
+      12
     ],
     "phase_2_arrangement": [
-      14,
-      9,
-      4
+      3,
+      8,
+      14
     ],
     "n_ptp_fail": 3,
-    "n_ptp_pass_or_ongoing": 9,
-    "n_ptp_needed": 0
+    "n_ptp_pass_or_ongoing": 3,
+    "n_ptp_needed": 3
   },
   {
     "congruency": false,
     "phase_1_concept": "beak_tail_space",
     "phase_2_concept": "neck_legs_space",
     "phase_1_arrangement": [
-      14,
-      9,
-      4
+      3,
+      8,
+      14
     ],
     "phase_2_arrangement": [
-      1,
-      8,
-      15
+      15,
+      5,
+      12
     ],
-    "n_ptp_fail": 2,
-    "n_ptp_pass_or_ongoing": 7,
-    "n_ptp_needed": 1
+    "n_ptp_fail": 4,
+    "n_ptp_pass_or_ongoing": 3,
+    "n_ptp_needed": 4
   },
   {
     "congruency": false,
     "phase_1_concept": "neck_legs_space",
     "phase_2_concept": "beak_tail_space",
     "phase_1_arrangement": [
-      1,
-      8,
-      15
+      15,
+      5,
+      12
     ],
     "phase_2_arrangement": [
-      14,
-      9,
-      4
+      3,
+      8,
+      14
+    ],
+    "n_ptp_fail": 2,
+    "n_ptp_pass_or_ongoing": 4,
+    "n_ptp_needed": 5
+  },
+  {
+    "congruency": false,
+    "phase_1_concept": "neck_legs_space",
+    "phase_2_concept": "beak_tail_space",
+    "phase_1_arrangement": [
+      3,
+      8,
+      14
+    ],
+    "phase_2_arrangement": [
+      15,
+      5,
+      12
+    ],
+    "n_ptp_fail": 4,
+    "n_ptp_pass_or_ongoing": 3,
+    "n_ptp_needed": 3
+  },
+  {
+    "congruency": true,
+    "phase_1_concept": "beak_tail_space",
+    "phase_2_concept": "neck_legs_space",
+    "phase_1_arrangement": [
+      15,
+      5,
+      12
+    ],
+    "phase_2_arrangement": [
+      15,
+      5,
+      12
     ],
     "n_ptp_fail": 3,
-    "n_ptp_pass_or_ongoing": 11,
-    "n_ptp_needed": 2
+    "n_ptp_pass_or_ongoing": 3,
+    "n_ptp_needed": 3
   },
   {
-    "congruency": false,
-    "phase_1_concept": "neck_legs_space",
-    "phase_2_concept": "beak_tail_space",
+    "congruency": true,
+    "phase_1_concept": "beak_tail_space",
+    "phase_2_concept": "neck_legs_space",
     "phase_1_arrangement": [
-      14,
-      9,
-      4
+      3,
+      8,
+      14
     ],
     "phase_2_arrangement": [
-      1,
+      3,
       8,
-      15
+      14
     ],
     "n_ptp_fail": 2,
-    "n_ptp_pass_or_ongoing": 13,
-    "n_ptp_needed": 2
-  },
-  {
-    "congruency": true,
-    "phase_1_concept": "beak_tail_space",
-    "phase_2_concept": "neck_legs_space",
-    "phase_1_arrangement": [
-      1,
-      8,
-      15
-    ],
-    "phase_2_arrangement": [
-      1,
-      8,
-      15
-    ],
-    "n_ptp_fail": 4,
-    "n_ptp_pass_or_ongoing": 13,
-    "n_ptp_needed": 1
-  },
-  {
-    "congruency": true,
-    "phase_1_concept": "beak_tail_space",
-    "phase_2_concept": "neck_legs_space",
-    "phase_1_arrangement": [
-      14,
-      9,
-      4
-    ],
-    "phase_2_arrangement": [
-      14,
-      9,
-      4
-    ],
-    "n_ptp_fail": 4,
-    "n_ptp_pass_or_ongoing": 9,
-    "n_ptp_needed": 0
+    "n_ptp_pass_or_ongoing": 3,
+    "n_ptp_needed": 3
   },
   {
     "congruency": true,
     "phase_1_concept": "neck_legs_space",
     "phase_2_concept": "beak_tail_space",
     "phase_1_arrangement": [
-      1,
-      8,
-      15
+      15,
+      5,
+      12
     ],
     "phase_2_arrangement": [
-      1,
-      8,
-      15
+      15,
+      5,
+      12
     ],
-    "n_ptp_fail": 1,
-    "n_ptp_pass_or_ongoing": 11,
-    "n_ptp_needed": 0
+    "n_ptp_fail": 2,
+    "n_ptp_pass_or_ongoing": 3,
+    "n_ptp_needed": 3
   },
   {
     "congruency": true,
     "phase_1_concept": "neck_legs_space",
     "phase_2_concept": "beak_tail_space",
     "phase_1_arrangement": [
-      14,
-      9,
-      4
+      3,
+      8,
+      14
     ],
     "phase_2_arrangement": [
-      14,
-      9,
-      4
+      3,
+      8,
+      14
     ],
-    "n_ptp_fail": 0,
-    "n_ptp_pass_or_ongoing": 9,
-    "n_ptp_needed": 0
+    "n_ptp_fail": 2,
+    "n_ptp_pass_or_ongoing": 3,
+    "n_ptp_needed": 4
   }
 ]
