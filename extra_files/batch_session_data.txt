@@ -4,143 +4,143 @@
     "phase_1_concept": "beak_tail_space",
     "phase_2_concept": "neck_legs_space",
     "phase_1_arrangement": [
-      15,
-      5,
-      12
+      14,
+      9,
+      4
     ],
     "phase_2_arrangement": [
-      3,
+      1,
       8,
-      14
+      15
     ],
-    "n_ptp_fail": 3,
-    "n_ptp_pass_or_ongoing": 3,
-    "n_ptp_needed": 3
+    "n_ptp_fail": 22,
+    "n_ptp_pass_or_ongoing": 23,
+    "n_ptp_needed": 2
   },
   {
     "congruency": false,
     "phase_1_concept": "beak_tail_space",
     "phase_2_concept": "neck_legs_space",
     "phase_1_arrangement": [
-      3,
+      1,
       8,
-      14
+      15
     ],
     "phase_2_arrangement": [
-      15,
-      5,
-      12
+      14,
+      9,
+      4
     ],
-    "n_ptp_fail": 4,
-    "n_ptp_pass_or_ongoing": 3,
-    "n_ptp_needed": 4
+    "n_ptp_fail": 13,
+    "n_ptp_pass_or_ongoing": 18,
+    "n_ptp_needed": 1
   },
   {
     "congruency": false,
     "phase_1_concept": "neck_legs_space",
     "phase_2_concept": "beak_tail_space",
     "phase_1_arrangement": [
-      15,
-      5,
-      12
+      14,
+      9,
+      4
     ],
     "phase_2_arrangement": [
-      3,
+      1,
       8,
-      14
+      15
     ],
-    "n_ptp_fail": 2,
-    "n_ptp_pass_or_ongoing": 4,
-    "n_ptp_needed": 5
+    "n_ptp_fail": 20,
+    "n_ptp_pass_or_ongoing": 15,
+    "n_ptp_needed": 1
   },
   {
     "congruency": false,
     "phase_1_concept": "neck_legs_space",
     "phase_2_concept": "beak_tail_space",
     "phase_1_arrangement": [
-      3,
+      1,
       8,
-      14
+      15
     ],
     "phase_2_arrangement": [
-      15,
-      5,
-      12
+      14,
+      9,
+      4
     ],
-    "n_ptp_fail": 4,
-    "n_ptp_pass_or_ongoing": 3,
-    "n_ptp_needed": 3
+    "n_ptp_fail": 17,
+    "n_ptp_pass_or_ongoing": 22,
+    "n_ptp_needed": -200
   },
   {
     "congruency": true,
     "phase_1_concept": "beak_tail_space",
     "phase_2_concept": "neck_legs_space",
     "phase_1_arrangement": [
-      15,
-      5,
-      12
+      14,
+      9,
+      4
     ],
     "phase_2_arrangement": [
-      15,
-      5,
-      12
+      14,
+      9,
+      4
     ],
-    "n_ptp_fail": 3,
-    "n_ptp_pass_or_ongoing": 3,
-    "n_ptp_needed": 3
+    "n_ptp_fail": 13,
+    "n_ptp_pass_or_ongoing": 19,
+    "n_ptp_needed": 2
   },
   {
     "congruency": true,
     "phase_1_concept": "beak_tail_space",
     "phase_2_concept": "neck_legs_space",
     "phase_1_arrangement": [
-      3,
+      1,
       8,
-      14
+      15
     ],
     "phase_2_arrangement": [
-      3,
+      1,
       8,
-      14
+      15
     ],
-    "n_ptp_fail": 2,
-    "n_ptp_pass_or_ongoing": 3,
-    "n_ptp_needed": 3
+    "n_ptp_fail": 28,
+    "n_ptp_pass_or_ongoing": 23,
+    "n_ptp_needed": 2
   },
   {
     "congruency": true,
     "phase_1_concept": "neck_legs_space",
     "phase_2_concept": "beak_tail_space",
     "phase_1_arrangement": [
-      15,
-      5,
-      12
+      14,
+      9,
+      4
     ],
     "phase_2_arrangement": [
-      15,
-      5,
-      12
+      14,
+      9,
+      4
     ],
-    "n_ptp_fail": 2,
-    "n_ptp_pass_or_ongoing": 3,
-    "n_ptp_needed": 3
+    "n_ptp_fail": 6,
+    "n_ptp_pass_or_ongoing": 14,
+    "n_ptp_needed": 2
   },
   {
     "congruency": true,
     "phase_1_concept": "neck_legs_space",
     "phase_2_concept": "beak_tail_space",
     "phase_1_arrangement": [
-      3,
+      1,
       8,
-      14
+      15
     ],
     "phase_2_arrangement": [
-      3,
+      1,
       8,
-      14
+      15
     ],
-    "n_ptp_fail": 2,
-    "n_ptp_pass_or_ongoing": 3,
-    "n_ptp_needed": 4
+    "n_ptp_fail": 22,
+    "n_ptp_pass_or_ongoing": 24,
+    "n_ptp_needed": 2
   }
 ]
