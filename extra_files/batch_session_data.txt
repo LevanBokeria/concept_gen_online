@@ -14,8 +14,8 @@
       15
     ],
     "n_ptp_fail": 22,
-    "n_ptp_pass_or_ongoing": 23,
-    "n_ptp_needed": 2
+    "n_ptp_pass_or_ongoing": 25,
+    "n_ptp_needed": -200
   },
   {
     "congruency": false,
@@ -32,8 +32,8 @@
       4
     ],
     "n_ptp_fail": 13,
-    "n_ptp_pass_or_ongoing": 18,
-    "n_ptp_needed": 1
+    "n_ptp_pass_or_ongoing": 19,
+    "n_ptp_needed": -200
   },
   {
     "congruency": false,
@@ -49,9 +49,9 @@
       8,
       15
     ],
-    "n_ptp_fail": 20,
-    "n_ptp_pass_or_ongoing": 15,
-    "n_ptp_needed": 1
+    "n_ptp_fail": 21,
+    "n_ptp_pass_or_ongoing": 16,
+    "n_ptp_needed": -200
   },
   {
     "congruency": false,
@@ -85,8 +85,8 @@
       9,
       4
     ],
-    "n_ptp_fail": 13,
-    "n_ptp_pass_or_ongoing": 19,
+    "n_ptp_fail": 22,
+    "n_ptp_pass_or_ongoing": 20,
     "n_ptp_needed": 2
   },
   {
@@ -103,9 +103,9 @@
       8,
       15
     ],
-    "n_ptp_fail": 28,
-    "n_ptp_pass_or_ongoing": 23,
-    "n_ptp_needed": 2
+    "n_ptp_fail": 29,
+    "n_ptp_pass_or_ongoing": 25,
+    "n_ptp_needed": -200
   },
   {
     "congruency": true,
@@ -121,9 +121,9 @@
       9,
       4
     ],
-    "n_ptp_fail": 6,
-    "n_ptp_pass_or_ongoing": 14,
-    "n_ptp_needed": 2
+    "n_ptp_fail": 7,
+    "n_ptp_pass_or_ongoing": 17,
+    "n_ptp_needed": 1
   },
   {
     "congruency": true,
@@ -140,7 +140,7 @@
       15
     ],
     "n_ptp_fail": 22,
-    "n_ptp_pass_or_ongoing": 24,
-    "n_ptp_needed": 2
+    "n_ptp_pass_or_ongoing": 25,
+    "n_ptp_needed": 1
   }
 ]
